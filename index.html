@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clue - Tarjeta de Puntuación Digital</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #2c3e50, #3498db);
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #34495e, #2c3e50);
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            opacity: 0.9;
+            font-size: 1.1rem;
+        }
+
+        .scorecard {
+            padding: 30px;
+        }
+
+        .section {
+            margin-bottom: 40px;
+        }
+
+        .section-title {
+            background: #34495e;
+            color: white;
+            padding: 12px 20px;
+            font-size: 1.3rem;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .grid-container {
+            overflow-x: auto;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+        }
+
+        th {
+            background: #2c3e50;
+            color: white;
+            padding: 12px 8px;
+            font-weight: bold;
+            text-align: center;
+            font-size: 0.9rem;
+            border-right: 1px solid #34495e;
+        }
+
+        th:last-child {
+            border-right: none;
+        }
+
+        td {
+            padding: 12px;
+            border: 1px solid #ddd;
+            text-align: center;
+            transition: all 0.2s ease;
+        }
+
+        td:first-child {
+            text-align: left;
+            font-weight: 500;
+            background: #f8f9fa;
+            color: #2c3e50;
+            padding-left: 15px;
+        }
+
+        .checkbox-cell {
+            width: 60px;
+            background: #fff;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .checkbox-cell:hover {
+            background: #f1f2f6;
+        }
+
+        .checkbox-cell.checked {
+            background: #27ae60;
+            color: white;
+        }
+
+        .checkbox-cell.crossed {
+            background: #e74c3c;
+            color: white;
+        }
+
+        .checkbox-cell::before {
+            content: '';
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #bdc3c7;
+            border-radius: 3px;
+            margin: 0;
+            transition: all 0.2s ease;
+        }
+
+        .checkbox-cell.checked::before {
+            content: '✓';
+            background: #27ae60;
+            border-color: #27ae60;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .checkbox-cell.crossed::before {
+            content: '✗';
+            background: #e74c3c;
+            border-color: #e74c3c;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .controls {
+            background: #f8f9fa;
+            padding: 20px;
+            text-align: center;
+            border-top: 1px solid #dee2e6;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1rem;
+            margin: 0 10px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(52, 152, 219, 0.4);
+        }
+
+        .btn.danger {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);
+        }
+
+        .btn.danger:hover {
+            box-shadow: 0 6px 20px rgba(231, 76, 60, 0.4);
+        }
+
+        .legend {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+        }
+
+        .legend-box {
+            width: 20px;
+            height: 20px;
+            border-radius: 3px;
+            border: 2px solid #bdc3c7;
+        }
+
+        .legend-box.checked {
+            background: #27ae60;
+            border-color: #27ae60;
+        }
+
+        .legend-box.crossed {
+            background: #e74c3c;
+            border-color: #e74c3c;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                border-radius: 10px;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .scorecard {
+                padding: 15px;
+            }
+
+            th, td {
+                padding: 8px 4px;
+                font-size: 0.8rem;
+            }
+
+            .checkbox-cell {
+                width: 40px;
+            }
+
+            .legend {
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🕵️ CLUE</h1>
+            <p>Tarjeta de Puntuación Digital</p>
+        </div>
+
+        <div class="scorecard">
+            <div class="legend">
+                <div class="legend-item">
+                    <div class="legend-box"></div>
+                    <span>Sin marcar</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-box checked"></div>
+                    <span>Tengo la carta</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-box crossed"></div>
+                    <span>No la tengo</span>
+                </div>
+            </div>
+
+            <!-- ¿QUIÉN? -->
+            <div class="section">
+                <div class="section-title">¿Quién?</div>
+                <div class="grid-container">
+                    <table id="quien-table">
+                        <thead>
+                            <tr>
+                                <th>Personaje</th>
+                                <th>Jugador 1</th>
+                                <th>Jugador 2</th>
+                                <th>Jugador 3</th>
+                                <th>Jugador 4</th>
+                                <th>Jugador 5</th>
+                                <th>Jugador 6</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr data-item="Verduzco">
+                                <td>Verduzco</td>
+                                <td class="checkbox-cell" data-player="1"></td>
+                                <td class="checkbox-cell" data-player="2"></td>
+                                <td class="checkbox-cell" data-player="3"></td>
+                                <td class="checkbox-cell" data-player="4"></td>
+                                <td class="checkbox-cell" data-player="5"></td>
+                                <td class="checkbox-cell" data-player="6"></td>
+                            </tr>
+                            <tr data-item="Mostaza">
+                                <td>Mostaza</td>
+                                <td class="checkbox-cell" data-player="1"></td>
+                                <td class="checkbox-cell" data-player="2"></td>
+                                <td class="checkbox-cell" data-player="3"></td>
+                                <td class="checkbox-cell" data-player="4"></td>
+                                <td class="checkbox-cell" data-player="5"></td>
+                                <td class="checkbox-cell" data-player="6"></td>
+                            </tr>
+                            <tr data-item="Marlene">
+                                <td>Marlene</td>
+                                <td class="checkbox-cell" data-player="1"></td>
+                                <td class="checkbox-cell" data-player="2"></td>
+                                <td class="checkbox-cell" data-player="3"></td>
+                                <td class="checkbox-cell" data-player="4"></td>
+                                <td class="checkbox-cell" data-player="5"></td>
+                                <td class="checkbox-cell" data-player="6"></td>
+                            </tr>
+                            <tr data-item="Moradillo">
+                                <td>Moradillo</td>
+                                <td class="checkbox-cell" data-player="1"></td>
+                                <td class="checkbox-cell" data-player="2"></td>
+                                <td class="checkbox-cell" data-player="3"></td>
+                                <td class="checkbox-cell" data-player="4"></td>
+                                <td class="checkbox-cell" data-player="5"></td>
+                                <td class="checkbox-cell" data-player="6"></td>
+                            </tr>
+                            <tr data-item="Escarlata">
+                                <td>Escarlata</td>
+                                <td class="checkbox-cell" data-player="1"></td>
+                                <td class="checkbox-cell" data-player="2"></td>
+                                <td class="checkbox-cell" data-player="3"></td>
+                                <td class="checkbox-cell" data-player="4"></td>
+                                <td class="checkbox-cell" data-player="5"></td>
+                                <td class="checkbox-cell" data-player="6"></td>
+                            </tr>
+                            <tr data-item="Blanca">
+                                <td>Blanca</td>
+                                <td class="checkbox-cell" data-player="1"></td>
+                                <td class="checkbox-cell" data-player="2"></td>
+                                <td class="checkbox-cell" data-player="3"></td>
+                                <td class="checkbox-cell" data-player="4"></td>
+                                <td class="checkbox-cell" data-player="5"></td>
+                                <td class="checkbox-cell" data-player="6"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- ¿CON QUÉ? -->
+            <div class="section">
+                <div class="section-title">¿Con qué?</div>
+                <div class="grid-container">
+                    <table id="armas-table">
+                        <thead>
+                            <tr>
+                                <th>Arma</th>
+                                <th>Jugador 1</th>
+                                <th>Jugador 2</th>
+                                <th>Jugador 3</th>
+                                <th>Jugador 4</th>
+                                <th>Jugador 5</th>
+                                <th>Jugador 6</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr data-item="Candelabro">
+                                <td>Candelabro</td>
+                                <td class="checkbox-cell" data-player="1"></td>
+                                <td class="checkbox-cell" data-player="2"></td>
+                                <td class="checkbox-cell" data-player="3"></td>
+                                <td class="checkbox-cell" data-player="4"></td>
+                                <td class="checkbox-cell" data-player="5"></td>
+                                <td class="checkbox-cell" data-player="6"></td>
+                            </tr>
+                            <tr data-item="Daga">
+                                <td>Daga</td>
+                                <td class="checkbox-cell" data-player="1"></td>
+                                <td class="checkbox-cell" data-player="2"></td>
+                                <td class="checkbox-cell" data-player="3"></td>
+                                <td class="checkbox-cell" data-player="4"></td>
+                                <td class="checkbox-cell" data-player="5"></td>
+                                <td class="checkbox-cell" data-player="6"></td>
+                            </tr>
+                            <tr data-item="Tubo de plomo">
+                                <td>Tubo de plomo</td>
+                                <td class="checkbox-cell" data-player="1"></td>
+                                <td class="checkbox-cell" data-player="2"></td>
+                                <td class="checkbox-cell" data-player="3"></td>
+                                <td class="checkbox-cell" data-player="4"></td>
+                                <td class="checkbox-cell" data-player="5"></td>
+                                <td class="checkbox-cell" data-player="6"></td>
+                            </tr>
+                            <tr data-item="Revólver">
+                                <td>Revólver</td>
+                                <td class="checkbox-cell" data-player="1"></td>
+                                <td class="checkbox-cell" data-player="2"></td>
+                                <td class="checkbox-cell" data-player="3"></td>
+                                <td class="checkbox-cell" data-player="4"></td>
+                                <td class="checkbox-cell" data-player="5"></td>
+                                <td class="checkbox-cell" data-player="6"></td>
+                            </tr>
+                            <tr data-item="Soga">
+                                <td>Soga</td>
+                                <td class="checkbox-cell" data-player="1"></td>
+                                <td class="checkbox-cell" data-player="2"></td>
+                                <td class="checkbox-cell" data-player="3"></td>
+                                <td class="checkbox-cell" data-player="4"></td>
+                                <td class="checkbox-cell" data-player="5"></td>
+                                <td class="checkbox-cell" data-player="6"></td>
+                            </tr>
+                            <tr data-item="Llave inglesa">
+                                <td>Llave inglesa</td>
+                                <td class="checkbox-cell" data-player="1"></td>
+                                <td class="checkbox-cell" data-player="2"></td>
+                                <td class="checkbox-cell" data-player="3"></td>
+                                <td class="checkbox-cell" data-player="4"></td>
+                                <td class="checkbox-cell" data-player="5"></td>
+                                <td class="checkbox-cell" data-player="6"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- ¿DÓNDE? -->
+            <div class="section">
+                <div class="section-title">¿Dónde?</div>
+                <div class="grid-container">
+                    <table id="lugares-table">
+                        <thead>
+                            <tr>
+                                <th>Lugar</th>
+                                <th>Jugador 1</th>
+                                <th>Jugador 2</th>
+                                <th>Jugador 3</th>
+                                <th>Jugador 4</th>
+                                <th>Jugador 5</th>
+                                <th>Jugador 6</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr data-item="Salón de baile">
+                                <td>Salón de baile</td>
+                                <td class="checkbox-cell" data-player="1"></td>
+                                <td class="checkbox-cell" data-player="2"></td>
+                                <td class="checkbox-cell" data-player="3"></td>
+                                <td class="checkbox-cell" data-player="4"></td>
+                                <td class="checkbox-cell" data-player="5"></td>
+                                <td class="checkbox-cell" data-player="6"></td>
+                            </tr>
+                            <tr data-item="Sala de billar">
+                                <td>Sala de billar</td>
+                                <td class="checkbox-cell" data-player="1"></td>
+                                <td class="checkbox-cell" data-player="2"></td>
+                                <td class="checkbox-cell" data-player="3"></td>
+                                <td class="checkbox-cell" data-player="4"></td>
+                                <td class="checkbox-cell" data-player="5"></td>
+                                <td class="checkbox-cell" data-player="6"></td>
+                            </tr>
+                            <tr data-item="Terraza">
+                                <td>Terraza</td>
+                                <td class="checkbox-cell" data-player="1"></td>
+                                <td class="checkbox-cell" data-player="2"></td>
+                                <td class="checkbox-cell" data-player="3"></td>
+                                <td class="checkbox-cell" data-player="4"></td>
+                                <td class="checkbox-cell" data-player="5"></td>
+                                <td class="checkbox-cell" data-player="6"></td>
+                            </tr>
+                            <tr data-item="Comedor">
+                                <td>Comedor</td>
+                                <td class="checkbox-cell" data-player="1"></td>
+                                <td class="checkbox-cell" data-player="2"></td>
+                                <td class="checkbox-cell" data-player="3"></td>
+                                <td class="checkbox-cell" data-player="4"></td>
+                                <td class="checkbox-cell" data-player="5"></td>
+                                <td class="checkbox-cell" data-player="6"></td>
+                            </tr>
+                            <tr data-item="Pasillo">
+                                <td>Pasillo</td>
+                                <td class="checkbox-cell" data-player="1"></td>
+                                <td class="checkbox-cell" data-player="2"></td>
+                                <td class="checkbox-cell" data-player="3"></td>
+                                <td class="checkbox-cell" data-player="4"></td>
+                                <td class="checkbox-cell" data-player="5"></td>
+                                <td class="checkbox-cell" data-player="6"></td>
+                            </tr>
+                            <tr data-item="Cocina">
+                                <td>Cocina</td>
+                                <td class="checkbox-cell" data-player="1"></td>
+                                <td class="checkbox-cell" data-player="2"></td>
+                                <td class="checkbox-cell" data-player="3"></td>
+                                <td class="checkbox-cell" data-player="4"></td>
+                                <td class="checkbox-cell" data-player="5"></td>
+                                <td class="checkbox-cell" data-player="6"></td>
+                            </tr>
+                            <tr data-item="Biblioteca">
+                                <td>Biblioteca</td>
+                                <td class="checkbox-cell" data-player="1"></td>
+                                <td class="checkbox-cell" data-player="2"></td>
+                                <td class="checkbox-cell" data-player="3"></td>
+                                <td class="checkbox-cell" data-player="4"></td>
+                                <td class="checkbox-cell" data-player="5"></td>
+                                <td class="checkbox-cell" data-player="6"></td>
+                            </tr>
+                            <tr data-item="Sala">
+                                <td>Sala</td>
+                                <td class="checkbox-cell" data-player="1"></td>
+                                <td class="checkbox-cell" data-player="2"></td>
+                                <td class="checkbox-cell" data-player="3"></td>
+                                <td class="checkbox-cell" data-player="4"></td>
+                                <td class="checkbox-cell" data-player="5"></td>
+                                <td class="checkbox-cell" data-player="6"></td>
+                            </tr>
+                            <tr data-item="Estudio">
+                                <td>Estudio</td>
+                                <td class="checkbox-cell" data-player="1"></td>
+                                <td class="checkbox-cell" data-player="2"></td>
+                                <td class="checkbox-cell" data-player="3"></td>
+                                <td class="checkbox-cell" data-player="4"></td>
+                                <td class="checkbox-cell" data-player="5"></td>
+                                <td class="checkbox-cell" data-player="6"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="controls">
+            <button class="btn" onclick="saveGame()">💾 Guardar Partida</button>
+            <button class="btn" onclick="loadGame()">📁 Cargar Partida</button>
+            <button class="btn danger" onclick="clearAll()">🗑️ Limpiar Todo</button>
+        </div>
+    </div>
+
+    <script>
+        // Add click functionality to checkbox cells
+        document.addEventListener('DOMContentLoaded', function() {
+            const checkboxCells = document.querySelectorAll('.checkbox-cell');
+
+            checkboxCells.forEach(cell => {
+                cell.addEventListener('click', function() {
+                    // Cycle through states: empty -> checked -> crossed -> empty
+                    if (this.classList.contains('checked')) {
+                        this.classList.remove('checked');
+                        this.classList.add('crossed');
+                    } else if (this.classList.contains('crossed')) {
+                        this.classList.remove('crossed');
+                    } else {
+                        this.classList.add('checked');
+                    }
+                });
+            });
+        });
+
+        function clearAll() {
+            if (confirm('¿Estás seguro de que quieres limpiar toda la tarjeta?')) {
+                const checkboxCells = document.querySelectorAll('.checkbox-cell');
+                checkboxCells.forEach(cell => {
+                    cell.classList.remove('checked', 'crossed');
+                });
+            }
+        }
+
+        function saveGame() {
+            const gameState = {};
+            const checkboxCells = document.querySelectorAll('.checkbox-cell');
+
+            checkboxCells.forEach(cell => {
+                const row = cell.closest('tr');
+                const item = row.getAttribute('data-item');
+                const player = cell.getAttribute('data-player');
+                const key = `${item}-${player}`;
+
+                if (cell.classList.contains('checked')) {
+                    gameState[key] = 'checked';
+                } else if (cell.classList.contains('crossed')) {
+                    gameState[key] = 'crossed';
+                } else {
+                    gameState[key] = 'empty';
+                }
+            });
+
+            const dataStr = JSON.stringify(gameState);
+            const dataBlob = new Blob([dataStr], {type: 'application/json'});
+
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(dataBlob);
+            link.download = 'clue_game_' + new Date().toISOString().slice(0,10) + '.json';
+            link.click();
+        }
+
+        function loadGame() {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = '.json';
+
+            input.onchange = function(event) {
+                const file = event.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        try {
+                            const gameState = JSON.parse(e.target.result);
+
+                            // Clear current state
+                            clearAll();
+
+                            // Apply loaded state
+                            Object.keys(gameState).forEach(key => {
+                                const [item, player] = key.split('-');
+                                const cell = document.querySelector(`tr[data-item="${item}"] .checkbox-cell[data-player="${player}"]`);
+
+                                if (cell) {
+                                    if (gameState[key] === 'checked') {
+                                        cell.classList.add('checked');
+                                    } else if (gameState[key] === 'crossed') {
+                                        cell.classList.add('crossed');
+                                    }
+                                }
+                            });
+
+                            alert('¡Partida cargada exitosamente!');
+                        } catch (error) {
+                            alert('Error al cargar el archivo. Asegúrate de que sea un archivo válido de Clue.');
+                        }
+                    };
+                    reader.readAsText(file);
+                }
+            };
+
+            input.click();
+        }
+    </script>
+</body>
+</html>
