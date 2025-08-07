@@ -452,6 +452,190 @@
             content: '❌';
         }
 
+        /* Instructions Section */
+        .instructions-section {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .btn-help {
+            background: linear-gradient(135deg, #f39c12, #e67e22);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 3px 10px rgba(243, 156, 18, 0.3);
+        }
+
+        .btn-help:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(243, 156, 18, 0.4);
+        }
+
+        .instructions-content {
+            background: #fff9e6;
+            border: 2px solid #f39c12;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 15px 0;
+            text-align: left;
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+            animation: slideDown 0.3s ease-out;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .instructions-content h4 {
+            color: #d35400;
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+            text-align: center;
+        }
+
+        .instruction-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .instruction-item {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #3498db;
+        }
+
+        .instruction-item h5 {
+            color: #2c3e50;
+            margin-bottom: 8px;
+            font-size: 1rem;
+        }
+
+        .instruction-item p {
+            color: #555;
+            margin: 0;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+
+        .game-logic {
+            background: #e8f6fd;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #3498db;
+        }
+
+        .game-logic h5 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        .game-logic ul {
+            margin: 0;
+            padding-left: 20px;
+        }
+
+        .game-logic li {
+            color: #555;
+            font-size: 0.9rem;
+            line-height: 1.4;
+            margin-bottom: 5px;
+        }
+
+        .smart-fill-indicator {
+            background: linear-gradient(135deg, #e8f5e8, #d4f1d4);
+            border: 1px solid #27ae60;
+            border-radius: 15px;
+            padding: 5px 10px;
+        }
+
+        .smart-fill-icon {
+            font-size: 1.1rem;
+        }
+
+        /* Enhanced card state indicators */
+        .checkbox-cell.checked {
+            background: #27ae60;
+            color: white;
+            position: relative;
+        }
+
+        .checkbox-cell.checked::after {
+            content: '👤';
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            font-size: 0.7rem;
+            background: #1e8449;
+            border-radius: 50%;
+            width: 16px;
+            height: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .checkbox-cell.auto-filled {
+            background: #e74c3c;
+            position: relative;
+        }
+
+        .checkbox-cell.auto-filled::after {
+            content: '🤖';
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            font-size: 0.6rem;
+            background: #c0392b;
+            border-radius: 50%;
+            width: 14px;
+            height: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Improved validation messages */
+        .validation-warning {
+            background: #fff3cd;
+            border: 1px solid #ffecb3;
+            color: #856404;
+            padding: 10px 15px;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            line-height: 1.4;
+        }
+
+        .smart-fill-message {
+            background: #e8f5e8;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+            padding: 10px 15px;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .smart-fill-message::before {
+            content: '🤖';
+        }
+
         @media (max-width: 768px) {
             .container {
                 margin: 10px;
@@ -503,6 +687,16 @@
                 padding: 14px 20px;
                 font-size: 0.9rem;
                 margin: 5px;
+            }
+
+            .instruction-grid {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+
+            .instructions-content {
+                padding: 15px;
+                margin: 10px;
             }
         }
 
@@ -557,18 +751,55 @@
                 </div>
             </div>
 
+            <!-- Game Instructions -->
+            <div class="instructions-section">
+                <button class="btn-help" onclick="toggleInstructions()">
+                    <span id="help-icon">❓</span> ¿Cómo usar la tarjeta?
+                </button>
+                <div id="instructions-content" class="instructions-content" style="display: none;">
+                    <h4>📋 Instrucciones de Uso</h4>
+                    <div class="instruction-grid">
+                        <div class="instruction-item">
+                            <h5>1. ✅ Verde (Tiene la carta)</h5>
+                            <p><strong>Solo UNA persona</strong> puede tener cada carta. Marca verde cuando sepas con certeza quién la tiene.</p>
+                        </div>
+                        <div class="instruction-item">
+                            <h5>2. ❌ Rojo (No la tiene)</h5>
+                            <p><strong>Múltiples personas</strong> pueden no tener la misma carta. Marca rojo cuando elimines jugadores.</p>
+                        </div>
+                        <div class="instruction-item">
+                            <h5>3. ⚪ Sin marcar (Desconocido)</h5>
+                            <p>No sabes si este jugador tiene o no esta carta.</p>
+                        </div>
+                    </div>
+                    <div class="game-logic">
+                        <h5>🎯 Lógica del Juego:</h5>
+                        <ul>
+                            <li><strong>Cada carta existe solo una vez</strong> en todo el juego</li>
+                            <li><strong>21 cartas total:</strong> 18 repartidas + 3 en el sobre del misterio</li>
+                            <li><strong>Proceso de eliminación:</strong> Si 5 jugadores no tienen una carta, el 6º la tiene</li>
+                            <li><strong>Auto-completado:</strong> Al marcar que alguien tiene una carta, los demás se marcan automáticamente como "no la tienen"</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
             <div class="legend">
                 <div class="legend-item">
                     <div class="legend-box"></div>
-                    <span>Sin marcar</span>
+                    <span>Desconocido</span>
                 </div>
                 <div class="legend-item">
                     <div class="legend-box checked"></div>
-                    <span>Tengo la carta</span>
+                    <span>Tiene la carta</span>
                 </div>
                 <div class="legend-item">
                     <div class="legend-box crossed"></div>
-                    <span>No la tengo</span>
+                    <span>No la tiene</span>
+                </div>
+                <div class="legend-item smart-fill-indicator">
+                    <span class="smart-fill-icon">🤖</span>
+                    <span>Auto-completado inteligente activado</span>
                 </div>
             </div>
 
@@ -1049,6 +1280,14 @@
 
         // Enhanced cell click with validation and keyboard support
         function handleCellClick(cell) {
+            const row = cell.closest('tr');
+            const item = row.getAttribute('data-item');
+            const player = cell.getAttribute('data-player');
+            const key = `${item}-${player}`;
+
+            // Store old state for smart fill logic
+            const wasChecked = cell.classList.contains('checked');
+
             // Cycle through states: empty -> checked -> crossed -> empty
             if (cell.classList.contains('checked')) {
                 cell.classList.remove('checked');
@@ -1057,14 +1296,15 @@
                 cell.classList.remove('crossed');
             } else {
                 cell.classList.add('checked');
+
+                // Smart fill: If we just marked someone as having a card,
+                // automatically mark all other players as NOT having it
+                if (!wasChecked) {
+                    smartFillCard(item, player);
+                }
             }
 
             // Update game state
-            const row = cell.closest('tr');
-            const item = row.getAttribute('data-item');
-            const player = cell.getAttribute('data-player');
-            const key = `${item}-${player}`;
-
             if (cell.classList.contains('checked')) {
                 gameState.cardStates[key] = 'checked';
             } else if (cell.classList.contains('crossed')) {
@@ -1076,6 +1316,70 @@
             // Validate and auto-save
             validateCardAssignments();
             autoSave();
+        }
+
+        // Smart fill functionality
+        function smartFillCard(item, playerWithCard) {
+            let autoFilledCount = 0;
+            const playerName = gameState.playerNames[playerWithCard] || `Jugador ${playerWithCard}`;
+
+            // Find all cells for this card
+            const allCellsForCard = document.querySelectorAll(`tr[data-item="${item}"] .checkbox-cell`);
+
+            allCellsForCard.forEach(cell => {
+                const cellPlayer = cell.getAttribute('data-player');
+
+                // Skip the player we just marked as having the card
+                if (cellPlayer === playerWithCard) return;
+
+                // Only auto-fill if the cell is currently empty
+                if (!cell.classList.contains('checked') && !cell.classList.contains('crossed')) {
+                    cell.classList.add('crossed');
+                    cell.classList.add('auto-filled'); // Visual indicator
+
+                    // Update game state
+                    const key = `${item}-${cellPlayer}`;
+                    gameState.cardStates[key] = 'crossed';
+
+                    autoFilledCount++;
+                }
+            });
+
+            // Show smart fill message if we auto-filled any cells
+            if (autoFilledCount > 0) {
+                const message = `🤖 Auto-completado: ${playerName} tiene "${item}", otros ${autoFilledCount} jugadores marcados automáticamente como "no la tienen"`;
+                showSmartFillMessage(message);
+            }
+        }
+
+        // Show smart fill message
+        function showSmartFillMessage(text, duration = 4000) {
+            const validationDiv = document.getElementById('validation-messages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'smart-fill-message';
+            messageDiv.textContent = text;
+
+            validationDiv.appendChild(messageDiv);
+
+            setTimeout(() => {
+                if (messageDiv.parentNode) {
+                    messageDiv.remove();
+                }
+            }, duration);
+        }
+
+        // Toggle instructions visibility
+        function toggleInstructions() {
+            const content = document.getElementById('instructions-content');
+            const icon = document.getElementById('help-icon');
+
+            if (content.style.display === 'none') {
+                content.style.display = 'block';
+                icon.textContent = '❌';
+            } else {
+                content.style.display = 'none';
+                icon.textContent = '❓';
+            }
         }
 
         // Keyboard navigation
@@ -1287,7 +1591,7 @@
                     cardStates: gameState.cardStates,
                     solution: gameState.solution,
                     savedAt: new Date().toISOString(),
-                    version: '2.0'
+                    version: '2.1'
                 };
 
                 const dataStr = JSON.stringify(fullGameState, null, 2);
@@ -1318,7 +1622,7 @@
                             const loadedData = JSON.parse(e.target.result);
 
                             // Handle both old and new save formats
-                            if (loadedData.version === '2.0' || (loadedData.playerNames && loadedData.cardStates)) {
+                            if (loadedData.version === '2.1' || loadedData.version === '2.0' || (loadedData.playerNames && loadedData.cardStates)) {
                                 // New format
                                 gameState = {
                                     playerNames: loadedData.playerNames || {},
