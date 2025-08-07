@@ -113,10 +113,17 @@
             background: #fff;
             cursor: pointer;
             position: relative;
+            min-height: 48px;
+            display: table-cell;
+            vertical-align: middle;
+            text-align: center;
+            transition: all 0.2s ease;
+            border: 1px solid #ddd;
         }
 
         .checkbox-cell:hover {
-            background: #f1f2f6;
+            background: #e3f2fd !important;
+            transform: scale(1.05);
         }
 
         .checkbox-cell.checked {
@@ -124,9 +131,17 @@
             color: white;
         }
 
+        .checkbox-cell.checked:hover {
+            background: #2e7d32 !important;
+        }
+
         .checkbox-cell.crossed {
             background: #e74c3c;
             color: white;
+        }
+
+        .checkbox-cell.crossed:hover {
+            background: #c62828 !important;
         }
 
         .checkbox-cell::before {
@@ -136,7 +151,7 @@
             height: 20px;
             border: 2px solid #bdc3c7;
             border-radius: 3px;
-            margin: 0;
+            vertical-align: middle;
             transition: all 0.2s ease;
         }
 
@@ -145,10 +160,11 @@
             background: #27ae60;
             border-color: #27ae60;
             color: white;
-            display: flex;
+            display: inline-flex;
             align-items: center;
             justify-content: center;
             font-weight: bold;
+            font-size: 14px;
         }
 
         .checkbox-cell.crossed::before {
@@ -156,10 +172,11 @@
             background: #e74c3c;
             border-color: #e74c3c;
             color: white;
-            display: flex;
+            display: inline-flex;
             align-items: center;
             justify-content: center;
             font-weight: bold;
+            font-size: 14px;
         }
 
         .controls {
@@ -354,18 +371,6 @@
             font-size: 0.85rem;
         }
 
-        .checkbox-cell {
-            width: 60px;
-            background: #fff;
-            cursor: pointer;
-            position: relative;
-            min-height: 48px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.2s ease;
-        }
-
         /* Row and column highlighting */
         tr:hover td {
             background-color: #f8f9fa;
@@ -376,18 +381,6 @@
             font-weight: 600;
         }
 
-        .checkbox-cell:hover {
-            background: #e3f2fd !important;
-            transform: scale(1.05);
-        }
-
-        .checkbox-cell.checked:hover {
-            background: #2e7d32 !important;
-        }
-
-        .checkbox-cell.crossed:hover {
-            background: #c62828 !important;
-        }
 
         /* Progress indicators */
         .section-title {
