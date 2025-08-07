@@ -296,6 +296,64 @@
             content: '⚠️';
         }
 
+        .solution-section {
+            background: #e8f5e8;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            border: 2px solid #27ae60;
+        }
+
+        .solution-section h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            text-align: center;
+            font-size: 1.2rem;
+        }
+
+        .solution-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .solution-category {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .solution-category label {
+            font-weight: 600;
+            color: #2c3e50;
+            font-size: 1rem;
+        }
+
+        .solution-category select {
+            padding: 10px 12px;
+            border: 2px solid #27ae60;
+            border-radius: 5px;
+            font-size: 0.9rem;
+            background: white;
+            transition: border-color 0.2s ease;
+        }
+
+        .solution-category select:focus {
+            outline: none;
+            border-color: #1e8449;
+            box-shadow: 0 0 0 2px rgba(39, 174, 96, 0.2);
+        }
+
+        .solution-actions {
+            text-align: center;
+        }
+
+        .btn-small {
+            padding: 8px 16px;
+            font-size: 0.85rem;
+        }
+
         .checkbox-cell {
             width: 60px;
             background: #fff;
@@ -306,6 +364,92 @@
             align-items: center;
             justify-content: center;
             transition: all 0.2s ease;
+        }
+
+        /* Row and column highlighting */
+        tr:hover td {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover td:first-child {
+            background-color: #e9ecef;
+            font-weight: 600;
+        }
+
+        .checkbox-cell:hover {
+            background: #e3f2fd !important;
+            transform: scale(1.05);
+        }
+
+        .checkbox-cell.checked:hover {
+            background: #2e7d32 !important;
+        }
+
+        .checkbox-cell.crossed:hover {
+            background: #c62828 !important;
+        }
+
+        /* Progress indicators */
+        .section-title {
+            position: relative;
+        }
+
+        .progress-indicator {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.3);
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 0.8rem;
+            font-weight: normal;
+        }
+
+        /* Keyboard focus styles */
+        .checkbox-cell:focus {
+            outline: 2px solid #3498db;
+            outline-offset: 2px;
+        }
+
+        .focused-cell {
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.3);
+            border: 2px solid #3498db;
+        }
+
+        /* Success feedback */
+        .success-message {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+            padding: 8px 12px;
+            border-radius: 5px;
+            margin: 10px 0;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .success-message::before {
+            content: '✅';
+        }
+
+        .error-message {
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+            padding: 8px 12px;
+            border-radius: 5px;
+            margin: 10px 0;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .error-message::before {
+            content: '❌';
         }
 
         @media (max-width: 768px) {
@@ -329,6 +473,15 @@
 
             .player-names-section {
                 padding: 15px;
+            }
+
+            .solution-section {
+                padding: 15px;
+            }
+
+            .solution-grid {
+                grid-template-columns: 1fr;
+                gap: 10px;
             }
 
             th, td {
@@ -421,6 +574,55 @@
 
             <!-- Validation Messages -->
             <div id="validation-messages" class="validation-messages"></div>
+
+            <!-- Solution Tracking Section -->
+            <div class="solution-section">
+                <h3>🔍 Solución del Misterio</h3>
+                <div class="solution-grid">
+                    <div class="solution-category">
+                        <label for="solution-quien">¿Quién?</label>
+                        <select id="solution-quien">
+                            <option value="">Seleccionar...</option>
+                            <option value="Verduzco">Verduzco</option>
+                            <option value="Mostaza">Mostaza</option>
+                            <option value="Marlene">Marlene</option>
+                            <option value="Moradillo">Moradillo</option>
+                            <option value="Escarlata">Escarlata</option>
+                            <option value="Blanca">Blanca</option>
+                        </select>
+                    </div>
+                    <div class="solution-category">
+                        <label for="solution-arma">¿Con qué?</label>
+                        <select id="solution-arma">
+                            <option value="">Seleccionar...</option>
+                            <option value="Candelabro">Candelabro</option>
+                            <option value="Daga">Daga</option>
+                            <option value="Tubo de plomo">Tubo de plomo</option>
+                            <option value="Revólver">Revólver</option>
+                            <option value="Soga">Soga</option>
+                            <option value="Llave inglesa">Llave inglesa</option>
+                        </select>
+                    </div>
+                    <div class="solution-category">
+                        <label for="solution-lugar">¿Dónde?</label>
+                        <select id="solution-lugar">
+                            <option value="">Seleccionar...</option>
+                            <option value="Salón de baile">Salón de baile</option>
+                            <option value="Sala de billar">Sala de billar</option>
+                            <option value="Terraza">Terraza</option>
+                            <option value="Comedor">Comedor</option>
+                            <option value="Pasillo">Pasillo</option>
+                            <option value="Cocina">Cocina</option>
+                            <option value="Biblioteca">Biblioteca</option>
+                            <option value="Sala">Sala</option>
+                            <option value="Estudio">Estudio</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="solution-actions">
+                    <button class="btn btn-small" onclick="clearSolution()">🗑️ Limpiar Solución</button>
+                </div>
+            </div>
 
             <!-- ¿QUIÉN? -->
             <div class="section">
@@ -689,15 +891,24 @@
         // Game state management
         let gameState = {
             playerNames: {},
-            cardStates: {}
+            cardStates: {},
+            solution: {
+                quien: '',
+                arma: '',
+                lugar: ''
+            }
         };
+
+        // Keyboard navigation state
+        let currentFocusedCell = null;
+        let keyboardNavigation = false;
 
         // Auto-save functionality
         function autoSave() {
             try {
                 localStorage.setItem('clue_autosave', JSON.stringify(gameState));
             } catch (e) {
-                console.warn('Auto-save failed:', e);
+                showMessage('Auto-guardado falló', 'error');
             }
         }
 
@@ -707,12 +918,32 @@
                 const saved = localStorage.getItem('clue_autosave');
                 if (saved) {
                     const data = JSON.parse(saved);
-                    gameState = { ...gameState, ...data };
+                    gameState = {
+                        playerNames: data.playerNames || {},
+                        cardStates: data.cardStates || {},
+                        solution: data.solution || { quien: '', arma: '', lugar: '' }
+                    };
                     restoreGameState();
                 }
             } catch (e) {
-                console.warn('Auto-load failed:', e);
+                showMessage('Error al cargar datos guardados', 'error');
             }
+        }
+
+        // Enhanced messaging system
+        function showMessage(text, type = 'success', duration = 3000) {
+            const validationDiv = document.getElementById('validation-messages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = type === 'error' ? 'error-message' : 'success-message';
+            messageDiv.textContent = text;
+
+            validationDiv.appendChild(messageDiv);
+
+            setTimeout(() => {
+                if (messageDiv.parentNode) {
+                    messageDiv.remove();
+                }
+            }, duration);
         }
 
         // Update player names in headers
@@ -720,60 +951,103 @@
             for (let i = 1; i <= 6; i++) {
                 const input = document.getElementById(`player${i}`);
                 const name = input.value.trim() || `Jugador ${i}`;
-                
+
                 // Update all table headers
                 const headers = [
                     document.getElementById(`header-player-${i}`),
                     document.getElementById(`header-player-${i}-armas`),
                     document.getElementById(`header-player-${i}-lugares`)
                 ];
-                
+
                 headers.forEach(header => {
                     if (header) {
                         header.textContent = name;
                     }
                 });
-                
+
                 gameState.playerNames[i] = name;
             }
+            updateProgressIndicators();
             autoSave();
         }
 
-        // Validation for duplicate card assignments
+        // Progress indicators for each section
+        function updateProgressIndicators() {
+            const sections = ['quien', 'armas', 'lugares'];
+            const sectionSelectors = [
+                '#quien-table tbody tr',
+                '#armas-table tbody tr',
+                '#lugares-table tbody tr'
+            ];
+            const titles = document.querySelectorAll('.section-title');
+
+            sections.forEach((section, index) => {
+                const rows = document.querySelectorAll(sectionSelectors[index]);
+                let completedRows = 0;
+
+                rows.forEach(row => {
+                    const checkedCells = row.querySelectorAll('.checkbox-cell.checked');
+                    const crossedCells = row.querySelectorAll('.checkbox-cell.crossed');
+
+                    // Consider a row complete if it has at least one check or all crossed
+                    if (checkedCells.length > 0 || crossedCells.length === 6) {
+                        completedRows++;
+                    }
+                });
+
+                // Update or create progress indicator
+                let indicator = titles[index].querySelector('.progress-indicator');
+                if (!indicator) {
+                    indicator = document.createElement('span');
+                    indicator.className = 'progress-indicator';
+                    titles[index].appendChild(indicator);
+                }
+
+                const percentage = Math.round((completedRows / rows.length) * 100);
+                indicator.textContent = `${completedRows}/${rows.length} (${percentage}%)`;
+            });
+        }
+
+        // Enhanced validation for duplicate card assignments
         function validateCardAssignments() {
             const validationDiv = document.getElementById('validation-messages');
-            validationDiv.innerHTML = '';
-            
-            const warnings = [];
+
+            // Clear only validation warnings, keep other messages
+            const warnings = validationDiv.querySelectorAll('.validation-warning');
+            warnings.forEach(warning => warning.remove());
+
+            const warningsList = [];
             const allItems = document.querySelectorAll('tr[data-item]');
-            
+
             allItems.forEach(row => {
                 const item = row.getAttribute('data-item');
                 const checkedCells = row.querySelectorAll('.checkbox-cell.checked');
-                
+
                 if (checkedCells.length > 1) {
-                    const playerNumbers = Array.from(checkedCells).map(cell => 
+                    const playerNumbers = Array.from(checkedCells).map(cell =>
                         cell.getAttribute('data-player')
                     );
-                    const playerNames = playerNumbers.map(num => 
+                    const playerNames = playerNumbers.map(num =>
                         gameState.playerNames[num] || `Jugador ${num}`
                     );
-                    
-                    warnings.push(
+
+                    warningsList.push(
                         `"${item}" está marcado como "tengo" para múltiples jugadores: ${playerNames.join(', ')}`
                     );
                 }
             });
-            
-            warnings.forEach(warning => {
+
+            warningsList.forEach(warning => {
                 const warningDiv = document.createElement('div');
                 warningDiv.className = 'validation-warning';
                 warningDiv.textContent = warning;
                 validationDiv.appendChild(warningDiv);
             });
+
+            updateProgressIndicators();
         }
 
-        // Enhanced cell click with validation
+        // Enhanced cell click with validation and keyboard support
         function handleCellClick(cell) {
             // Cycle through states: empty -> checked -> crossed -> empty
             if (cell.classList.contains('checked')) {
@@ -784,13 +1058,13 @@
             } else {
                 cell.classList.add('checked');
             }
-            
+
             // Update game state
             const row = cell.closest('tr');
             const item = row.getAttribute('data-item');
             const player = cell.getAttribute('data-player');
             const key = `${item}-${player}`;
-            
+
             if (cell.classList.contains('checked')) {
                 gameState.cardStates[key] = 'checked';
             } else if (cell.classList.contains('crossed')) {
@@ -798,10 +1072,117 @@
             } else {
                 gameState.cardStates[key] = 'empty';
             }
-            
+
             // Validate and auto-save
             validateCardAssignments();
             autoSave();
+        }
+
+        // Keyboard navigation
+        function initKeyboardNavigation() {
+            const checkboxCells = document.querySelectorAll('.checkbox-cell');
+            let currentIndex = -1;
+
+            document.addEventListener('keydown', function(e) {
+                // Only activate keyboard navigation if user presses Tab or arrow keys
+                if (['Tab', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', ' ', 'Enter'].includes(e.key)) {
+                    keyboardNavigation = true;
+                }
+
+                if (!keyboardNavigation) return;
+
+                switch(e.key) {
+                    case 'Tab':
+                        e.preventDefault();
+                        currentIndex = (currentIndex + 1) % checkboxCells.length;
+                        focusCell(checkboxCells[currentIndex]);
+                        break;
+
+                    case 'ArrowRight':
+                        e.preventDefault();
+                        if (currentIndex < checkboxCells.length - 1) {
+                            currentIndex++;
+                            focusCell(checkboxCells[currentIndex]);
+                        }
+                        break;
+
+                    case 'ArrowLeft':
+                        e.preventDefault();
+                        if (currentIndex > 0) {
+                            currentIndex--;
+                            focusCell(checkboxCells[currentIndex]);
+                        }
+                        break;
+
+                    case 'ArrowDown':
+                        e.preventDefault();
+                        // Move to next row (6 cells per row)
+                        if (currentIndex + 6 < checkboxCells.length) {
+                            currentIndex += 6;
+                            focusCell(checkboxCells[currentIndex]);
+                        }
+                        break;
+
+                    case 'ArrowUp':
+                        e.preventDefault();
+                        // Move to previous row
+                        if (currentIndex - 6 >= 0) {
+                            currentIndex -= 6;
+                            focusCell(checkboxCells[currentIndex]);
+                        }
+                        break;
+
+                    case ' ':
+                    case 'Enter':
+                        e.preventDefault();
+                        if (currentFocusedCell) {
+                            handleCellClick(currentFocusedCell);
+                        }
+                        break;
+
+                    case 'Escape':
+                        keyboardNavigation = false;
+                        if (currentFocusedCell) {
+                            currentFocusedCell.classList.remove('focused-cell');
+                            currentFocusedCell = null;
+                        }
+                        currentIndex = -1;
+                        break;
+                }
+            });
+        }
+
+        function focusCell(cell) {
+            // Remove focus from previous cell
+            if (currentFocusedCell) {
+                currentFocusedCell.classList.remove('focused-cell');
+            }
+
+            // Focus new cell
+            currentFocusedCell = cell;
+            cell.classList.add('focused-cell');
+            cell.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
+        // Solution tracking
+        function updateSolution() {
+            gameState.solution = {
+                quien: document.getElementById('solution-quien').value,
+                arma: document.getElementById('solution-arma').value,
+                lugar: document.getElementById('solution-lugar').value
+            };
+            autoSave();
+        }
+
+        function clearSolution() {
+            if (confirm('¿Limpiar la solución del misterio?')) {
+                document.getElementById('solution-quien').value = '';
+                document.getElementById('solution-arma').value = '';
+                document.getElementById('solution-lugar').value = '';
+                gameState.solution = { quien: '', arma: '', lugar: '' };
+                autoSave();
+                showMessage('Solución limpiada');
+            }
         }
 
         // Restore game state from saved data
@@ -814,12 +1195,19 @@
                 }
             }
             updatePlayerHeaders();
-            
+
+            // Restore solution
+            if (gameState.solution) {
+                document.getElementById('solution-quien').value = gameState.solution.quien || '';
+                document.getElementById('solution-arma').value = gameState.solution.arma || '';
+                document.getElementById('solution-lugar').value = gameState.solution.lugar || '';
+            }
+
             // Restore card states
             Object.keys(gameState.cardStates).forEach(key => {
                 const [item, player] = key.split('-');
                 const cell = document.querySelector(`tr[data-item="${item}"] .checkbox-cell[data-player="${player}"]`);
-                
+
                 if (cell) {
                     cell.classList.remove('checked', 'crossed');
                     if (gameState.cardStates[key] === 'checked') {
@@ -829,7 +1217,7 @@
                     }
                 }
             });
-            
+
             validateCardAssignments();
         }
 
@@ -837,24 +1225,44 @@
         document.addEventListener('DOMContentLoaded', function() {
             // Load auto-saved data
             loadAutoSave();
-            
+
             // Set up checkbox cell click handlers
             const checkboxCells = document.querySelectorAll('.checkbox-cell');
             checkboxCells.forEach(cell => {
                 cell.addEventListener('click', function() {
                     handleCellClick(this);
                 });
+
+                // Make cells focusable for keyboard navigation
+                cell.setAttribute('tabindex', '-1');
             });
-            
+
             // Set up player name input handlers
             for (let i = 1; i <= 6; i++) {
                 const input = document.getElementById(`player${i}`);
                 input.addEventListener('input', updatePlayerHeaders);
                 input.addEventListener('blur', updatePlayerHeaders);
             }
-            
+
+            // Set up solution tracking handlers
+            ['solution-quien', 'solution-arma', 'solution-lugar'].forEach(id => {
+                const select = document.getElementById(id);
+                select.addEventListener('change', updateSolution);
+            });
+
+            // Initialize keyboard navigation
+            initKeyboardNavigation();
+
             // Set up auto-save interval (every 30 seconds)
             setInterval(autoSave, 30000);
+
+            // Show help message on first load
+            if (!localStorage.getItem('clue_help_shown')) {
+                setTimeout(() => {
+                    showMessage('💡 Usa Tab y flechas para navegar, Espacio para cambiar estado', 'success', 5000);
+                    localStorage.setItem('clue_help_shown', 'true');
+                }, 1000);
+            }
         });
 
         function clearAll() {
@@ -863,28 +1271,37 @@
                 checkboxCells.forEach(cell => {
                     cell.classList.remove('checked', 'crossed');
                 });
-                
+
                 // Clear game state
                 gameState.cardStates = {};
                 validateCardAssignments();
                 autoSave();
+                showMessage('Tarjeta limpiada completamente');
             }
         }
 
         function saveGame() {
-            const fullGameState = {
-                playerNames: gameState.playerNames,
-                cardStates: gameState.cardStates,
-                savedAt: new Date().toISOString()
-            };
+            try {
+                const fullGameState = {
+                    playerNames: gameState.playerNames,
+                    cardStates: gameState.cardStates,
+                    solution: gameState.solution,
+                    savedAt: new Date().toISOString(),
+                    version: '2.0'
+                };
 
-            const dataStr = JSON.stringify(fullGameState, null, 2);
-            const dataBlob = new Blob([dataStr], {type: 'application/json'});
+                const dataStr = JSON.stringify(fullGameState, null, 2);
+                const dataBlob = new Blob([dataStr], {type: 'application/json'});
 
-            const link = document.createElement('a');
-            link.href = URL.createObjectURL(dataBlob);
-            link.download = 'clue_game_' + new Date().toISOString().slice(0,10) + '.json';
-            link.click();
+                const link = document.createElement('a');
+                link.href = URL.createObjectURL(dataBlob);
+                link.download = 'clue_game_' + new Date().toISOString().slice(0,10) + '.json';
+                link.click();
+
+                showMessage('Partida guardada exitosamente');
+            } catch (error) {
+                showMessage('Error al guardar la partida', 'error');
+            }
         }
 
         function loadGame() {
@@ -899,23 +1316,24 @@
                     reader.onload = function(e) {
                         try {
                             const loadedData = JSON.parse(e.target.result);
-                            
+
                             // Handle both old and new save formats
-                            if (loadedData.playerNames && loadedData.cardStates) {
+                            if (loadedData.version === '2.0' || (loadedData.playerNames && loadedData.cardStates)) {
                                 // New format
                                 gameState = {
                                     playerNames: loadedData.playerNames || {},
-                                    cardStates: loadedData.cardStates || {}
+                                    cardStates: loadedData.cardStates || {},
+                                    solution: loadedData.solution || { quien: '', arma: '', lugar: '' }
                                 };
                             } else {
                                 // Old format - convert to new format
                                 gameState.cardStates = loadedData;
                             }
-                            
+
                             restoreGameState();
-                            alert('¡Partida cargada exitosamente!');
+                            showMessage('¡Partida cargada exitosamente!');
                         } catch (error) {
-                            alert('Error al cargar el archivo. Asegúrate de que sea un archivo válido de Clue.');
+                            showMessage('Error al cargar el archivo. Archivo inválido.', 'error');
                         }
                     };
                     reader.readAsText(file);

@@ -20,17 +20,29 @@ A digital scorecard for the Clue board game in Spanish. Track which cards each p
 - **📱 Enhanced Mobile UX**: Improved touch targets and responsive design
 - **🔄 Persistent State**: Automatically restores your game when reopening
 
+### Advanced Features (v2.1)
+
+- **🔍 Solution Tracking**: Dedicated section to track mystery solution (¿Quién?, ¿Con qué?, ¿Dónde?)
+- **📊 Progress Indicators**: Real-time completion tracking for each category (e.g., "4/6 (67%)")
+- **⌨️ Keyboard Navigation**: Full keyboard support with Tab, arrows, Space, and Escape
+- **🎨 Enhanced Visual Feedback**: Row/column highlighting, hover effects, and smooth animations
+- **💬 Smart Messaging**: Contextual success and error messages with auto-dismiss
+- **🚀 Improved Performance**: Optimized interactions and better error recovery
+
 ## 🚀 Quick Start
 
 1. Open `index.html` in any modern web browser
 2. **Set Player Names**: Enter custom names in the "Nombres de Jugadores" section (optional)
-3. **Mark Cards**: Click on cells to track card ownership:
+3. **Track Solution**: Use the "Solución del Misterio" section to track your deductions
+4. **Mark Cards**: Click on cells to track card ownership:
    - Empty = Unknown status
    - ✓ = Player has the card
    - ✗ = Player doesn't have the card
-4. **Auto-Save**: Your progress saves automatically every 30 seconds
-5. **Manual Save**: Use "Guardar Partida" to export game state
-6. **Load Game**: Use "Cargar Partida" to import a saved game
+5. **Keyboard Navigation**: Use Tab, arrows, Space, and Escape for efficient navigation
+6. **Monitor Progress**: Watch real-time completion percentages in section titles
+7. **Auto-Save**: Your progress saves automatically every 30 seconds
+8. **Manual Save**: Use "Guardar Partida" to export game state
+9. **Load Game**: Use "Cargar Partida" to import a saved game
 
 ## 🎯 Game Categories
 
@@ -38,20 +50,49 @@ A digital scorecard for the Clue board game in Spanish. Track which cards each p
 - **¿Con qué?** (With what?) - 6 weapons (Candelabro, Daga, Revólver, etc.)
 - **¿Dónde?** (Where?) - 9 locations (Salón de baile, Cocina, Biblioteca, etc.)
 
-## 🛡️ Smart Validation
+## 🛡️ Smart Features
 
-The app automatically detects and warns you when:
+### Validation System
 
-- Multiple players are marked as having the same card
-- Validation messages appear below the legend with player names
-- Helps prevent common tracking errors during gameplay
+- **Duplicate Detection**: Automatically warns when multiple players have the same card
+- **Real-Time Feedback**: Validation messages appear instantly with player names
+- **Error Prevention**: Helps avoid common tracking mistakes during gameplay
 
-## 📱 Mobile Optimization
+### Solution Management
+
+- **Mystery Tracking**: Dedicated dropdowns for ¿Quién?, ¿Con qué?, and ¿Dónde?
+- **Auto-Save Integration**: Solution choices saved automatically with game state
+- **Quick Clear**: One-click solution reset with confirmation
+
+### Progress Tracking
+
+- **Live Updates**: Real-time completion percentages in section headers
+- **Smart Logic**: Considers rows complete with checks or fully eliminated cards
+- **Visual Indicators**: Easy-to-read progress display (e.g., "4/6 (67%)")
+
+## 📱 User Experience
+
+### Mobile Optimization
 
 - **Touch-Friendly**: Minimum 44px touch targets on mobile devices
 - **Responsive Layout**: Adapts to screen sizes from 320px to desktop
 - **Fast Performance**: Optimized for smooth mobile interactions
 - **Accessible**: Proper contrast and readable fonts on small screens
+
+### Keyboard Navigation
+
+- **Full Support**: Complete keyboard control for power users
+- **Navigation Keys**: Tab, Arrow keys, Space/Enter, Escape
+- **Visual Feedback**: Blue focus indicator shows current position
+- **Smart Activation**: Only activates when keyboard keys are pressed
+- **Auto-Scroll**: Focused cells automatically scroll into view
+
+### Visual Feedback
+
+- **Interactive Highlighting**: Hover effects on rows and columns
+- **Smooth Animations**: Subtle scaling and color transitions
+- **Progress Visualization**: Real-time completion tracking
+- **Status Messages**: Success/error feedback with auto-dismiss
 
 ## 🛠️ Technical Details
 
@@ -80,7 +121,13 @@ The app automatically detects and warns you when:
     "Verduzco-1": "checked",
     "Mostaza-2": "crossed"
   },
-  "savedAt": "2024-01-15T10:30:00.000Z"
+  "solution": {
+    "quien": "Verduzco",
+    "arma": "Daga",
+    "lugar": "Biblioteca"
+  },
+  "savedAt": "2024-01-15T10:30:00.000Z",
+  "version": "2.1"
 }
 ```
 
@@ -114,8 +161,18 @@ clue-digital-scorecard/
    - Mark ✓ for cards you have
    - Mark ✗ for cards you've eliminated
    - Leave empty for unknown status
-4. **Validation**: Watch for warnings if you accidentally mark the same card for multiple players
-5. **Save/Resume**: Game automatically saves, or manually export for sharing
+4. **Track Solution**: Use the green "Solución del Misterio" section to record your deductions
+5. **Monitor Progress**: Watch completion percentages to see investigation progress
+6. **Navigation**: Use mouse/touch or keyboard (Tab, arrows, Space) for efficient input
+7. **Validation**: Watch for warnings if you accidentally mark the same card for multiple players
+8. **Save/Resume**: Game automatically saves, or manually export for sharing
+
+### Keyboard Shortcuts
+
+- **Tab**: Navigate to next cell
+- **Arrow Keys**: Move in any direction
+- **Space/Enter**: Toggle cell state (empty → ✓ → ✗ → empty)
+- **Escape**: Exit keyboard navigation mode
 
 ## License
 
