@@ -228,6 +228,86 @@
             border-color: #e74c3c;
         }
 
+        .player-names-section {
+            background: #f8f9fa;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            border: 1px solid #dee2e6;
+        }
+
+        .player-names-section h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            text-align: center;
+            font-size: 1.2rem;
+        }
+
+        .player-names {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .player-input {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .player-input label {
+            font-weight: 500;
+            color: #2c3e50;
+            font-size: 0.9rem;
+        }
+
+        .player-input input {
+            padding: 8px 12px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 0.9rem;
+            transition: border-color 0.2s ease;
+        }
+
+        .player-input input:focus {
+            outline: none;
+            border-color: #3498db;
+        }
+
+        .validation-messages {
+            margin: 15px 0;
+            min-height: 20px;
+        }
+
+        .validation-warning {
+            background: #fff3cd;
+            border: 1px solid #ffecb3;
+            color: #856404;
+            padding: 8px 12px;
+            border-radius: 5px;
+            margin-bottom: 5px;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .validation-warning::before {
+            content: '⚠️';
+        }
+
+        .checkbox-cell {
+            width: 60px;
+            background: #fff;
+            cursor: pointer;
+            position: relative;
+            min-height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+        }
+
         @media (max-width: 768px) {
             .container {
                 margin: 10px;
@@ -242,17 +322,45 @@
                 padding: 15px;
             }
 
+            .player-names {
+                grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+                gap: 10px;
+            }
+
+            .player-names-section {
+                padding: 15px;
+            }
+
             th, td {
                 padding: 8px 4px;
                 font-size: 0.8rem;
             }
 
             .checkbox-cell {
-                width: 40px;
+                width: 44px;
+                min-height: 44px;
+                touch-action: manipulation;
             }
 
             .legend {
                 gap: 15px;
+            }
+
+            .btn {
+                padding: 14px 20px;
+                font-size: 0.9rem;
+                margin: 5px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .player-names {
+                grid-template-columns: 1fr;
+            }
+
+            .checkbox-cell {
+                width: 40px;
+                min-height: 40px;
             }
         }
     </style>
@@ -265,6 +373,37 @@
         </div>
 
         <div class="scorecard">
+            <!-- Player Names Section -->
+            <div class="player-names-section">
+                <h3>Nombres de Jugadores</h3>
+                <div class="player-names">
+                    <div class="player-input">
+                        <label for="player1">Jugador 1:</label>
+                        <input type="text" id="player1" placeholder="Jugador 1" maxlength="15">
+                    </div>
+                    <div class="player-input">
+                        <label for="player2">Jugador 2:</label>
+                        <input type="text" id="player2" placeholder="Jugador 2" maxlength="15">
+                    </div>
+                    <div class="player-input">
+                        <label for="player3">Jugador 3:</label>
+                        <input type="text" id="player3" placeholder="Jugador 3" maxlength="15">
+                    </div>
+                    <div class="player-input">
+                        <label for="player4">Jugador 4:</label>
+                        <input type="text" id="player4" placeholder="Jugador 4" maxlength="15">
+                    </div>
+                    <div class="player-input">
+                        <label for="player5">Jugador 5:</label>
+                        <input type="text" id="player5" placeholder="Jugador 5" maxlength="15">
+                    </div>
+                    <div class="player-input">
+                        <label for="player6">Jugador 6:</label>
+                        <input type="text" id="player6" placeholder="Jugador 6" maxlength="15">
+                    </div>
+                </div>
+            </div>
+
             <div class="legend">
                 <div class="legend-item">
                     <div class="legend-box"></div>
@@ -280,6 +419,9 @@
                 </div>
             </div>
 
+            <!-- Validation Messages -->
+            <div id="validation-messages" class="validation-messages"></div>
+
             <!-- ¿QUIÉN? -->
             <div class="section">
                 <div class="section-title">¿Quién?</div>
@@ -288,12 +430,12 @@
                         <thead>
                             <tr>
                                 <th>Personaje</th>
-                                <th>Jugador 1</th>
-                                <th>Jugador 2</th>
-                                <th>Jugador 3</th>
-                                <th>Jugador 4</th>
-                                <th>Jugador 5</th>
-                                <th>Jugador 6</th>
+                                <th id="header-player-1">Jugador 1</th>
+                                <th id="header-player-2">Jugador 2</th>
+                                <th id="header-player-3">Jugador 3</th>
+                                <th id="header-player-4">Jugador 4</th>
+                                <th id="header-player-5">Jugador 5</th>
+                                <th id="header-player-6">Jugador 6</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -364,12 +506,12 @@
                         <thead>
                             <tr>
                                 <th>Arma</th>
-                                <th>Jugador 1</th>
-                                <th>Jugador 2</th>
-                                <th>Jugador 3</th>
-                                <th>Jugador 4</th>
-                                <th>Jugador 5</th>
-                                <th>Jugador 6</th>
+                                <th id="header-player-1-armas">Jugador 1</th>
+                                <th id="header-player-2-armas">Jugador 2</th>
+                                <th id="header-player-3-armas">Jugador 3</th>
+                                <th id="header-player-4-armas">Jugador 4</th>
+                                <th id="header-player-5-armas">Jugador 5</th>
+                                <th id="header-player-6-armas">Jugador 6</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -440,12 +582,12 @@
                         <thead>
                             <tr>
                                 <th>Lugar</th>
-                                <th>Jugador 1</th>
-                                <th>Jugador 2</th>
-                                <th>Jugador 3</th>
-                                <th>Jugador 4</th>
-                                <th>Jugador 5</th>
-                                <th>Jugador 6</th>
+                                <th id="header-player-1-lugares">Jugador 1</th>
+                                <th id="header-player-2-lugares">Jugador 2</th>
+                                <th id="header-player-3-lugares">Jugador 3</th>
+                                <th id="header-player-4-lugares">Jugador 4</th>
+                                <th id="header-player-5-lugares">Jugador 5</th>
+                                <th id="header-player-6-lugares">Jugador 6</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -544,23 +686,175 @@
     </div>
 
     <script>
-        // Add click functionality to checkbox cells
-        document.addEventListener('DOMContentLoaded', function() {
-            const checkboxCells = document.querySelectorAll('.checkbox-cell');
+        // Game state management
+        let gameState = {
+            playerNames: {},
+            cardStates: {}
+        };
 
-            checkboxCells.forEach(cell => {
-                cell.addEventListener('click', function() {
-                    // Cycle through states: empty -> checked -> crossed -> empty
-                    if (this.classList.contains('checked')) {
-                        this.classList.remove('checked');
-                        this.classList.add('crossed');
-                    } else if (this.classList.contains('crossed')) {
-                        this.classList.remove('crossed');
-                    } else {
-                        this.classList.add('checked');
+        // Auto-save functionality
+        function autoSave() {
+            try {
+                localStorage.setItem('clue_autosave', JSON.stringify(gameState));
+            } catch (e) {
+                console.warn('Auto-save failed:', e);
+            }
+        }
+
+        // Load auto-saved data
+        function loadAutoSave() {
+            try {
+                const saved = localStorage.getItem('clue_autosave');
+                if (saved) {
+                    const data = JSON.parse(saved);
+                    gameState = { ...gameState, ...data };
+                    restoreGameState();
+                }
+            } catch (e) {
+                console.warn('Auto-load failed:', e);
+            }
+        }
+
+        // Update player names in headers
+        function updatePlayerHeaders() {
+            for (let i = 1; i <= 6; i++) {
+                const input = document.getElementById(`player${i}`);
+                const name = input.value.trim() || `Jugador ${i}`;
+                
+                // Update all table headers
+                const headers = [
+                    document.getElementById(`header-player-${i}`),
+                    document.getElementById(`header-player-${i}-armas`),
+                    document.getElementById(`header-player-${i}-lugares`)
+                ];
+                
+                headers.forEach(header => {
+                    if (header) {
+                        header.textContent = name;
                     }
                 });
+                
+                gameState.playerNames[i] = name;
+            }
+            autoSave();
+        }
+
+        // Validation for duplicate card assignments
+        function validateCardAssignments() {
+            const validationDiv = document.getElementById('validation-messages');
+            validationDiv.innerHTML = '';
+            
+            const warnings = [];
+            const allItems = document.querySelectorAll('tr[data-item]');
+            
+            allItems.forEach(row => {
+                const item = row.getAttribute('data-item');
+                const checkedCells = row.querySelectorAll('.checkbox-cell.checked');
+                
+                if (checkedCells.length > 1) {
+                    const playerNumbers = Array.from(checkedCells).map(cell => 
+                        cell.getAttribute('data-player')
+                    );
+                    const playerNames = playerNumbers.map(num => 
+                        gameState.playerNames[num] || `Jugador ${num}`
+                    );
+                    
+                    warnings.push(
+                        `"${item}" está marcado como "tengo" para múltiples jugadores: ${playerNames.join(', ')}`
+                    );
+                }
             });
+            
+            warnings.forEach(warning => {
+                const warningDiv = document.createElement('div');
+                warningDiv.className = 'validation-warning';
+                warningDiv.textContent = warning;
+                validationDiv.appendChild(warningDiv);
+            });
+        }
+
+        // Enhanced cell click with validation
+        function handleCellClick(cell) {
+            // Cycle through states: empty -> checked -> crossed -> empty
+            if (cell.classList.contains('checked')) {
+                cell.classList.remove('checked');
+                cell.classList.add('crossed');
+            } else if (cell.classList.contains('crossed')) {
+                cell.classList.remove('crossed');
+            } else {
+                cell.classList.add('checked');
+            }
+            
+            // Update game state
+            const row = cell.closest('tr');
+            const item = row.getAttribute('data-item');
+            const player = cell.getAttribute('data-player');
+            const key = `${item}-${player}`;
+            
+            if (cell.classList.contains('checked')) {
+                gameState.cardStates[key] = 'checked';
+            } else if (cell.classList.contains('crossed')) {
+                gameState.cardStates[key] = 'crossed';
+            } else {
+                gameState.cardStates[key] = 'empty';
+            }
+            
+            // Validate and auto-save
+            validateCardAssignments();
+            autoSave();
+        }
+
+        // Restore game state from saved data
+        function restoreGameState() {
+            // Restore player names
+            for (let i = 1; i <= 6; i++) {
+                const input = document.getElementById(`player${i}`);
+                if (gameState.playerNames[i]) {
+                    input.value = gameState.playerNames[i];
+                }
+            }
+            updatePlayerHeaders();
+            
+            // Restore card states
+            Object.keys(gameState.cardStates).forEach(key => {
+                const [item, player] = key.split('-');
+                const cell = document.querySelector(`tr[data-item="${item}"] .checkbox-cell[data-player="${player}"]`);
+                
+                if (cell) {
+                    cell.classList.remove('checked', 'crossed');
+                    if (gameState.cardStates[key] === 'checked') {
+                        cell.classList.add('checked');
+                    } else if (gameState.cardStates[key] === 'crossed') {
+                        cell.classList.add('crossed');
+                    }
+                }
+            });
+            
+            validateCardAssignments();
+        }
+
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', function() {
+            // Load auto-saved data
+            loadAutoSave();
+            
+            // Set up checkbox cell click handlers
+            const checkboxCells = document.querySelectorAll('.checkbox-cell');
+            checkboxCells.forEach(cell => {
+                cell.addEventListener('click', function() {
+                    handleCellClick(this);
+                });
+            });
+            
+            // Set up player name input handlers
+            for (let i = 1; i <= 6; i++) {
+                const input = document.getElementById(`player${i}`);
+                input.addEventListener('input', updatePlayerHeaders);
+                input.addEventListener('blur', updatePlayerHeaders);
+            }
+            
+            // Set up auto-save interval (every 30 seconds)
+            setInterval(autoSave, 30000);
         });
 
         function clearAll() {
@@ -569,29 +863,22 @@
                 checkboxCells.forEach(cell => {
                     cell.classList.remove('checked', 'crossed');
                 });
+                
+                // Clear game state
+                gameState.cardStates = {};
+                validateCardAssignments();
+                autoSave();
             }
         }
 
         function saveGame() {
-            const gameState = {};
-            const checkboxCells = document.querySelectorAll('.checkbox-cell');
+            const fullGameState = {
+                playerNames: gameState.playerNames,
+                cardStates: gameState.cardStates,
+                savedAt: new Date().toISOString()
+            };
 
-            checkboxCells.forEach(cell => {
-                const row = cell.closest('tr');
-                const item = row.getAttribute('data-item');
-                const player = cell.getAttribute('data-player');
-                const key = `${item}-${player}`;
-
-                if (cell.classList.contains('checked')) {
-                    gameState[key] = 'checked';
-                } else if (cell.classList.contains('crossed')) {
-                    gameState[key] = 'crossed';
-                } else {
-                    gameState[key] = 'empty';
-                }
-            });
-
-            const dataStr = JSON.stringify(gameState);
+            const dataStr = JSON.stringify(fullGameState, null, 2);
             const dataBlob = new Blob([dataStr], {type: 'application/json'});
 
             const link = document.createElement('a');
@@ -611,25 +898,21 @@
                     const reader = new FileReader();
                     reader.onload = function(e) {
                         try {
-                            const gameState = JSON.parse(e.target.result);
-
-                            // Clear current state
-                            clearAll();
-
-                            // Apply loaded state
-                            Object.keys(gameState).forEach(key => {
-                                const [item, player] = key.split('-');
-                                const cell = document.querySelector(`tr[data-item="${item}"] .checkbox-cell[data-player="${player}"]`);
-
-                                if (cell) {
-                                    if (gameState[key] === 'checked') {
-                                        cell.classList.add('checked');
-                                    } else if (gameState[key] === 'crossed') {
-                                        cell.classList.add('crossed');
-                                    }
-                                }
-                            });
-
+                            const loadedData = JSON.parse(e.target.result);
+                            
+                            // Handle both old and new save formats
+                            if (loadedData.playerNames && loadedData.cardStates) {
+                                // New format
+                                gameState = {
+                                    playerNames: loadedData.playerNames || {},
+                                    cardStates: loadedData.cardStates || {}
+                                };
+                            } else {
+                                // Old format - convert to new format
+                                gameState.cardStates = loadedData;
+                            }
+                            
+                            restoreGameState();
                             alert('¡Partida cargada exitosamente!');
                         } catch (error) {
                             alert('Error al cargar el archivo. Asegúrate de que sea un archivo válido de Clue.');
