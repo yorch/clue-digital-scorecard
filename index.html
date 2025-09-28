@@ -147,12 +147,22 @@
         /* Toast notification styles */
         .toast-container {
             position: fixed;
-            top: 80px;
-            right: 20px;
+            top: 1rem;
+            right: 0.5rem;
+            left: 0.5rem;
             z-index: 10000;
-            max-width: 350px;
+            max-width: none;
             width: auto;
             pointer-events: none;
+        }
+
+        @media (min-width: 640px) {
+            .toast-container {
+                top: 80px;
+                right: 20px;
+                left: auto;
+                max-width: 350px;
+            }
         }
 
         .toast-message {
@@ -247,6 +257,7 @@
             font-weight: bold;
             font-size: inherit;
         }
+
     </style>
     <!-- React CDN -->
     <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
@@ -675,7 +686,7 @@
                             t={t}
                         />
 
-                        <div className="p-4 md:p-5">
+                        <div className="p-3 md:p-5">
                             <PlayerNamesSection
                                 gameState={gameState}
                                 setGameState={setGameState}
@@ -759,18 +770,18 @@
         // Header Component
         function Header({ currentLanguage, setLanguage, t }) {
             return (
-                <div className="bg-white text-black p-5 text-center relative border-b-4 border-black">
-                    <h1 className="text-3xl md:text-4xl mb-1 font-bold uppercase tracking-widest">🕵️ CLUE</h1>
-                    <p className="text-sm uppercase tracking-wide">{t('subtitle')}</p>
-                    <div className="absolute top-5 right-5 flex gap-2 md:gap-3 flex-col md:flex-row items-center">
+                <div className="bg-white text-black p-3 md:p-5 text-center relative border-b-4 border-black">
+                    <h1 className="text-2xl md:text-4xl mb-1 font-bold uppercase tracking-widest">🕵️ CLUE</h1>
+                    <p className="text-xs md:text-sm uppercase tracking-wide">{t('subtitle')}</p>
+                    <div className="absolute top-3 right-3 md:top-5 md:right-5 flex gap-1 md:gap-3 flex-col md:flex-row items-center">
                         <button
-                            className={`lang-btn bg-white text-black border-2 border-black px-3 py-1 cursor-pointer text-xs font-typewriter transition-all duration-200 uppercase font-bold hover:bg-gray-200 ${currentLanguage === 'es' ? 'active' : ''}`}
+                            className={`lang-btn bg-white text-black border-2 border-black px-2 py-1 md:px-3 cursor-pointer text-xs font-typewriter transition-all duration-200 uppercase font-bold hover:bg-gray-200 min-w-8 h-6 md:min-w-auto md:h-auto ${currentLanguage === 'es' ? 'active' : ''}`}
                             onClick={() => setLanguage('es')}
                         >
                             🇪🇸 ES
                         </button>
                         <button
-                            className={`lang-btn bg-white text-black border-2 border-black px-3 py-1 cursor-pointer text-xs font-typewriter transition-all duration-200 uppercase font-bold hover:bg-gray-200 ${currentLanguage === 'en' ? 'active' : ''}`}
+                            className={`lang-btn bg-white text-black border-2 border-black px-2 py-1 md:px-3 cursor-pointer text-xs font-typewriter transition-all duration-200 uppercase font-bold hover:bg-gray-200 min-w-8 h-6 md:min-w-auto md:h-auto ${currentLanguage === 'en' ? 'active' : ''}`}
                             onClick={() => setLanguage('en')}
                         >
                             🇬🇧 EN
@@ -799,7 +810,7 @@
                             {t('playerNames')}
                         </h3>
                         <button
-                            className="bg-white text-black border-2 border-black px-3 py-1 cursor-pointer text-xs font-typewriter transition-all duration-200 uppercase font-bold hover:bg-black hover:text-white"
+                            className="bg-white text-black border-2 border-black px-2 py-1 md:px-3 cursor-pointer text-xs font-typewriter transition-all duration-200 uppercase font-bold hover:bg-black hover:text-white min-h-9 md:min-h-auto"
                             onClick={() => setShowPlayerNames(!showPlayerNames)}
                         >
                             <span>{showPlayerNames ? '▲' : '▼'}</span>
@@ -833,7 +844,7 @@
             return (
                 <div className="mb-5 text-center">
                     <button
-                        className="bg-white text-black border-2 border-black px-4 py-2 cursor-pointer text-sm font-typewriter transition-all duration-200 uppercase font-bold hover:bg-black hover:text-white"
+                        className="bg-white text-black border-2 border-black px-3 py-2 md:px-4 cursor-pointer text-sm font-typewriter transition-all duration-200 uppercase font-bold hover:bg-black hover:text-white min-h-11 md:min-h-auto"
                         onClick={() => setShowInstructions(!showInstructions)}
                     >
                         <span>{showInstructions ? '❌' : '❓'}</span> {t('howToUse')}
@@ -875,20 +886,20 @@
         // Legend Component
         function Legend({ t }) {
             return (
-                <div className="flex justify-center gap-5 my-4 flex-wrap font-typewriter text-sm">
-                    <div className="flex items-center gap-2 text-sm">
+                <div className="flex flex-col sm:flex-row justify-center gap-2 sm:gap-5 my-4 flex-wrap font-typewriter text-sm">
+                    <div className="flex items-center justify-center gap-2 text-sm p-2 sm:p-0 border sm:border-0 border-black bg-white sm:bg-transparent">
                         <div className="legend-box w-5 h-5 border-2 border-black inline-flex items-center justify-center font-bold font-typewriter"></div>
                         <span>{t('legendUnknown')}</span>
                     </div>
-                    <div className="flex items-center gap-2 text-sm">
+                    <div className="flex items-center justify-center gap-2 text-sm p-2 sm:p-0 border sm:border-0 border-black bg-white sm:bg-transparent">
                         <div className="legend-box checked w-5 h-5 border-2 border-black inline-flex items-center justify-center font-bold font-typewriter bg-green-500 text-white"></div>
                         <span>{t('legendHasCard')}</span>
                     </div>
-                    <div className="flex items-center gap-2 text-sm">
+                    <div className="flex items-center justify-center gap-2 text-sm p-2 sm:p-0 border sm:border-0 border-black bg-white sm:bg-transparent">
                         <div className="legend-box crossed w-5 h-5 border-2 border-black inline-flex items-center justify-center font-bold font-typewriter bg-red-500 text-white"></div>
                         <span>{t('legendNoCard')}</span>
                     </div>
-                    <div className="flex items-center gap-2 text-sm bg-white border-2 border-black px-2 py-1 font-bold">
+                    <div className="flex items-center justify-center gap-2 text-sm bg-white border-2 border-black px-2 py-1 font-bold">
                         <span className="text-lg">🤖</span>
                         <span>{t('smartFillEnabled')}</span>
                     </div>
@@ -1045,7 +1056,7 @@
                     <div className="text-center">
                         <button
                             onClick={clearSolution}
-                            className="bg-white text-black border-2 border-black px-3 py-1 cursor-pointer text-xs font-typewriter transition-all duration-200 uppercase font-bold hover:bg-black hover:text-white"
+                            className="bg-white text-black border-2 border-black px-2 py-1 md:px-3 cursor-pointer text-xs font-typewriter transition-all duration-200 uppercase font-bold hover:bg-black hover:text-white min-h-9 md:min-h-auto"
                         >
                             🗑️ {t('clearSolution')}
                         </button>
@@ -1069,7 +1080,7 @@
                 <div className="mb-5">
                     <div className="bg-black text-white p-3 text-center font-typewriter">
                         <button
-                            className="flex items-center justify-center w-full text-center cursor-pointer transition-all duration-200 hover:bg-gray-800"
+                            className="flex items-center justify-center w-full text-center p-3 md:p-4 text-sm md:text-base cursor-pointer transition-all duration-200 hover:bg-gray-800"
                             onClick={() => setShowNotes(!showNotes)}
                         >
                             <span className="text-xl font-bold tracking-wide uppercase mr-2">
@@ -1226,9 +1237,9 @@
 
             return (
                 <div className="mb-6">
-                    <div className="section-title bg-black text-white px-4 py-2 text-base font-bold text-left mb-3 uppercase tracking-widest font-typewriter relative">
+                    <div className="section-title bg-black text-white px-3 py-2 md:px-4 text-sm md:text-base font-bold text-left mb-3 uppercase tracking-widest font-typewriter relative">
                         {title}
-                        <span className="progress-indicator">
+                        <span className="progress-indicator text-xs md:text-sm py-1 px-2 md:py-auto md:px-auto">
                             {progress}%
                         </span>
                     </div>
@@ -1236,11 +1247,11 @@
                         <table className="w-full border-collapse bg-white font-typewriter">
                             <thead>
                                 <tr>
-                                    <th className="bg-gray-800 text-white p-2 font-bold text-center text-xs border border-black uppercase tracking-wide">
+                                    <th className="bg-gray-800 text-white p-1 md:p-2 font-bold text-center text-xs border border-black uppercase tracking-wide">
                                         {title === t('who') ? t('character') : title === t('withWhat') ? t('weapon') : t('room')}
                                     </th>
                                     {activePlayers.map(playerNum => (
-                                        <th key={playerNum} className="bg-gray-800 text-white p-2 font-bold text-center text-xs border border-black uppercase tracking-wide">
+                                        <th key={playerNum} className="bg-gray-800 text-white p-1 md:p-2 font-bold text-center text-xs border border-black uppercase tracking-wide min-w-12">
                                             {getPlayerName(playerNum)}
                                         </th>
                                     ))}
@@ -1249,13 +1260,13 @@
                             <tbody>
                                 {items.map(item => (
                                     <tr key={item} className="hover:bg-gray-50">
-                                        <td className="p-3 border border-black text-left font-bold bg-gray-100 text-black pl-4 text-sm">
+                                        <td className="p-2 md:p-3 border border-black text-left font-bold bg-gray-100 text-black text-xs md:text-sm min-w-20">
                                             {getTranslatedCardName(item)}
                                         </td>
                                         {activePlayers.map(playerNum => (
                                             <td
                                                 key={playerNum}
-                                                className={getCellClasses(item, playerNum)}
+                                                className={getCellClasses(item, playerNum) + ' w-12 h-10 min-w-12'}
                                                 onClick={() => handleCellClick(item, playerNum.toString())}
                                                 tabIndex="-1"
                                             />
@@ -1343,22 +1354,22 @@
             };
 
             return (
-                <div className="bg-white p-4 text-center border-t-4 border-black">
+                <div className="bg-white p-3 md:p-4 text-center border-t-4 border-black flex flex-col sm:flex-row gap-2 sm:gap-1 sm:justify-center">
                     <button
                         onClick={saveGame}
-                        className="bg-white text-black border-2 border-black px-5 py-2 cursor-pointer text-sm font-typewriter mx-1 transition-all duration-200 uppercase font-bold hover:bg-black hover:text-white"
+                        className="bg-white text-black border-2 border-black px-4 py-2 md:px-5 cursor-pointer text-sm font-typewriter transition-all duration-200 uppercase font-bold hover:bg-black hover:text-white min-h-11 md:min-h-auto"
                     >
                         💾 {t('saveGame')}
                     </button>
                     <button
                         onClick={loadGame}
-                        className="bg-white text-black border-2 border-black px-5 py-2 cursor-pointer text-sm font-typewriter mx-1 transition-all duration-200 uppercase font-bold hover:bg-black hover:text-white"
+                        className="bg-white text-black border-2 border-black px-4 py-2 md:px-5 cursor-pointer text-sm font-typewriter transition-all duration-200 uppercase font-bold hover:bg-black hover:text-white min-h-11 md:min-h-auto"
                     >
                         📁 {t('loadGame')}
                     </button>
                     <button
                         onClick={clearAll}
-                        className="bg-white text-red-500 border-2 border-red-500 px-5 py-2 cursor-pointer text-sm font-typewriter mx-1 transition-all duration-200 uppercase font-bold hover:bg-red-500 hover:text-white"
+                        className="bg-white text-red-500 border-2 border-red-500 px-4 py-2 md:px-5 cursor-pointer text-sm font-typewriter transition-all duration-200 uppercase font-bold hover:bg-red-500 hover:text-white min-h-11 md:min-h-auto"
                     >
                         🗑️ {t('clearAll')}
                     </button>
