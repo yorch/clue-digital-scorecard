@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" data-lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Clue - Tarjeta de Puntuación Digital</title>
+    <title>Clue - Digital Score Card</title>
     <style>
         * {
             margin: 0;
@@ -33,6 +33,36 @@
             color: white;
             padding: 20px;
             text-align: center;
+            position: relative;
+        }
+
+        .language-toggle {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .lang-btn {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .lang-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .lang-btn.active {
+            background: #3498db;
+            border-color: #3498db;
         }
 
         .header h1 {
@@ -639,6 +669,14 @@
                 font-size: 2rem;
             }
 
+            .language-toggle {
+                position: relative;
+                top: auto;
+                right: auto;
+                margin-top: 10px;
+                justify-content: center;
+            }
+
             .scorecard {
                 padding: 15px;
             }
@@ -709,37 +747,41 @@
     <div class="container">
         <div class="header">
             <h1>🕵️ CLUE</h1>
-            <p>Tarjeta de Puntuación Digital</p>
+            <p data-i18n="subtitle">Tarjeta de Puntuación Digital</p>
+            <div class="language-toggle">
+                <button class="lang-btn" data-lang="es" onclick="setLanguage('es')">🇪🇸 ES</button>
+                <button class="lang-btn" data-lang="en" onclick="setLanguage('en')">🇬🇧 EN</button>
+            </div>
         </div>
 
         <div class="scorecard">
             <!-- Player Names Section -->
             <div class="player-names-section">
-                <h3>Nombres de Jugadores</h3>
+                <h3 data-i18n="playerNames">Nombres de Jugadores</h3>
                 <div class="player-names">
                     <div class="player-input">
-                        <label for="player1">Jugador 1:</label>
-                        <input type="text" id="player1" placeholder="Jugador 1" maxlength="15">
+                        <label for="player1" data-i18n="player1Label">Jugador 1:</label>
+                        <input type="text" id="player1" data-i18n-placeholder="player1" placeholder="Jugador 1" maxlength="15">
                     </div>
                     <div class="player-input">
-                        <label for="player2">Jugador 2:</label>
-                        <input type="text" id="player2" placeholder="Jugador 2" maxlength="15">
+                        <label for="player2" data-i18n="player2Label">Jugador 2:</label>
+                        <input type="text" id="player2" data-i18n-placeholder="player2" placeholder="Jugador 2" maxlength="15">
                     </div>
                     <div class="player-input">
-                        <label for="player3">Jugador 3:</label>
-                        <input type="text" id="player3" placeholder="Jugador 3" maxlength="15">
+                        <label for="player3" data-i18n="player3Label">Jugador 3:</label>
+                        <input type="text" id="player3" data-i18n-placeholder="player3" placeholder="Jugador 3" maxlength="15">
                     </div>
                     <div class="player-input">
-                        <label for="player4">Jugador 4:</label>
-                        <input type="text" id="player4" placeholder="Jugador 4" maxlength="15">
+                        <label for="player4" data-i18n="player4Label">Jugador 4:</label>
+                        <input type="text" id="player4" data-i18n-placeholder="player4" placeholder="Jugador 4" maxlength="15">
                     </div>
                     <div class="player-input">
-                        <label for="player5">Jugador 5:</label>
-                        <input type="text" id="player5" placeholder="Jugador 5" maxlength="15">
+                        <label for="player5" data-i18n="player5Label">Jugador 5:</label>
+                        <input type="text" id="player5" data-i18n-placeholder="player5" placeholder="Jugador 5" maxlength="15">
                     </div>
                     <div class="player-input">
-                        <label for="player6">Jugador 6:</label>
-                        <input type="text" id="player6" placeholder="Jugador 6" maxlength="15">
+                        <label for="player6" data-i18n="player6Label">Jugador 6:</label>
+                        <input type="text" id="player6" data-i18n-placeholder="player6" placeholder="Jugador 6" maxlength="15">
                     </div>
                 </div>
             </div>
@@ -747,31 +789,31 @@
             <!-- Game Instructions -->
             <div class="instructions-section">
                 <button class="btn-help" onclick="toggleInstructions()">
-                    <span id="help-icon">❓</span> ¿Cómo usar la tarjeta?
+                    <span id="help-icon">❓</span> <span data-i18n="howToUse">¿Cómo usar la tarjeta?</span>
                 </button>
                 <div id="instructions-content" class="instructions-content" style="display: none;">
-                    <h4>📋 Instrucciones de Uso</h4>
+                    <h4 data-i18n="instructionsTitle">📋 Instrucciones de Uso</h4>
                     <div class="instruction-grid">
                         <div class="instruction-item">
-                            <h5>1. ✅ Verde (Tiene la carta)</h5>
-                            <p><strong>Solo UNA persona</strong> puede tener cada carta. Marca verde cuando sepas con certeza quién la tiene.</p>
+                            <h5 data-i18n="greenTitle">1. ✅ Verde (Tiene la carta)</h5>
+                            <p data-i18n="greenDesc"><strong>Solo UNA persona</strong> puede tener cada carta. Marca verde cuando sepas con certeza quién la tiene.</p>
                         </div>
                         <div class="instruction-item">
-                            <h5>2. ❌ Rojo (No la tiene)</h5>
-                            <p><strong>Múltiples personas</strong> pueden no tener la misma carta. Marca rojo cuando elimines jugadores.</p>
+                            <h5 data-i18n="redTitle">2. ❌ Rojo (No la tiene)</h5>
+                            <p data-i18n="redDesc"><strong>Múltiples personas</strong> pueden no tener la misma carta. Marca rojo cuando elimines jugadores.</p>
                         </div>
                         <div class="instruction-item">
-                            <h5>3. ⚪ Sin marcar (Desconocido)</h5>
-                            <p>No sabes si este jugador tiene o no esta carta.</p>
+                            <h5 data-i18n="unmarkedTitle">3. ⚪ Sin marcar (Desconocido)</h5>
+                            <p data-i18n="unmarkedDesc">No sabes si este jugador tiene o no esta carta.</p>
                         </div>
                     </div>
                     <div class="game-logic">
-                        <h5>🎯 Lógica del Juego:</h5>
+                        <h5 data-i18n="gameLogicTitle">🎯 Lógica del Juego:</h5>
                         <ul>
-                            <li><strong>Cada carta existe solo una vez</strong> en todo el juego</li>
-                            <li><strong>21 cartas total:</strong> 18 repartidas + 3 en el sobre del misterio</li>
-                            <li><strong>Proceso de eliminación:</strong> Si 5 jugadores no tienen una carta, el 6º la tiene</li>
-                            <li><strong>Auto-completado:</strong> Al marcar que alguien tiene una carta, los demás se marcan automáticamente como "no la tienen"</li>
+                            <li data-i18n="gameLogic1"><strong>Cada carta existe solo una vez</strong> en todo el juego</li>
+                            <li data-i18n="gameLogic2"><strong>21 cartas total:</strong> 18 repartidas + 3 en el sobre del misterio</li>
+                            <li data-i18n="gameLogic3"><strong>Proceso de eliminación:</strong> Si 5 jugadores no tienen una carta, el 6º la tiene</li>
+                            <li data-i18n="gameLogic4"><strong>Auto-completado:</strong> Al marcar que alguien tiene una carta, los demás se marcan automáticamente como "no la tienen"</li>
                         </ul>
                     </div>
                 </div>
@@ -780,19 +822,19 @@
             <div class="legend">
                 <div class="legend-item">
                     <div class="legend-box"></div>
-                    <span>Desconocido</span>
+                    <span data-i18n="legendUnknown">Desconocido</span>
                 </div>
                 <div class="legend-item">
                     <div class="legend-box checked"></div>
-                    <span>Tiene la carta</span>
+                    <span data-i18n="legendHasCard">Tiene la carta</span>
                 </div>
                 <div class="legend-item">
                     <div class="legend-box crossed"></div>
-                    <span>No la tiene</span>
+                    <span data-i18n="legendNoCard">No la tiene</span>
                 </div>
                 <div class="legend-item smart-fill-indicator">
                     <span class="smart-fill-icon">🤖</span>
-                    <span>Auto-completado inteligente activado</span>
+                    <span data-i18n="smartFillEnabled">Auto-completado inteligente activado</span>
                 </div>
             </div>
 
@@ -801,10 +843,10 @@
 
             <!-- Solution Tracking Section -->
             <div class="solution-section">
-                <h3>🔍 Solución del Misterio</h3>
+                <h3 data-i18n="solutionTitle">🔍 Solución del Misterio</h3>
                 <div class="solution-grid">
                     <div class="solution-category">
-                        <label for="solution-quien">¿Quién?</label>
+                        <label for="solution-quien" data-i18n="who">¿Quién?</label>
                         <select id="solution-quien">
                             <option value="">Seleccionar...</option>
                             <option value="Verduzco">Verduzco</option>
@@ -816,7 +858,7 @@
                         </select>
                     </div>
                     <div class="solution-category">
-                        <label for="solution-arma">¿Con qué?</label>
+                        <label for="solution-arma" data-i18n="withWhat">¿Con qué?</label>
                         <select id="solution-arma">
                             <option value="">Seleccionar...</option>
                             <option value="Candelabro">Candelabro</option>
@@ -828,7 +870,7 @@
                         </select>
                     </div>
                     <div class="solution-category">
-                        <label for="solution-lugar">¿Dónde?</label>
+                        <label for="solution-lugar" data-i18n="where">¿Dónde?</label>
                         <select id="solution-lugar">
                             <option value="">Seleccionar...</option>
                             <option value="Salón de baile">Salón de baile</option>
@@ -844,18 +886,18 @@
                     </div>
                 </div>
                 <div class="solution-actions">
-                    <button class="btn btn-small" onclick="clearSolution()">🗑️ Limpiar Solución</button>
+                    <button class="btn btn-small" onclick="clearSolution()">🗑️ <span data-i18n="clearSolution">Limpiar Solución</span></button>
                 </div>
             </div>
 
             <!-- ¿QUIÉN? -->
             <div class="section">
-                <div class="section-title">¿Quién?</div>
+                <div class="section-title" data-i18n="who">¿Quién?</div>
                 <div class="grid-container">
                     <table id="quien-table">
                         <thead>
                             <tr>
-                                <th>Personaje</th>
+                                <th data-i18n="character">Personaje</th>
                                 <th id="header-player-1">Jugador 1</th>
                                 <th id="header-player-2">Jugador 2</th>
                                 <th id="header-player-3">Jugador 3</th>
@@ -926,12 +968,12 @@
 
             <!-- ¿CON QUÉ? -->
             <div class="section">
-                <div class="section-title">¿Con qué?</div>
+                <div class="section-title" data-i18n="withWhat">¿Con qué?</div>
                 <div class="grid-container">
                     <table id="armas-table">
                         <thead>
                             <tr>
-                                <th>Arma</th>
+                                <th data-i18n="weapon">Arma</th>
                                 <th id="header-player-1-armas">Jugador 1</th>
                                 <th id="header-player-2-armas">Jugador 2</th>
                                 <th id="header-player-3-armas">Jugador 3</th>
@@ -1002,12 +1044,12 @@
 
             <!-- ¿DÓNDE? -->
             <div class="section">
-                <div class="section-title">¿Dónde?</div>
+                <div class="section-title" data-i18n="where">¿Dónde?</div>
                 <div class="grid-container">
                     <table id="lugares-table">
                         <thead>
                             <tr>
-                                <th>Lugar</th>
+                                <th data-i18n="room">Lugar</th>
                                 <th id="header-player-1-lugares">Jugador 1</th>
                                 <th id="header-player-2-lugares">Jugador 2</th>
                                 <th id="header-player-3-lugares">Jugador 3</th>
@@ -1105,13 +1147,164 @@
         </div>
 
         <div class="controls">
-            <button class="btn" onclick="saveGame()">💾 Guardar Partida</button>
-            <button class="btn" onclick="loadGame()">📁 Cargar Partida</button>
-            <button class="btn danger" onclick="clearAll()">🗑️ Limpiar Todo</button>
+            <button class="btn" onclick="saveGame()">💾 <span data-i18n="saveGame">Guardar Partida</span></button>
+            <button class="btn" onclick="loadGame()">📁 <span data-i18n="loadGame">Cargar Partida</span></button>
+            <button class="btn danger" onclick="clearAll()">🗑️ <span data-i18n="clearAll">Limpiar Todo</span></button>
         </div>
     </div>
 
     <script>
+        // Language translations
+        const translations = {
+            es: {
+                subtitle: "Tarjeta de Puntuación Digital",
+                playerNames: "Nombres de Jugadores",
+                player1Label: "Jugador 1:",
+                player2Label: "Jugador 2:",
+                player3Label: "Jugador 3:",
+                player4Label: "Jugador 4:",
+                player5Label: "Jugador 5:",
+                player6Label: "Jugador 6:",
+                player1: "Jugador 1",
+                player2: "Jugador 2",
+                player3: "Jugador 3",
+                player4: "Jugador 4",
+                player5: "Jugador 5",
+                player6: "Jugador 6",
+                howToUse: "¿Cómo usar la tarjeta?",
+                instructionsTitle: "📋 Instrucciones de Uso",
+                greenTitle: "1. ✅ Verde (Tiene la carta)",
+                greenDesc: "<strong>Solo UNA persona</strong> puede tener cada carta. Marca verde cuando sepas con certeza quién la tiene.",
+                redTitle: "2. ❌ Rojo (No la tiene)",
+                redDesc: "<strong>Múltiples personas</strong> pueden no tener la misma carta. Marca rojo cuando elimines jugadores.",
+                unmarkedTitle: "3. ⚪ Sin marcar (Desconocido)",
+                unmarkedDesc: "No sabes si este jugador tiene o no esta carta.",
+                gameLogicTitle: "🎯 Lógica del Juego:",
+                gameLogic1: "<strong>Cada carta existe solo una vez</strong> en todo el juego",
+                gameLogic2: "<strong>21 cartas total:</strong> 18 repartidas + 3 en el sobre del misterio",
+                gameLogic3: "<strong>Proceso de eliminación:</strong> Si 5 jugadores no tienen una carta, el 6º la tiene",
+                gameLogic4: "<strong>Auto-completado:</strong> Al marcar que alguien tiene una carta, los demás se marcan automáticamente como \"no la tienen\"",
+                legendUnknown: "Desconocido",
+                legendHasCard: "Tiene la carta",
+                legendNoCard: "No la tiene",
+                smartFillEnabled: "Auto-completado inteligente activado",
+                solutionTitle: "🔍 Solución del Misterio",
+                who: "¿Quién?",
+                withWhat: "¿Con qué?",
+                where: "¿Dónde?",
+                clearSolution: "Limpiar Solución",
+                character: "Personaje",
+                weapon: "Arma",
+                room: "Lugar",
+                saveGame: "Guardar Partida",
+                loadGame: "Cargar Partida",
+                clearAll: "Limpiar Todo",
+                selectOption: "Seleccionar...",
+                confirmClearAll: "¿Estás seguro de que quieres limpiar toda la tarjeta?",
+                confirmClearSolution: "¿Limpiar la solución del misterio?",
+                cardClearedMsg: "Tarjeta limpiada completamente",
+                solutionClearedMsg: "Solución limpiada",
+                gameSavedMsg: "Partida guardada exitosamente",
+                gameLoadedMsg: "¡Partida cargada exitosamente!",
+                errorSaveMsg: "Error al guardar la partida",
+                errorLoadMsg: "Error al cargar el archivo. Archivo inválido.",
+                autoSaveFailedMsg: "Auto-guardado falló",
+                errorLoadAutoSaveMsg: "Error al cargar datos guardados",
+                smartFillMsg: "Auto-completado: {player} tiene \"{card}\", otros {count} jugadores marcados automáticamente como \"no la tienen\"",
+                smartUnfillMsg: "Auto-limpieza: {player} ya no tiene \"{card}\", {count} celdas auto-completadas limpiadas",
+                helpFirstLoadMsg: "💡 Usa Tab y flechas para navegar, Espacio para cambiar estado"
+            },
+            en: {
+                subtitle: "Digital Score Card",
+                playerNames: "Player Names",
+                player1Label: "Player 1:",
+                player2Label: "Player 2:",
+                player3Label: "Player 3:",
+                player4Label: "Player 4:",
+                player5Label: "Player 5:",
+                player6Label: "Player 6:",
+                player1: "Player 1",
+                player2: "Player 2",
+                player3: "Player 3",
+                player4: "Player 4",
+                player5: "Player 5",
+                player6: "Player 6",
+                howToUse: "How to use the card?",
+                instructionsTitle: "📋 Instructions",
+                greenTitle: "1. ✅ Green (Has the card)",
+                greenDesc: "<strong>Only ONE person</strong> can have each card. Mark green when you know for certain who has it.",
+                redTitle: "2. ❌ Red (Doesn't have it)",
+                redDesc: "<strong>Multiple people</strong> can not have the same card. Mark red when you eliminate players.",
+                unmarkedTitle: "3. ⚪ Unmarked (Unknown)",
+                unmarkedDesc: "You don't know if this player has this card or not.",
+                gameLogicTitle: "🎯 Game Logic:",
+                gameLogic1: "<strong>Each card exists only once</strong> in the entire game",
+                gameLogic2: "<strong>21 cards total:</strong> 18 dealt + 3 in the mystery envelope",
+                gameLogic3: "<strong>Elimination process:</strong> If 5 players don't have a card, the 6th has it",
+                gameLogic4: "<strong>Auto-complete:</strong> When marking that someone has a card, others are automatically marked as \"don't have it\"",
+                legendUnknown: "Unknown",
+                legendHasCard: "Has the card",
+                legendNoCard: "Doesn't have it",
+                smartFillEnabled: "Smart auto-complete enabled",
+                solutionTitle: "🔍 Mystery Solution",
+                who: "Who?",
+                withWhat: "With what?",
+                where: "Where?",
+                clearSolution: "Clear Solution",
+                character: "Character",
+                weapon: "Weapon",
+                room: "Room",
+                saveGame: "Save Game",
+                loadGame: "Load Game",
+                clearAll: "Clear All",
+                selectOption: "Select...",
+                confirmClearAll: "Are you sure you want to clear the entire card?",
+                confirmClearSolution: "Clear the mystery solution?",
+                cardClearedMsg: "Card completely cleared",
+                solutionClearedMsg: "Solution cleared",
+                gameSavedMsg: "Game saved successfully",
+                gameLoadedMsg: "Game loaded successfully!",
+                errorSaveMsg: "Error saving the game",
+                errorLoadMsg: "Error loading the file. Invalid file.",
+                autoSaveFailedMsg: "Auto-save failed",
+                errorLoadAutoSaveMsg: "Error loading saved data",
+                smartFillMsg: "Auto-complete: {player} has \"{card}\", {count} other players automatically marked as \"don't have it\"",
+                smartUnfillMsg: "Auto-clear: {player} no longer has \"{card}\", {count} auto-filled cells cleared",
+                helpFirstLoadMsg: "💡 Use Tab and arrows to navigate, Space to change state"
+            }
+        };
+
+        // Card names translations
+        const cardTranslations = {
+            // Characters
+            "Verduzco": { es: "Verduzco", en: "Mr. Green" },
+            "Mostaza": { es: "Mostaza", en: "Colonel Mustard" },
+            "Marlene": { es: "Marlene", en: "Mrs. White" },
+            "Moradillo": { es: "Moradillo", en: "Professor Plum" },
+            "Escarlata": { es: "Escarlata", en: "Miss Scarlet" },
+            "Blanca": { es: "Blanca", en: "Mrs. Peacock" },
+            // Weapons
+            "Candelabro": { es: "Candelabro", en: "Candlestick" },
+            "Daga": { es: "Daga", en: "Dagger" },
+            "Tubo de plomo": { es: "Tubo de plomo", en: "Lead Pipe" },
+            "Revólver": { es: "Revólver", en: "Revolver" },
+            "Soga": { es: "Soga", en: "Rope" },
+            "Llave inglesa": { es: "Llave inglesa", en: "Wrench" },
+            // Rooms
+            "Salón de baile": { es: "Salón de baile", en: "Ballroom" },
+            "Sala de billar": { es: "Sala de billar", en: "Billiard Room" },
+            "Terraza": { es: "Terraza", en: "Conservatory" },
+            "Comedor": { es: "Comedor", en: "Dining Room" },
+            "Pasillo": { es: "Pasillo", en: "Hall" },
+            "Cocina": { es: "Cocina", en: "Kitchen" },
+            "Biblioteca": { es: "Biblioteca", en: "Library" },
+            "Sala": { es: "Sala", en: "Lounge" },
+            "Estudio": { es: "Estudio", en: "Study" }
+        };
+
+        // Current language
+        let currentLanguage = localStorage.getItem('clue_language') || 'es';
+
         // Game state management
         let gameState = {
             playerNames: {},
@@ -1127,12 +1320,109 @@
         let currentFocusedCell = null;
         let keyboardNavigation = false;
 
+        // Language functions
+        function setLanguage(lang) {
+            currentLanguage = lang;
+            localStorage.setItem('clue_language', lang);
+            document.documentElement.setAttribute('data-lang', lang);
+
+            // Update language toggle buttons
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.querySelector(`.lang-btn[data-lang="${lang}"]`).classList.add('active');
+
+            // Update text content
+            updateUILanguage();
+
+            // Update card names in tables
+            updateCardNames();
+        }
+
+        function updateUILanguage() {
+            // Update elements with data-i18n attribute
+            document.querySelectorAll('[data-i18n]').forEach(element => {
+                const key = element.getAttribute('data-i18n');
+                if (translations[currentLanguage][key]) {
+                    element.innerHTML = translations[currentLanguage][key];
+                }
+            });
+
+            // Update placeholders
+            document.querySelectorAll('[data-i18n-placeholder]').forEach(element => {
+                const key = element.getAttribute('data-i18n-placeholder');
+                if (translations[currentLanguage][key]) {
+                    element.placeholder = translations[currentLanguage][key];
+                }
+            });
+
+            // Update select options
+            updateSolutionSelects();
+        }
+
+        function updateCardNames() {
+            // Update card names in tables
+            document.querySelectorAll('tr[data-item]').forEach(row => {
+                const originalName = row.getAttribute('data-item');
+                const td = row.querySelector('td:first-child');
+                if (td && cardTranslations[originalName]) {
+                    td.textContent = cardTranslations[originalName][currentLanguage];
+                }
+            });
+        }
+
+        function updateSolutionSelects() {
+            // Update Who select
+            const whoSelect = document.getElementById('solution-quien');
+            const currentWhoValue = whoSelect.value;
+            whoSelect.innerHTML = `<option value="">${translations[currentLanguage].selectOption}</option>`;
+            ['Verduzco', 'Mostaza', 'Marlene', 'Moradillo', 'Escarlata', 'Blanca'].forEach(name => {
+                const option = document.createElement('option');
+                option.value = name;
+                option.textContent = cardTranslations[name][currentLanguage];
+                whoSelect.appendChild(option);
+            });
+            whoSelect.value = currentWhoValue;
+
+            // Update Weapon select
+            const weaponSelect = document.getElementById('solution-arma');
+            const currentWeaponValue = weaponSelect.value;
+            weaponSelect.innerHTML = `<option value="">${translations[currentLanguage].selectOption}</option>`;
+            ['Candelabro', 'Daga', 'Tubo de plomo', 'Revólver', 'Soga', 'Llave inglesa'].forEach(name => {
+                const option = document.createElement('option');
+                option.value = name;
+                option.textContent = cardTranslations[name][currentLanguage];
+                weaponSelect.appendChild(option);
+            });
+            weaponSelect.value = currentWeaponValue;
+
+            // Update Room select
+            const roomSelect = document.getElementById('solution-lugar');
+            const currentRoomValue = roomSelect.value;
+            roomSelect.innerHTML = `<option value="">${translations[currentLanguage].selectOption}</option>`;
+            ['Salón de baile', 'Sala de billar', 'Terraza', 'Comedor', 'Pasillo', 'Cocina', 'Biblioteca', 'Sala', 'Estudio'].forEach(name => {
+                const option = document.createElement('option');
+                option.value = name;
+                option.textContent = cardTranslations[name][currentLanguage];
+                roomSelect.appendChild(option);
+            });
+            roomSelect.value = currentRoomValue;
+        }
+
+        function getTranslatedCardName(originalName) {
+            return cardTranslations[originalName] ? cardTranslations[originalName][currentLanguage] : originalName;
+        }
+
+        function t(key) {
+            return translations[currentLanguage][key] || key;
+        }
+
         // Auto-save functionality
         function autoSave() {
             try {
                 localStorage.setItem('clue_autosave', JSON.stringify(gameState));
             } catch (e) {
-                showMessage('Auto-guardado falló', 'error');
+                showMessage(t('autoSaveFailedMsg'), 'error');
             }
         }
 
@@ -1150,7 +1440,7 @@
                     restoreGameState();
                 }
             } catch (e) {
-                showMessage('Error al cargar datos guardados', 'error');
+                showMessage(t('errorLoadAutoSaveMsg'), 'error');
             }
         }
 
@@ -1174,7 +1464,8 @@
         function updatePlayerHeaders() {
             for (let i = 1; i <= 6; i++) {
                 const input = document.getElementById(`player${i}`);
-                const name = input.value.trim() || `Jugador ${i}`;
+                const defaultName = t(`player${i}`);
+                const name = input.value.trim() || defaultName;
 
                 // Update all table headers
                 const headers = [
@@ -1252,12 +1543,14 @@
                         cell.getAttribute('data-player')
                     );
                     const playerNames = playerNumbers.map(num =>
-                        gameState.playerNames[num] || `Jugador ${num}`
+                        gameState.playerNames[num] || t(`player${num}`)
                     );
 
-                    warningsList.push(
-                        `"${item}" está marcado como "tengo" para múltiples jugadores: ${playerNames.join(', ')}`
-                    );
+                    const translatedItem = getTranslatedCardName(item);
+                    const warningMsg = currentLanguage === 'es'
+                        ? `"${translatedItem}" está marcado como "tengo" para múltiples jugadores: ${playerNames.join(', ')}`
+                        : `"${translatedItem}" is marked as "has" for multiple players: ${playerNames.join(', ')}`;
+                    warningsList.push(warningMsg);
                 }
             });
 
@@ -1286,7 +1579,7 @@
             if (cell.classList.contains('checked')) {
                 cell.classList.remove('checked');
                 cell.classList.add('crossed');
-                
+
                 // Smart unfill: If we're removing someone as having a card,
                 // clear auto-filled cells for this card (but keep manual ones)
                 if (wasChecked) {
@@ -1352,7 +1645,11 @@
 
             // Show smart fill message if we auto-filled any cells
             if (autoFilledCount > 0) {
-                const message = `🤖 Auto-completado: ${playerName} tiene "${item}", otros ${autoFilledCount} jugadores marcados automáticamente como "no la tienen"`;
+                const cardName = getTranslatedCardName(item);
+                const message = t('smartFillMsg')
+                    .replace('{player}', playerName)
+                    .replace('{card}', cardName)
+                    .replace('{count}', autoFilledCount);
                 showSmartFillMessage(message);
             }
         }
@@ -1361,32 +1658,36 @@
         function smartUnfillCard(item, playerWhoHadCard) {
             let autoUnfilledCount = 0;
             const playerName = gameState.playerNames[playerWhoHadCard] || `Jugador ${playerWhoHadCard}`;
-            
+
             // Find all cells for this card
             const allCellsForCard = document.querySelectorAll(`tr[data-item="${item}"] .checkbox-cell`);
-            
+
             allCellsForCard.forEach(cell => {
                 const cellPlayer = cell.getAttribute('data-player');
-                
+
                 // Skip the player we just changed
                 if (cellPlayer === playerWhoHadCard) return;
-                
+
                 // Only clear auto-filled cells (not manually set ones)
                 if (cell.classList.contains('auto-filled')) {
                     cell.classList.remove('crossed');
                     cell.classList.remove('auto-filled');
-                    
+
                     // Update game state
                     const key = `${item}-${cellPlayer}`;
                     gameState.cardStates[key] = 'empty';
-                    
+
                     autoUnfilledCount++;
                 }
             });
-            
+
             // Show smart unfill message if we cleared any auto-filled cells
             if (autoUnfilledCount > 0) {
-                const message = `🤖 Auto-limpieza: ${playerName} ya no tiene "${item}", ${autoUnfilledCount} celdas auto-completadas limpiadas`;
+                const cardName = getTranslatedCardName(item);
+                const message = t('smartUnfillMsg')
+                    .replace('{player}', playerName)
+                    .replace('{card}', cardName)
+                    .replace('{count}', autoUnfilledCount);
                 showSmartFillMessage(message);
             }
         }
@@ -1518,13 +1819,13 @@
         }
 
         function clearSolution() {
-            if (confirm('¿Limpiar la solución del misterio?')) {
+            if (confirm(t('confirmClearSolution'))) {
                 document.getElementById('solution-quien').value = '';
                 document.getElementById('solution-arma').value = '';
                 document.getElementById('solution-lugar').value = '';
                 gameState.solution = { quien: '', arma: '', lugar: '' };
                 autoSave();
-                showMessage('Solución limpiada');
+                showMessage(t('solutionClearedMsg'));
             }
         }
 
@@ -1602,17 +1903,20 @@
             // Set up auto-save interval (every 30 seconds)
             setInterval(autoSave, 30000);
 
+            // Initialize language
+            setLanguage(currentLanguage);
+
             // Show help message on first load
             if (!localStorage.getItem('clue_help_shown')) {
                 setTimeout(() => {
-                    showMessage('💡 Usa Tab y flechas para navegar, Espacio para cambiar estado', 'success', 5000);
+                    showMessage(t('helpFirstLoadMsg'), 'success', 5000);
                     localStorage.setItem('clue_help_shown', 'true');
                 }, 1000);
             }
         });
 
         function clearAll() {
-            if (confirm('¿Estás seguro de que quieres limpiar toda la tarjeta?')) {
+            if (confirm(t('confirmClearAll'))) {
                 const checkboxCells = document.querySelectorAll('.checkbox-cell');
                 checkboxCells.forEach(cell => {
                     cell.classList.remove('checked', 'crossed', 'auto-filled');
@@ -1622,7 +1926,7 @@
                 gameState.cardStates = {};
                 validateCardAssignments();
                 autoSave();
-                showMessage('Tarjeta limpiada completamente');
+                showMessage(t('cardClearedMsg'));
             }
         }
 
@@ -1644,9 +1948,9 @@
                 link.download = 'clue_game_' + new Date().toISOString().slice(0,10) + '.json';
                 link.click();
 
-                showMessage('Partida guardada exitosamente');
+                showMessage(t('gameSavedMsg'));
             } catch (error) {
-                showMessage('Error al guardar la partida', 'error');
+                showMessage(t('errorSaveMsg'), 'error');
             }
         }
 
@@ -1677,9 +1981,9 @@
                             }
 
                             restoreGameState();
-                            showMessage('¡Partida cargada exitosamente!');
+                            showMessage(t('gameLoadedMsg'));
                         } catch (error) {
-                            showMessage('Error al cargar el archivo. Archivo inválido.', 'error');
+                            showMessage(t('errorLoadMsg'), 'error');
                         }
                     };
                     reader.readAsText(file);
