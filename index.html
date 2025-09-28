@@ -461,6 +461,11 @@
                 // Clear existing validation warnings
                 setValidationMessages(prev => prev.filter(msg => msg.type !== 'validation-warning'));
 
+                // Get active players (those with names)
+                const activePlayers = PLAYER_NUMBERS.filter(playerNum =>
+                    gameState.playerNames[playerNum] && gameState.playerNames[playerNum].trim() !== ''
+                );
+
                 const allItems = ['mrGreen', 'colonelMustard', 'mrsWhite', 'professorPlum', 'missScarlet', 'mrsPeacock',
                     'candlestick', 'dagger', 'leadPipe', 'revolver', 'rope', 'wrench',
                     'ballroom', 'billiardRoom', 'conservatory', 'diningRoom', 'hall', 'kitchen', 'library', 'lounge', 'study'];
@@ -469,12 +474,13 @@
 
                 allItems.forEach(item => {
                     const checkedPlayers = [];
-                    for (let player = 1; player <= 6; player++) {
+                    // Only check active players (those with names)
+                    activePlayers.forEach(player => {
                         const key = `${item}-${player}`;
                         if (gameState.cardStates[key] === 'checked') {
                             checkedPlayers.push(player);
                         }
-                    }
+                    });
 
                     if (checkedPlayers.length > 1) {
                         const playerNames = checkedPlayers.map(num =>
@@ -494,7 +500,7 @@
             }, [gameState.cardStates, gameState.playerNames, t, getTranslatedCardName, currentLanguage]);
 
             // Calculate progress for a section (optimized)
-            const calculateProgress = useCallback((items) => {
+            const calculateProgress = useCallback((items, activePlayers = PLAYER_NUMBERS) => {
                 let completedRows = 0;
                 const cardStates = gameState.cardStates;
 
@@ -502,7 +508,8 @@
                     let hasChecked = false;
                     let crossedCount = 0;
 
-                    for (let player = 1; player <= 6; player++) {
+                    // Only consider active players for progress calculation
+                    for (const player of activePlayers) {
                         const state = cardStates[`${item}-${player}`];
                         if (state === 'checked') {
                             hasChecked = true;
@@ -513,8 +520,8 @@
                         }
                     }
 
-                    // Row is complete if it has at least one checked OR all 6 cells are crossed
-                    if (hasChecked || crossedCount === 6) {
+                    // Row is complete if it has at least one checked OR all active players are crossed
+                    if (hasChecked || crossedCount === activePlayers.length) {
                         completedRows++;
                     }
                 }
@@ -565,7 +572,9 @@
                         case 'ArrowDown':
                             e.preventDefault();
                             if (currentFocusedCell) {
-                                const cellsPerRow = 6;
+                                // Calculate cells per row based on active players
+                                const activePlayers = Array.from(document.querySelectorAll('th')).length - 1; // -1 for card name column
+                                const cellsPerRow = Math.max(activePlayers, 1);
                                 const nextRowIndex = Math.min(currentIndex + cellsPerRow, checkboxCells.length - 1);
                                 focusCell(checkboxCells[nextRowIndex]);
                             }
@@ -573,7 +582,9 @@
                         case 'ArrowUp':
                             e.preventDefault();
                             if (currentFocusedCell) {
-                                const cellsPerRow = 6;
+                                // Calculate cells per row based on active players
+                                const activePlayers = Array.from(document.querySelectorAll('th')).length - 1; // -1 for card name column
+                                const cellsPerRow = Math.max(activePlayers, 1);
                                 const prevRowIndex = Math.max(currentIndex - cellsPerRow, 0);
                                 focusCell(checkboxCells[prevRowIndex]);
                             }
@@ -934,7 +945,15 @@
 
         // Game Section Component (for Characters, Weapons, Rooms)
         function GameSection({ title, items, gameState, setGameState, t, getTranslatedCardName, showMessage, calculateProgress }) {
-            const progress = useMemo(() => calculateProgress(items), [calculateProgress, items]);
+            // Get active players (those with names)
+            const activePlayers = useMemo(() => {
+                return PLAYER_NUMBERS.filter(playerNum =>
+                    gameState.playerNames[playerNum] && gameState.playerNames[playerNum].trim() !== ''
+                );
+            }, [gameState.playerNames]);
+
+            const progress = useMemo(() => calculateProgress(items, activePlayers), [calculateProgress, items, activePlayers]);
+
             const handleCellClick = (item, player) => {
                 const key = `${item}-${player}`;
                 const currentState = gameState.cardStates[key] || 'empty';
@@ -970,15 +989,16 @@
                     const newCardStates = { ...prev.cardStates };
                     autoFilledCount = 0; // Reset inside state update for accuracy
 
-                    for (let player = 1; player <= 6; player++) {
-                        if (player.toString() === playerWithCard) continue;
+                    // Only auto-fill for active players (those with names)
+                    activePlayers.forEach(player => {
+                        if (player.toString() === playerWithCard) return;
 
                         const key = `${item}-${player}`;
                         if (!newCardStates[key] || newCardStates[key] === 'empty') {
                             newCardStates[key] = 'crossed-auto';
                             autoFilledCount++;
                         }
-                    }
+                    });
 
                     // Prepare message inside state update to avoid stale closure
                     if (autoFilledCount > 0) {
@@ -1006,15 +1026,16 @@
                     const newCardStates = { ...prev.cardStates };
                     autoUnfilledCount = 0; // Reset inside state update for accuracy
 
-                    for (let player = 1; player <= 6; player++) {
-                        if (player.toString() === playerWhoHadCard) continue;
+                    // Only auto-unfill for active players (those with names)
+                    activePlayers.forEach(player => {
+                        if (player.toString() === playerWhoHadCard) return;
 
                         const key = `${item}-${player}`;
                         if (newCardStates[key] === 'crossed-auto') {
                             newCardStates[key] = 'empty';
                             autoUnfilledCount++;
                         }
-                    }
+                    });
 
                     // Prepare message inside state update to avoid stale closure
                     if (autoUnfilledCount > 0) {
@@ -1068,7 +1089,7 @@
                                     <th className="bg-gray-800 text-white p-2 font-bold text-center text-xs border border-black uppercase tracking-wide">
                                         {title === t('who') ? t('character') : title === t('withWhat') ? t('weapon') : t('room')}
                                     </th>
-                                    {PLAYER_NUMBERS.map(playerNum => (
+                                    {activePlayers.map(playerNum => (
                                         <th key={playerNum} className="bg-gray-800 text-white p-2 font-bold text-center text-xs border border-black uppercase tracking-wide">
                                             {getPlayerName(playerNum)}
                                         </th>
@@ -1081,7 +1102,7 @@
                                         <td className="p-3 border border-black text-left font-bold bg-gray-100 text-black pl-4 text-sm">
                                             {getTranslatedCardName(item)}
                                         </td>
-                                        {PLAYER_NUMBERS.map(playerNum => (
+                                        {activePlayers.map(playerNum => (
                                             <td
                                                 key={playerNum}
                                                 className={getCellClasses(item, playerNum)}
