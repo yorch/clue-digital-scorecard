@@ -692,14 +692,6 @@
 
                             <Legend t={t} />
 
-                            <SolutionSection
-                                gameState={gameState}
-                                setGameState={setGameState}
-                                t={t}
-                                getTranslatedCardName={getTranslatedCardName}
-                                showMessage={showMessage}
-                            />
-
                             <GameSection
                                 title={t('who')}
                                 items={GAME_CARDS.characters}
@@ -731,6 +723,14 @@
                                 getTranslatedCardName={getTranslatedCardName}
                                 showMessage={showMessage}
                                 calculateProgress={calculateProgress}
+                            />
+
+                            <SolutionSection
+                                gameState={gameState}
+                                setGameState={setGameState}
+                                t={t}
+                                getTranslatedCardName={getTranslatedCardName}
+                                showMessage={showMessage}
                             />
 
                             <NotesSection
