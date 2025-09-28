@@ -299,6 +299,13 @@
                 player4: "Jugador 4",
                 player5: "Jugador 5",
                 player6: "Jugador 6",
+                // Short mobile versions
+                player1Short: "J1",
+                player2Short: "J2",
+                player3Short: "J3",
+                player4Short: "J4",
+                player5Short: "J5",
+                player6Short: "J6",
                 howToUse: "¿Cómo usar la tarjeta?",
                 instructionsTitle: "📋 Instrucciones de Uso",
                 greenTitle: "1. ✅ Verde (Tiene la carta)",
@@ -376,6 +383,13 @@
                 player4: "Player 4",
                 player5: "Player 5",
                 player6: "Player 6",
+                // Short mobile versions
+                player1Short: "P1",
+                player2Short: "P2",
+                player3Short: "P3",
+                player4Short: "P4",
+                player5Short: "P5",
+                player6Short: "P6",
                 howToUse: "How to use the card?",
                 instructionsTitle: "📋 Instructions",
                 greenTitle: "1. ✅ Green (Has the card)",
@@ -821,7 +835,7 @@
 
             return (
                 <>
-                    <div className="max-w-screen-xl mx-auto bg-paper-white border-l-2 border-r-2 border-t-2 border-black m-3 sm:m-4">
+                    <div className="max-w-screen-xl mx-auto bg-paper-white border-l-2 border-r-2 border-t-2 border-black m-3 sm:m-4 rounded-lg overflow-hidden shadow-lg">
                         <Header
                             currentLanguage={currentLanguage}
                             setLanguage={setLanguage}
@@ -942,7 +956,7 @@
                     <div className="fixed inset-0 bg-black bg-opacity-50" onClick={onCancel}></div>
 
                     {/* Modal */}
-                    <div className="relative bg-paper-white border-2 border-black max-w-md mx-4 p-6 font-typewriter shadow-lg">
+                    <div className="relative bg-paper-white border-2 border-black max-w-md mx-4 p-6 font-typewriter shadow-lg rounded-lg">
                         <div className="text-center">
                             <div className="mb-4 text-lg font-bold text-black">
                                 {message}
@@ -1005,13 +1019,13 @@
             };
 
             return (
-                <div className="bg-white p-4 mb-5 border-2 border-black">
+                <div className="bg-white p-4 mb-5 border-2 border-black rounded-md shadow-sm">
                     <div className="flex justify-between items-center mb-4">
                         <h3 className="text-black text-left text-base uppercase tracking-wide font-bold">
                             {t('playerNames')}
                         </h3>
                         <button
-                            className="bg-white text-black border-2 border-black px-2 py-1 md:px-3 cursor-pointer text-xs font-typewriter transition-all duration-200 uppercase font-bold hover:bg-black hover:text-white min-h-9 md:min-h-auto"
+                            className="bg-white text-black border-2 border-black px-3 py-2 md:px-3 md:py-1 cursor-pointer text-xs font-typewriter transition-all duration-200 uppercase font-bold hover:bg-black hover:text-white min-h-10 md:min-h-auto"
                             onClick={() => setShowPlayerNames(!showPlayerNames)}
                         >
                             <span>{showPlayerNames ? '▲' : '▼'}</span>
@@ -1051,7 +1065,7 @@
                         <span>{showInstructions ? '❌' : '❓'}</span> {t('howToUse')}
                     </button>
                     {showInstructions && (
-                        <div className="instructions-content bg-white border-2 border-black p-5 mt-4 text-left max-w-4xl mx-auto font-typewriter">
+                        <div className="instructions-content bg-white border-2 border-black p-5 mt-4 text-left max-w-4xl mx-auto font-typewriter rounded-md shadow-sm">
                             <h4 className="text-black mb-4 text-lg text-center uppercase tracking-wide">
                                 {t('instructionsTitle')}
                             </h4>
@@ -1197,7 +1211,7 @@
             const { characters, weapons, rooms } = GAME_CARDS;
 
             return (
-                <div className="bg-white p-4 mb-5 border-2 border-black">
+                <div className="bg-white p-4 mb-5 border-2 border-black rounded-md shadow-sm">
                     <h3 className="text-black mb-4 text-left text-base uppercase tracking-wide font-bold">
                         {t('solutionTitle')}
                     </h3>
@@ -1257,7 +1271,7 @@
                     <div className="text-center">
                         <button
                             onClick={clearSolution}
-                            className="bg-white text-black border-2 border-black px-2 py-1 md:px-3 cursor-pointer text-xs font-typewriter transition-all duration-200 uppercase font-bold hover:bg-black hover:text-white min-h-9 md:min-h-auto"
+                            className="bg-white text-black border-2 border-black px-3 py-2 md:px-3 md:py-1 cursor-pointer text-xs font-typewriter transition-all duration-200 uppercase font-bold hover:bg-black hover:text-white min-h-10 md:min-h-auto"
                         >
                             🗑️ {t('clearSolution')}
                         </button>
@@ -1278,25 +1292,25 @@
             };
 
             return (
-                <div className="mb-5">
-                    <div className="bg-black text-white p-3 text-center font-typewriter">
+                <div className="bg-white p-4 mb-5 border-2 border-black rounded-md shadow-sm">
+                    <div className="flex justify-between items-center mb-4">
+                        <h3 className="text-black text-left text-base uppercase tracking-wide font-bold">
+                            📝 {t('notes')}
+                        </h3>
                         <button
-                            className="flex items-center justify-center w-full text-center p-3 md:p-4 text-sm md:text-base cursor-pointer transition-all duration-200 hover:bg-gray-800"
+                            className="bg-white text-black border-2 border-black px-3 py-2 md:px-3 md:py-1 cursor-pointer text-xs font-typewriter transition-all duration-200 uppercase font-bold hover:bg-black hover:text-white min-h-10 md:min-h-auto"
                             onClick={() => setShowNotes(!showNotes)}
                         >
-                            <span className="text-xl font-bold tracking-wide uppercase mr-2">
-                                📝 {t('notes')}
-                            </span>
-                            <span className="text-sm">{showNotes ? '▼' : '▶'}</span>
+                            <span>{showNotes ? '▲' : '▼'}</span>
                         </button>
                     </div>
                     {showNotes && (
-                        <div className="bg-white border-2 border-black p-4">
+                        <div className="collapsible-content">
                             <textarea
                                 value={gameState.notes}
                                 onChange={(e) => updateNotes(e.target.value)}
                                 placeholder={t('notesPlaceholder')}
-                                className="w-full p-3 border-2 border-black font-typewriter text-sm min-h-32 resize-y bg-white focus:outline-none focus:border-gray-600 focus:bg-gray-50 transition-colors duration-200"
+                                className="w-full p-3 border-2 border-black font-typewriter text-sm min-h-32 resize-y bg-white focus:outline-none focus:border-gray-600 focus:bg-gray-50 transition-colors duration-200 rounded-sm"
                                 style={{ lineHeight: '1.5' }}
                             />
                         </div>
@@ -1420,7 +1434,7 @@
                 const key = `${item}-${player}`;
                 const state = gameState.cardStates[key] || 'empty';
 
-                const baseClasses = 'checkbox-cell w-12 bg-white cursor-pointer relative min-h-10 text-center transition-all duration-100 border border-black font-typewriter font-bold text-xl';
+                const baseClasses = 'checkbox-cell w-12 sm:w-14 bg-white cursor-pointer relative min-h-12 sm:min-h-10 text-center transition-all duration-100 border border-black font-typewriter font-bold text-xl p-1 sm:p-0';
 
                 if (state === 'checked') {
                     return baseClasses + ' checked';
@@ -1432,7 +1446,18 @@
             }, [gameState.cardStates]);
 
             const getPlayerName = useCallback(
-                (playerNum) => gameState.playerNames[playerNum] || t(`player${playerNum}`),
+                (playerNum, isShort = false) => {
+                    // Use custom player name if available
+                    if (gameState.playerNames[playerNum]) {
+                        return gameState.playerNames[playerNum];
+                    }
+                    // Use short version for mobile/small headers
+                    if (isShort) {
+                        return t(`player${playerNum}Short`);
+                    }
+                    // Use full version otherwise
+                    return t(`player${playerNum}`);
+                },
                 [gameState.playerNames, t]
             );
 
@@ -1444,7 +1469,7 @@
                             {progress}%
                         </span>
                     </div>
-                    <div className="overflow-x-auto border border-black bg-white">
+                    <div className="overflow-x-auto border border-black bg-white rounded-md shadow-sm">
                         <table className="w-full border-collapse bg-white font-typewriter">
                             <thead>
                                 <tr>
@@ -1453,21 +1478,22 @@
                                     </th>
                                     {activePlayers.map(playerNum => (
                                         <th key={playerNum} className="bg-gray-800 text-white p-1 md:p-2 font-bold text-center text-xs border border-black uppercase tracking-wide min-w-12">
-                                            {getPlayerName(playerNum)}
+                                            <span className="block sm:hidden">{getPlayerName(playerNum, true)}</span>
+                                            <span className="hidden sm:block">{getPlayerName(playerNum, false)}</span>
                                         </th>
                                     ))}
                                 </tr>
                             </thead>
                             <tbody>
-                                {items.map(item => (
-                                    <tr key={item} className="hover:bg-gray-50">
+                                {items.map((item, index) => (
+                                    <tr key={item} className={`hover:bg-gray-100 ${index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}`}>
                                         <td className="p-2 md:p-3 border border-black text-left font-bold bg-gray-100 text-black text-xs md:text-sm min-w-20">
                                             {getTranslatedCardName(item)}
                                         </td>
                                         {activePlayers.map(playerNum => (
                                             <td
                                                 key={playerNum}
-                                                className={getCellClasses(item, playerNum) + ' w-12 h-10 min-w-12'}
+                                                className={getCellClasses(item, playerNum) + ' w-12 sm:w-14 h-12 sm:h-10 min-w-12 sm:min-w-14'}
                                                 onClick={() => handleCellClick(item, playerNum.toString())}
                                                 tabIndex="-1"
                                             />
@@ -1534,7 +1560,7 @@
                         </button>
                     </div>
                     {showGameHistory && (
-                        <div className="bg-white border border-black">
+                        <div className="bg-white border border-black rounded-md shadow-sm">
                             {gameHistory.length === 0 ? (
                                 <div className="p-4 text-center text-gray-600 font-typewriter">
                                     {t('noGamesPlayed')}
@@ -1559,8 +1585,8 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            {gameHistory.map(game => (
-                                                <tr key={game.id} className="hover:bg-gray-50">
+                                            {gameHistory.map((game, index) => (
+                                                <tr key={game.id} className={`hover:bg-gray-100 ${index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}`}>
                                                     <td className="p-2 border border-black">
                                                         {formatDate(game.completedAt)}
                                                     </td>
@@ -1574,14 +1600,14 @@
                                                         <div className="flex gap-1 justify-center flex-col sm:flex-row">
                                                             <button
                                                                 onClick={() => loadPreviousGame(game)}
-                                                                className="bg-blue-500 text-white border-2 border-blue-500 px-2 py-1 text-xs font-typewriter transition-all duration-200 uppercase font-bold hover:bg-blue-600 min-h-8"
+                                                                className="bg-blue-500 text-white border-2 border-blue-500 px-3 py-2 sm:px-2 sm:py-1 text-xs font-typewriter transition-all duration-200 uppercase font-bold hover:bg-blue-600 min-h-10 sm:min-h-8"
                                                                 title={t('loadPreviousGame')}
                                                             >
                                                                 📁
                                                             </button>
                                                             <button
                                                                 onClick={() => deletePreviousGame(game.id)}
-                                                                className="bg-red-500 text-white border-2 border-red-500 px-2 py-1 text-xs font-typewriter transition-all duration-200 uppercase font-bold hover:bg-red-600 min-h-8"
+                                                                className="bg-red-500 text-white border-2 border-red-500 px-3 py-2 sm:px-2 sm:py-1 text-xs font-typewriter transition-all duration-200 uppercase font-bold hover:bg-red-600 min-h-10 sm:min-h-8"
                                                                 title={t('deletePreviousGame')}
                                                             >
                                                                 🗑️
