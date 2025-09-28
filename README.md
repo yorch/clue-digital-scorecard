@@ -1,6 +1,6 @@
 # 🕵️ Clue Digital Scorecard
 
-A digital scorecard for the Clue board game in Spanish. Track which cards each player has during the game with an intuitive web interface featuring customizable player names, automatic saving, and intelligent validation.
+A bilingual digital scorecard for the Clue board game built with React. Track which cards each player has during the game with an intuitive web interface featuring customizable player names, automatic saving, intelligent validation, and full English/Spanish language support.
 
 ## ✨ Features
 
@@ -10,7 +10,7 @@ A digital scorecard for the Clue board game in Spanish. Track which cards each p
 - **Multi-Player Support**: Up to 6 players with customizable names
 - **Save/Load Games**: Export and import game states as JSON files
 - **Mobile Responsive**: Optimized for phones, tablets, and desktop
-- **Spanish Interface**: Complete localization for Spanish speakers
+- **Bilingual Interface**: Complete English/Spanish language support with runtime switching
 
 ### Enhanced Features (v2.0)
 
@@ -22,33 +22,39 @@ A digital scorecard for the Clue board game in Spanish. Track which cards each p
 
 ### Advanced Features (v2.1)
 
-- **🔍 Solution Tracking**: Dedicated section to track mystery solution (¿Quién?, ¿Con qué?, ¿Dónde?)
+- **🔍 Solution Tracking**: Dedicated section to track mystery solution (Who?, With what?, Where?)
 - **📊 Progress Indicators**: Real-time completion tracking for each category (e.g., "4/6 (67%)")
 - **⌨️ Keyboard Navigation**: Full keyboard support with Tab, arrows, Space, and Escape
 - **🎨 Enhanced Visual Feedback**: Row/column highlighting, hover effects, and smooth animations
 - **💬 Smart Messaging**: Contextual success and error messages with auto-dismiss
-- **🚀 Improved Performance**: Optimized interactions and better error recovery
+- **🚀 Improved Performance**: React-based optimization with modern patterns and better error recovery
+- **🌐 Language Toggle**: Real-time switching between English and Spanish with persistent preference
+- **🤖 Smart Auto-Complete**: Intelligent card elimination when a player is confirmed to have a card
+- **📋 Interactive Instructions**: Collapsible help section with detailed usage guide
 
 ## 🚀 Quick Start
 
 1. Open `index.html` in any modern web browser
-2. **Set Player Names**: Enter custom names in the "Nombres de Jugadores" section (optional)
-3. **Track Solution**: Use the "Solución del Misterio" section to track your deductions
-4. **Mark Cards**: Click on cells to track card ownership:
+2. **Choose Language**: Toggle between English/Spanish using the language buttons in the top-right
+3. **View Instructions**: Click the "How to use the card?" button for detailed guidance (optional)
+4. **Set Player Names**: Enter custom names in the "Player Names" section (optional)
+5. **Track Solution**: Use the "Mystery Solution" section to track your deductions
+6. **Mark Cards**: Click on cells to track card ownership:
    - Empty = Unknown status
    - ✓ = Player has the card
    - ✗ = Player doesn't have the card
-5. **Keyboard Navigation**: Use Tab, arrows, Space, and Escape for efficient navigation
-6. **Monitor Progress**: Watch real-time completion percentages in section titles
-7. **Auto-Save**: Your progress saves automatically every 30 seconds
-8. **Manual Save**: Use "Guardar Partida" to export game state
-9. **Load Game**: Use "Cargar Partida" to import a saved game
+7. **Keyboard Navigation**: Use Tab, arrows, Space, and Escape for efficient navigation
+8. **Monitor Progress**: Watch real-time completion percentages in section titles
+9. **Smart Auto-Complete**: When you mark a card as owned, other players' cells automatically clear
+10. **Auto-Save**: Your progress saves automatically every 30 seconds
+11. **Manual Save**: Use "Save Game" to export game state
+12. **Load Game**: Use "Load Game" to import a saved game
 
 ## 🎯 Game Categories
 
-- **¿Quién?** (Who?) - 6 characters (Verduzco, Mostaza, Marlene, etc.)
-- **¿Con qué?** (With what?) - 6 weapons (Candelabro, Daga, Revólver, etc.)
-- **¿Dónde?** (Where?) - 9 locations (Salón de baile, Cocina, Biblioteca, etc.)
+- **Who?** (¿Quién?) - 6 characters (Mr. Green, Colonel Mustard, Mrs. White, etc.)
+- **With what?** (¿Con qué?) - 6 weapons (Candlestick, Dagger, Revolver, etc.)
+- **Where?** (¿Dónde?) - 9 rooms (Ballroom, Kitchen, Library, etc.)
 
 ## 🛡️ Smart Features
 
@@ -57,12 +63,14 @@ A digital scorecard for the Clue board game in Spanish. Track which cards each p
 - **Duplicate Detection**: Automatically warns when multiple players have the same card
 - **Real-Time Feedback**: Validation messages appear instantly with player names
 - **Error Prevention**: Helps avoid common tracking mistakes during gameplay
+- **Smart Auto-Complete**: Automatically clears other players when someone is confirmed to have a card
 
 ### Solution Management
 
-- **Mystery Tracking**: Dedicated dropdowns for ¿Quién?, ¿Con qué?, and ¿Dónde?
+- **Mystery Tracking**: Dedicated dropdowns for Who?, With what?, and Where?
 - **Auto-Save Integration**: Solution choices saved automatically with game state
 - **Quick Clear**: One-click solution reset with confirmation
+- **Bilingual Labels**: Solution interface adapts to selected language
 
 ### Progress Tracking
 
@@ -78,6 +86,12 @@ A digital scorecard for the Clue board game in Spanish. Track which cards each p
 - **Responsive Layout**: Adapts to screen sizes from 320px to desktop
 - **Fast Performance**: Optimized for smooth mobile interactions
 - **Accessible**: Proper contrast and readable fonts on small screens
+
+### Interactive Help System
+
+- **Built-in Instructions**: Comprehensive help system accessible via "How to use the card?" button
+- **Visual Legend**: Color-coded legend explaining different cell states
+- **Context-Sensitive**: Instructions include keyboard shortcuts and navigation tips
 
 ### Keyboard Navigation
 
@@ -98,16 +112,18 @@ A digital scorecard for the Clue board game in Spanish. Track which cards each p
 
 ### Architecture
 
-- **Single File**: Complete self-contained HTML application
-- **No Dependencies**: Pure HTML/CSS/JavaScript - no external libraries
-- **Client-Side Storage**: Uses localStorage for automatic persistence
+- **Single File**: Complete self-contained React application in HTML file (~1200 lines)
+- **Modern Framework**: React 18 with hooks, Babel for JSX transformation
+- **Styling Framework**: Tailwind CSS with custom typewriter theme (Special Elite font)
+- **Design Theme**: Detective/vintage aesthetic with paper-like colors and typewriter fonts
+- **Client-Side Storage**: Uses localStorage for automatic persistence and settings
 - **File Operations**: Browser-native file API for save/load functionality
 
 ### Browser Support
 
-- **Modern Browsers**: Chrome, Firefox, Safari, Edge (ES6+ support required)
+- **Modern Browsers**: Chrome, Firefox, Safari, Edge (ES6+ and React support required)
 - **Mobile Compatible**: iOS Safari, Android Chrome
-- **Features Used**: classList API, JSON handling, File API, localStorage
+- **Features Used**: React hooks, JSON handling, File API, localStorage, modern JavaScript
 
 ### Data Format
 
@@ -118,16 +134,17 @@ A digital scorecard for the Clue board game in Spanish. Track which cards each p
     "2": "Bob"
   },
   "cardStates": {
-    "Verduzco-1": "checked",
-    "Mostaza-2": "crossed"
+    "mrGreen-1": "checked",
+    "colonelMustard-2": "crossed"
   },
   "solution": {
-    "quien": "Verduzco",
-    "arma": "Daga",
-    "lugar": "Biblioteca"
+    "character": "mrGreen",
+    "weapon": "dagger",
+    "room": "library"
   },
+  "language": "en",
   "savedAt": "2024-01-15T10:30:00.000Z",
-  "version": "2.1"
+  "version": "1.0"
 }
 ```
 
@@ -146,26 +163,27 @@ python3 -m http.server 8000
 
 ### File Structure
 
-```
+```text
 clue-digital-scorecard/
-├── index.html          # Complete application
-├── README.md          # Documentation
-└── CLAUDE.md         # AI assistant guidance
+├── index.html          # Complete React application (~1200 lines)
+├── README.md          # Project documentation
+└── CLAUDE.md         # Claude Code guidance
 ```
 
 ## 🎮 How to Play
 
-1. **Setup**: Each player enters their name at the top
-2. **Deal Cards**: Distribute Clue cards among players as per game rules
-3. **Track Cards**: As you learn about cards through gameplay:
-   - Mark ✓ for cards you have
+1. **Setup**: Choose your language (English/Spanish) and enter player names at the top
+2. **Learn the Interface**: Click "How to use the card?" for comprehensive instructions
+3. **Deal Cards**: Distribute Clue cards among players as per game rules
+4. **Track Cards**: As you learn about cards through gameplay:
+   - Mark ✓ for cards you have (automatically clears other players)
    - Mark ✗ for cards you've eliminated
    - Leave empty for unknown status
-4. **Track Solution**: Use the green "Solución del Misterio" section to record your deductions
-5. **Monitor Progress**: Watch completion percentages to see investigation progress
-6. **Navigation**: Use mouse/touch or keyboard (Tab, arrows, Space) for efficient input
-7. **Validation**: Watch for warnings if you accidentally mark the same card for multiple players
-8. **Save/Resume**: Game automatically saves, or manually export for sharing
+5. **Track Solution**: Use the "Mystery Solution" section to record your deductions
+6. **Monitor Progress**: Watch completion percentages to see investigation progress
+7. **Navigation**: Use mouse/touch or keyboard (Tab, arrows, Space) for efficient input
+8. **Validation**: Watch for warnings if you accidentally mark the same card for multiple players
+9. **Save/Resume**: Game automatically saves, or manually export for sharing
 
 ### Keyboard Shortcuts
 
