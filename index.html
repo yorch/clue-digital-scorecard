@@ -1280,11 +1280,18 @@
 
             // Store old state for smart fill logic
             const wasChecked = cell.classList.contains('checked');
+            const wasCrossed = cell.classList.contains('crossed');
 
             // Cycle through states: empty -> checked -> crossed -> empty
             if (cell.classList.contains('checked')) {
                 cell.classList.remove('checked');
                 cell.classList.add('crossed');
+                
+                // Smart unfill: If we're removing someone as having a card,
+                // clear auto-filled cells for this card (but keep manual ones)
+                if (wasChecked) {
+                    smartUnfillCard(item, player);
+                }
             } else if (cell.classList.contains('crossed')) {
                 cell.classList.remove('crossed');
             } else {
@@ -1301,7 +1308,12 @@
             if (cell.classList.contains('checked')) {
                 gameState.cardStates[key] = 'checked';
             } else if (cell.classList.contains('crossed')) {
-                gameState.cardStates[key] = 'crossed';
+                // Track if this was auto-filled
+                if (cell.classList.contains('auto-filled')) {
+                    gameState.cardStates[key] = 'crossed-auto';
+                } else {
+                    gameState.cardStates[key] = 'crossed';
+                }
             } else {
                 gameState.cardStates[key] = 'empty';
             }
@@ -1341,6 +1353,40 @@
             // Show smart fill message if we auto-filled any cells
             if (autoFilledCount > 0) {
                 const message = `🤖 Auto-completado: ${playerName} tiene "${item}", otros ${autoFilledCount} jugadores marcados automáticamente como "no la tienen"`;
+                showSmartFillMessage(message);
+            }
+        }
+
+        // Smart unfill functionality - clear auto-filled cells when removing a "has card" mark
+        function smartUnfillCard(item, playerWhoHadCard) {
+            let autoUnfilledCount = 0;
+            const playerName = gameState.playerNames[playerWhoHadCard] || `Jugador ${playerWhoHadCard}`;
+            
+            // Find all cells for this card
+            const allCellsForCard = document.querySelectorAll(`tr[data-item="${item}"] .checkbox-cell`);
+            
+            allCellsForCard.forEach(cell => {
+                const cellPlayer = cell.getAttribute('data-player');
+                
+                // Skip the player we just changed
+                if (cellPlayer === playerWhoHadCard) return;
+                
+                // Only clear auto-filled cells (not manually set ones)
+                if (cell.classList.contains('auto-filled')) {
+                    cell.classList.remove('crossed');
+                    cell.classList.remove('auto-filled');
+                    
+                    // Update game state
+                    const key = `${item}-${cellPlayer}`;
+                    gameState.cardStates[key] = 'empty';
+                    
+                    autoUnfilledCount++;
+                }
+            });
+            
+            // Show smart unfill message if we cleared any auto-filled cells
+            if (autoUnfilledCount > 0) {
+                const message = `🤖 Auto-limpieza: ${playerName} ya no tiene "${item}", ${autoUnfilledCount} celdas auto-completadas limpiadas`;
                 showSmartFillMessage(message);
             }
         }
@@ -1506,11 +1552,14 @@
                 const cell = document.querySelector(`tr[data-item="${item}"] .checkbox-cell[data-player="${player}"]`);
 
                 if (cell) {
-                    cell.classList.remove('checked', 'crossed');
+                    cell.classList.remove('checked', 'crossed', 'auto-filled');
                     if (gameState.cardStates[key] === 'checked') {
                         cell.classList.add('checked');
                     } else if (gameState.cardStates[key] === 'crossed') {
                         cell.classList.add('crossed');
+                    } else if (gameState.cardStates[key] === 'crossed-auto') {
+                        cell.classList.add('crossed');
+                        cell.classList.add('auto-filled');
                     }
                 }
             });
@@ -1566,7 +1615,7 @@
             if (confirm('¿Estás seguro de que quieres limpiar toda la tarjeta?')) {
                 const checkboxCells = document.querySelectorAll('.checkbox-cell');
                 checkboxCells.forEach(cell => {
-                    cell.classList.remove('checked', 'crossed');
+                    cell.classList.remove('checked', 'crossed', 'auto-filled');
                 });
 
                 // Clear game state
