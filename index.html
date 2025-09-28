@@ -54,24 +54,6 @@
             content: 'X';
         }
 
-        /* Validation warning pseudo-element */
-        .validation-warning::before {
-            content: '⚠️';
-        }
-
-        /* Success/error message pseudo-elements */
-        .success-message::before {
-            content: '✅';
-        }
-
-        .error-message::before {
-            content: '❌';
-        }
-
-        /* Smart fill message pseudo-element */
-        .smart-fill-message::before {
-            content: '🤖';
-        }
 
         /* Animation for instructions slideDown */
         @keyframes slideDown {
@@ -155,64 +137,115 @@
             font-weight: bold;
         }
 
-        /* Message styling */
-        .success-message {
-            background: #f0f8f0;
-            border: 2px solid #4CAF50;
-            color: #000;
-            padding: 8px 12px;
-            margin: 10px 0;
-            font-size: 0.9rem;
-            font-family: 'Special Elite', 'Courier New', monospace;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .error-message {
-            background: #fff0f0;
-            border: 2px solid #f44336;
-            color: #000;
-            padding: 8px 12px;
-            margin: 10px 0;
-            font-size: 0.9rem;
-            font-family: 'Special Elite', 'Courier New', monospace;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .validation-warning {
-            background: #fffbf0;
-            border: 2px solid #ffa500;
-            color: #000;
-            padding: 10px 15px;
-            margin-bottom: 8px;
-            font-size: 0.9rem;
-            font-family: 'Special Elite', 'Courier New', monospace;
-            display: flex;
-            align-items: flex-start;
-            gap: 10px;
-            line-height: 1.4;
-        }
-
-        .smart-fill-message {
-            background: #f0f8f0;
-            border: 2px solid #4CAF50;
-            color: #000;
-            padding: 10px 15px;
-            margin-bottom: 8px;
-            font-size: 0.9rem;
-            font-family: 'Special Elite', 'Courier New', monospace;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
 
         /* Language button active state */
         .lang-btn.active {
             background: #000 !important;
             color: #fff !important;
+        }
+
+        /* Toast notification styles */
+        .toast-container {
+            position: fixed;
+            top: 80px;
+            right: 20px;
+            z-index: 10000;
+            max-width: 350px;
+            width: auto;
+            pointer-events: none;
+        }
+
+        .toast-message {
+            pointer-events: auto;
+            margin-bottom: 10px;
+            border: 2px solid #000;
+            background: #fafaf8;
+            color: #000;
+            padding: 10px 12px;
+            font-family: 'Special Elite', 'Courier New', monospace;
+            font-size: 0.8rem;
+            line-height: 1.3;
+            box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.4);
+            transform: translateX(100%);
+            opacity: 0;
+            animation: slideInToast 0.3s ease-out forwards;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            word-wrap: break-word;
+            position: relative;
+        }
+
+        .toast-message:hover {
+            transform: translateX(-3px);
+            box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.4);
+        }
+
+        .toast-message.removing {
+            animation: slideOutToast 0.3s ease-in forwards;
+        }
+
+        @keyframes slideInToast {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideOutToast {
+            from {
+                transform: translateX(0);
+                opacity: 1;
+            }
+            to {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+        }
+
+        /* Toast message variants */
+        .toast-success {
+            border-color: #4CAF50;
+            background: #f0f8f0;
+        }
+
+        .toast-error {
+            border-color: #f44336;
+            background: #fff0f0;
+        }
+
+        .toast-warning {
+            border-color: #ffa500;
+            background: #fffbf0;
+        }
+
+        .toast-smart-fill {
+            border-color: #4CAF50;
+            background: #f0f8f0;
+        }
+
+        /* Toast content layout */
+        .toast-content {
+            display: flex;
+            align-items: flex-start;
+            gap: 6px;
+        }
+
+        .toast-icon {
+            flex-shrink: 0;
+            font-size: 0.9rem;
+            line-height: 1;
+            margin-top: 0;
+        }
+
+        .toast-text {
+            flex: 1;
+            margin: 0;
+            font-weight: bold;
+            font-size: inherit;
         }
     </style>
     <!-- React CDN -->
@@ -493,7 +526,7 @@
                             gameState.playerNames[num] || t(`player${num}`)
                         ).join(', ');
                         const translatedItem = getTranslatedCardName(item);
-                        const warning = `⚠️ "${translatedItem}" ${currentLanguage === 'es' ? 'está asignada a múltiples jugadores' : 'is assigned to multiple players'}: ${playerNames}`;
+                        const warning = `"${translatedItem}" ${currentLanguage === 'es' ? 'está asignada a múltiples jugadores' : 'is assigned to multiple players'}: ${playerNames}`;
                         warnings.push(warning);
                     }
                 });
@@ -628,81 +661,86 @@
             }, [keyboardNavigation, currentFocusedCell]);
 
             return (
-                <div className="max-w-screen-xl mx-auto bg-paper-white border-2 border-black m-4">
-                    <Header
-                        currentLanguage={currentLanguage}
-                        setLanguage={setLanguage}
-                        t={t}
-                    />
-
-                    <div className="p-4 md:p-5">
-                        <PlayerNamesSection
-                            gameState={gameState}
-                            setGameState={setGameState}
-                            t={t}
-                            showPlayerNames={showPlayerNames}
-                            setShowPlayerNames={setShowPlayerNames}
-                        />
-
-                        <InstructionsSection
-                            showInstructions={showInstructions}
-                            setShowInstructions={setShowInstructions}
+                <>
+                    <div className="max-w-screen-xl mx-auto bg-paper-white border-2 border-black m-4">
+                        <Header
+                            currentLanguage={currentLanguage}
+                            setLanguage={setLanguage}
                             t={t}
                         />
 
-                        <Legend t={t} />
+                        <div className="p-4 md:p-5">
+                            <PlayerNamesSection
+                                gameState={gameState}
+                                setGameState={setGameState}
+                                t={t}
+                                showPlayerNames={showPlayerNames}
+                                setShowPlayerNames={setShowPlayerNames}
+                            />
 
-                        <ValidationMessages messages={validationMessages} />
+                            <InstructionsSection
+                                showInstructions={showInstructions}
+                                setShowInstructions={setShowInstructions}
+                                t={t}
+                            />
 
-                        <SolutionSection
+                            <Legend t={t} />
+
+                            <SolutionSection
+                                gameState={gameState}
+                                setGameState={setGameState}
+                                t={t}
+                                getTranslatedCardName={getTranslatedCardName}
+                                showMessage={showMessage}
+                            />
+
+                            <GameSection
+                                title={t('who')}
+                                items={GAME_CARDS.characters}
+                                gameState={gameState}
+                                setGameState={setGameState}
+                                t={t}
+                                getTranslatedCardName={getTranslatedCardName}
+                                showMessage={showMessage}
+                                calculateProgress={calculateProgress}
+                            />
+
+                            <GameSection
+                                title={t('withWhat')}
+                                items={GAME_CARDS.weapons}
+                                gameState={gameState}
+                                setGameState={setGameState}
+                                t={t}
+                                getTranslatedCardName={getTranslatedCardName}
+                                showMessage={showMessage}
+                                calculateProgress={calculateProgress}
+                            />
+
+                            <GameSection
+                                title={t('where')}
+                                items={GAME_CARDS.rooms}
+                                gameState={gameState}
+                                setGameState={setGameState}
+                                t={t}
+                                getTranslatedCardName={getTranslatedCardName}
+                                showMessage={showMessage}
+                                calculateProgress={calculateProgress}
+                            />
+                        </div>
+
+                        <Controls
                             gameState={gameState}
                             setGameState={setGameState}
                             t={t}
-                            getTranslatedCardName={getTranslatedCardName}
                             showMessage={showMessage}
-                        />
-
-                        <GameSection
-                            title={t('who')}
-                            items={GAME_CARDS.characters}
-                            gameState={gameState}
-                            setGameState={setGameState}
-                            t={t}
-                            getTranslatedCardName={getTranslatedCardName}
-                            showMessage={showMessage}
-                            calculateProgress={calculateProgress}
-                        />
-
-                        <GameSection
-                            title={t('withWhat')}
-                            items={GAME_CARDS.weapons}
-                            gameState={gameState}
-                            setGameState={setGameState}
-                            t={t}
-                            getTranslatedCardName={getTranslatedCardName}
-                            showMessage={showMessage}
-                            calculateProgress={calculateProgress}
-                        />
-
-                        <GameSection
-                            title={t('where')}
-                            items={GAME_CARDS.rooms}
-                            gameState={gameState}
-                            setGameState={setGameState}
-                            t={t}
-                            getTranslatedCardName={getTranslatedCardName}
-                            showMessage={showMessage}
-                            calculateProgress={calculateProgress}
                         />
                     </div>
 
-                    <Controls
-                        gameState={gameState}
-                        setGameState={setGameState}
-                        t={t}
-                        showMessage={showMessage}
+                    <ToastMessages
+                        messages={validationMessages}
+                        setValidationMessages={setValidationMessages}
                     />
-                </div>
+                </>
             );
         }
 
@@ -846,21 +884,64 @@
             );
         }
 
-        // Validation Messages Component
-        function ValidationMessages({ messages }) {
+        // Toast Messages Component (formerly ValidationMessages)
+        function ToastMessages({ messages, setValidationMessages }) {
+            const [removingMessages, setRemovingMessages] = useState(new Set());
+
+            const removeMessage = useCallback((messageId) => {
+                setRemovingMessages(prev => new Set([...prev, messageId]));
+
+                // Remove the message after animation completes
+                setTimeout(() => {
+                    setValidationMessages(prev => prev.filter(msg => msg.id !== messageId));
+                    setRemovingMessages(prev => {
+                        const newSet = new Set(prev);
+                        newSet.delete(messageId);
+                        return newSet;
+                    });
+                }, 300);
+            }, [setValidationMessages]);
+
+            const getToastClass = (message) => {
+                const baseClass = 'toast-message';
+                const isRemoving = removingMessages.has(message.id) ? ' removing' : '';
+
+                let typeClass = '';
+                switch (message.type) {
+                    case 'error':
+                        typeClass = ' toast-error';
+                        break;
+                    case 'validation-warning':
+                        typeClass = ' toast-warning';
+                        break;
+                    case 'smart-fill':
+                        typeClass = ' toast-smart-fill';
+                        break;
+                    default:
+                        typeClass = ' toast-success';
+                }
+
+                return baseClass + typeClass + isRemoving;
+            };
+
             return (
-                <div className="my-4 min-h-5">
+                <div className="toast-container">
                     {messages.map(message => (
                         <div
                             key={message.id}
-                            className={
-                                message.type === 'error' ? 'error-message' :
-                                message.type === 'validation-warning' ? 'validation-warning' :
-                                message.type === 'smart-fill' ? 'smart-fill-message' :
-                                'success-message'
-                            }
+                            className={getToastClass(message)}
+                            onClick={() => removeMessage(message.id)}
+                            title="Click to dismiss"
                         >
-                            {message.text}
+                            <div className="toast-content">
+                                <span className="toast-icon">
+                                    {message.type === 'error' ? '❌' :
+                                     message.type === 'validation-warning' ? '⚠️' :
+                                     message.type === 'smart-fill' ? '🤖' :
+                                     '✅'}
+                                </span>
+                                <span className="toast-text">{message.text}</span>
+                            </div>
                         </div>
                     ))}
                 </div>
