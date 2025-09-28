@@ -315,7 +315,6 @@
                 legendUnknown: "Desconocido",
                 legendHasCard: "Tiene la carta",
                 legendNoCard: "No la tiene",
-                smartFillEnabled: "Auto-completado inteligente activado",
                 solutionTitle: "🔍 Solución del Misterio",
                 who: "¿Quién?",
                 withWhat: "¿Con qué?",
@@ -324,12 +323,30 @@
                 character: "Personaje",
                 weapon: "Arma",
                 room: "Lugar",
-                saveGame: "Guardar Partida",
-                loadGame: "Cargar Partida",
+                downloadGame: "Descargar Partida",
+                uploadGame: "Cargar Partida",
                 clearAll: "Limpiar Todo",
+                newGame: "Nueva Partida",
+                previousGames: "Partidas Anteriores",
+                gameHistory: "Historial de Partidas",
+                noGamesPlayed: "No hay partidas anteriores",
+                gameCompleted: "Partida Completada",
+                loadPreviousGame: "Cargar esta partida",
+                deletePreviousGame: "Eliminar esta partida",
+                confirmNewGame: "¿Estás seguro de que quieres comenzar una nueva partida? Se guardará la partida actual si está en progreso.",
+                confirmDeleteGame: "¿Estás seguro de que quieres eliminar esta partida del historial?",
+                gameCompletedMsg: "¡Partida completada y guardada en el historial!",
+                newGameStartedMsg: "Nueva partida iniciada",
+                gameDeletedMsg: "Partida eliminada del historial",
+                gameDate: "Fecha",
+                gamePlayers: "Jugadores",
+                gameSolution: "Solución",
                 selectOption: "Seleccionar...",
                 confirmClearAll: "¿Estás seguro de que quieres limpiar toda la tarjeta?",
                 confirmClearSolution: "¿Limpiar la solución del misterio?",
+                confirmYes: "Sí",
+                confirmNo: "No",
+                confirmCancel: "Cancelar",
                 cardClearedMsg: "Tarjeta limpiada completamente",
                 solutionClearedMsg: "Solución limpiada",
                 gameSavedMsg: "Partida guardada exitosamente",
@@ -375,7 +392,6 @@
                 legendUnknown: "Unknown",
                 legendHasCard: "Has the card",
                 legendNoCard: "Doesn't have it",
-                smartFillEnabled: "Smart auto-complete enabled",
                 solutionTitle: "🔍 Mystery Solution",
                 who: "Who?",
                 withWhat: "With what?",
@@ -384,12 +400,30 @@
                 character: "Character",
                 weapon: "Weapon",
                 room: "Room",
-                saveGame: "Save Game",
-                loadGame: "Load Game",
+                downloadGame: "Descargar Partida",
+                uploadGame: "Cargar Partida",
                 clearAll: "Clear All",
+                newGame: "New Game",
+                previousGames: "Previous Games",
+                gameHistory: "Game History",
+                noGamesPlayed: "No previous games",
+                gameCompleted: "Game Completed",
+                loadPreviousGame: "Load this game",
+                deletePreviousGame: "Delete this game",
+                confirmNewGame: "Are you sure you want to start a new game? Current game will be saved if in progress.",
+                confirmDeleteGame: "Are you sure you want to delete this game from history?",
+                gameCompletedMsg: "Game completed and saved to history!",
+                newGameStartedMsg: "New game started",
+                gameDeletedMsg: "Game deleted from history",
+                gameDate: "Date",
+                gamePlayers: "Players",
+                gameSolution: "Solution",
                 selectOption: "Select...",
                 confirmClearAll: "Are you sure you want to clear the entire card?",
                 confirmClearSolution: "Clear the mystery solution?",
+                confirmYes: "Yes",
+                confirmNo: "No",
+                confirmCancel: "Cancel",
                 cardClearedMsg: "Card completely cleared",
                 solutionClearedMsg: "Solution cleared",
                 gameSavedMsg: "Game saved successfully",
@@ -443,11 +477,14 @@
                 solution: { who: '', weapon: '', room: '' },
                 notes: ''
             });
+            const [gameHistory, setGameHistory] = useState([]);
             const [validationMessages, setValidationMessages] = useState([]);
             const [showInstructions, setShowInstructions] = useState(false);
             const [showPlayerNames, setShowPlayerNames] = useState(true);
+            const [showGameHistory, setShowGameHistory] = useState(true);
             const [keyboardNavigation, setKeyboardNavigation] = useState(false);
             const [currentFocusedCell, setCurrentFocusedCell] = useState(null);
+            const [confirmModal, setConfirmModal] = useState({ isOpen: false, message: '', onConfirm: null, onCancel: null });
 
             // Translation helper
             const t = useCallback((key) => {
@@ -470,7 +507,7 @@
                 }
             }, [gameState, t]);
 
-            // Load auto-saved data
+            // Load auto-saved data and game history
             useEffect(() => {
                 try {
                     const saved = localStorage.getItem('clue_autosave');
@@ -483,6 +520,12 @@
                             notes: data.notes || ''
                         });
                     }
+
+                    // Load game history
+                    const history = localStorage.getItem('clue_game_history');
+                    if (history) {
+                        setGameHistory(JSON.parse(history));
+                    }
                 } catch (e) {
                     showMessage(t('errorLoadAutoSaveMsg'), 'error');
                 }
@@ -493,6 +536,29 @@
                 autoSave();
                 validateCardAssignments();
             }, [autoSave, validateCardAssignments]);
+
+            // Auto-save completed games to history
+            useEffect(() => {
+                if (isGameCompleted()) {
+                    // Only save if this is a new completion (not loading a saved game)
+                    const previousSolution = JSON.stringify({
+                        who: gameState.solution.who,
+                        weapon: gameState.solution.weapon,
+                        room: gameState.solution.room
+                    });
+
+                    // Check if this exact game is already in history
+                    const isDuplicateGame = gameHistory.some(game =>
+                        JSON.stringify(game.solution) === previousSolution &&
+                        JSON.stringify(game.playerNames) === JSON.stringify(gameState.playerNames) &&
+                        JSON.stringify(game.cardStates) === JSON.stringify(gameState.cardStates)
+                    );
+
+                    if (!isDuplicateGame) {
+                        saveGameToHistory();
+                    }
+                }
+            }, [gameState.solution, isGameCompleted, saveGameToHistory, gameHistory, gameState.playerNames, gameState.cardStates]);
 
             // Set language
             const setLanguage = useCallback((lang) => {
@@ -511,6 +577,82 @@
                     setValidationMessages(prev => prev.filter(msg => msg.id !== id));
                 }, duration);
             }, []);
+
+            // Custom confirm modal
+            const showConfirm = useCallback((message, onConfirm, onCancel = null) =>
+                new Promise((resolve) => {
+                    setConfirmModal({
+                        isOpen: true,
+                        message,
+                        onConfirm: () => {
+                            setConfirmModal({ isOpen: false, message: '', onConfirm: null, onCancel: null });
+                            if (onConfirm) onConfirm();
+                            resolve(true);
+                        },
+                        onCancel: () => {
+                            setConfirmModal({ isOpen: false, message: '', onConfirm: null, onCancel: null });
+                            if (onCancel) onCancel();
+                            resolve(false);
+                        }
+                    });
+                }),
+                []
+            );
+
+            // Check if game is completed (solution is filled)
+            const isGameCompleted = useCallback(
+                () => gameState.solution.who && gameState.solution.weapon && gameState.solution.room,
+                [gameState.solution]
+            );
+
+            // Save completed game to history
+            const saveGameToHistory = useCallback(() => {
+                if (!isGameCompleted()) {
+                    return;
+                }
+
+                const activePlayers = PLAYER_NUMBERS.filter(playerNum =>
+                    gameState.playerNames[playerNum] && gameState.playerNames[playerNum].trim() !== ''
+                );
+
+                const completedGame = {
+                    id: Date.now(),
+                    playerNames: gameState.playerNames,
+                    cardStates: gameState.cardStates,
+                    solution: gameState.solution,
+                    notes: gameState.notes,
+                    completedAt: new Date().toISOString(),
+                    activePlayers: activePlayers,
+                    version: '1.0'
+                };
+
+                const newHistory = [completedGame, ...gameHistory].slice(0, 10); // Keep last 10 games
+                setGameHistory(newHistory);
+                localStorage.setItem('clue_game_history', JSON.stringify(newHistory));
+                showMessage(t('gameCompletedMsg'));
+            }, [gameState, gameHistory, isGameCompleted, t]);
+
+            // Start new game
+            const startNewGame = useCallback(() => {
+                showConfirm(t('confirmNewGame'), () => {
+                    // Save current game if completed
+                    if (isGameCompleted()) {
+                        saveGameToHistory();
+                    }
+
+                    // Reset game state
+                    setGameState({
+                        playerNames: {},
+                        cardStates: {},
+                        solution: { who: '', weapon: '', room: '' },
+                        notes: ''
+                    });
+
+                    // Clear auto-save
+                    localStorage.removeItem('clue_autosave');
+                    showMessage(t('newGameStartedMsg'));
+                });
+            }, [t, isGameCompleted, saveGameToHistory, showConfirm]);
 
             // Validate card assignments for duplicates
             const validateCardAssignments = useCallback(() => {
@@ -742,12 +884,25 @@
                                 t={t}
                                 getTranslatedCardName={getTranslatedCardName}
                                 showMessage={showMessage}
+                                showConfirm={showConfirm}
                             />
 
                             <NotesSection
                                 gameState={gameState}
                                 setGameState={setGameState}
                                 t={t}
+                            />
+
+                            <GameHistorySection
+                                gameHistory={gameHistory}
+                                setGameHistory={setGameHistory}
+                                setGameState={setGameState}
+                                t={t}
+                                getTranslatedCardName={getTranslatedCardName}
+                                showMessage={showMessage}
+                                showGameHistory={showGameHistory}
+                                setShowGameHistory={setShowGameHistory}
+                                showConfirm={showConfirm}
                             />
                         </div>
 
@@ -756,6 +911,8 @@
                             setGameState={setGameState}
                             t={t}
                             showMessage={showMessage}
+                            startNewGame={startNewGame}
+                            showConfirm={showConfirm}
                         />
                     </div>
 
@@ -763,7 +920,51 @@
                         messages={validationMessages}
                         setValidationMessages={setValidationMessages}
                     />
+
+                    <ConfirmModal
+                        isOpen={confirmModal.isOpen}
+                        message={confirmModal.message}
+                        onConfirm={confirmModal.onConfirm}
+                        onCancel={confirmModal.onCancel}
+                        t={t}
+                    />
                 </>
+            );
+        }
+
+        // Confirm Modal Component
+        function ConfirmModal({ isOpen, message, onConfirm, onCancel, t }) {
+            if (!isOpen) return null;
+
+            return (
+                <div className="fixed inset-0 z-50 flex items-center justify-center">
+                    {/* Overlay */}
+                    <div className="fixed inset-0 bg-black bg-opacity-50" onClick={onCancel}></div>
+
+                    {/* Modal */}
+                    <div className="relative bg-paper-white border-4 border-black max-w-md mx-4 p-6 font-typewriter shadow-lg">
+                        <div className="text-center">
+                            <div className="mb-4 text-lg font-bold text-black">
+                                {message}
+                            </div>
+
+                            <div className="flex gap-3 justify-center">
+                                <button
+                                    onClick={onConfirm}
+                                    className="bg-green-500 text-white border-2 border-green-500 px-4 py-2 cursor-pointer text-sm font-typewriter transition-all duration-200 uppercase font-bold hover:bg-green-600 min-h-10"
+                                >
+                                    ✓ {t('confirmYes')}
+                                </button>
+                                <button
+                                    onClick={onCancel}
+                                    className="bg-red-500 text-white border-2 border-red-500 px-4 py-2 cursor-pointer text-sm font-typewriter transition-all duration-200 uppercase font-bold hover:bg-red-600 min-h-10"
+                                >
+                                    ✗ {t('confirmNo')}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             );
         }
 
@@ -899,10 +1100,6 @@
                         <div className="legend-box crossed w-5 h-5 border-2 border-black inline-flex items-center justify-center font-bold font-typewriter bg-red-500 text-white"></div>
                         <span>{t('legendNoCard')}</span>
                     </div>
-                    <div className="flex items-center justify-center gap-2 text-sm bg-white border-2 border-black px-2 py-1 font-bold">
-                        <span className="text-lg">🤖</span>
-                        <span>{t('smartFillEnabled')}</span>
-                    </div>
                 </div>
             );
         }
@@ -972,25 +1169,29 @@
         }
 
         // Solution Section Component
-        function SolutionSection({ gameState, setGameState, t, getTranslatedCardName, showMessage }) {
+        function SolutionSection({ gameState, setGameState, t, getTranslatedCardName, showMessage, showConfirm }) {
             const updateSolution = (field, value) => {
-                setGameState(prev => ({
-                    ...prev,
-                    solution: {
+                setGameState(prev => {
+                    const newSolution = {
                         ...prev.solution,
                         [field]: value
-                    }
-                }));
+                    };
+
+                    return {
+                        ...prev,
+                        solution: newSolution
+                    };
+                });
             };
 
             const clearSolution = () => {
-                if (confirm(t('confirmClearSolution'))) {
+                showConfirm(t('confirmClearSolution'), () => {
                     setGameState(prev => ({
                         ...prev,
                         solution: { who: '', weapon: '', room: '' }
                     }));
                     showMessage(t('solutionClearedMsg'));
-                }
+                });
             };
 
             const { characters, weapons, rooms } = GAME_CARDS;
@@ -1107,11 +1308,10 @@
         // Game Section Component (for Characters, Weapons, Rooms)
         function GameSection({ title, items, gameState, setGameState, t, getTranslatedCardName, showMessage, calculateProgress }) {
             // Get active players (those with names)
-            const activePlayers = useMemo(() => {
-                return PLAYER_NUMBERS.filter(playerNum =>
-                    gameState.playerNames[playerNum] && gameState.playerNames[playerNum].trim() !== ''
-                );
-            }, [gameState.playerNames]);
+            const activePlayers = useMemo(() => PLAYER_NUMBERS.filter(
+                (playerNum) => gameState.playerNames[playerNum] && gameState.playerNames[playerNum].trim() !== ''),
+                [gameState.playerNames]
+            );
 
             const progress = useMemo(() => calculateProgress(items, activePlayers), [calculateProgress, items, activePlayers]);
 
@@ -1231,9 +1431,10 @@
                 return baseClasses;
             }, [gameState.cardStates]);
 
-            const getPlayerName = useCallback((playerNum) => {
-                return gameState.playerNames[playerNum] || t(`player${playerNum}`);
-            }, [gameState.playerNames, t]);
+            const getPlayerName = useCallback(
+                (playerNum) => gameState.playerNames[playerNum] || t(`player${playerNum}`),
+                [gameState.playerNames, t]
+            );
 
             return (
                 <div className="mb-6">
@@ -1280,9 +1481,128 @@
             );
         }
 
+        // Game History Section Component
+        function GameHistorySection({ gameHistory, setGameHistory, setGameState, t, getTranslatedCardName, showMessage, showGameHistory, setShowGameHistory, showConfirm }) {
+            const loadPreviousGame = (game) => {
+                setGameState({
+                    playerNames: game.playerNames || {},
+                    cardStates: game.cardStates || {},
+                    solution: game.solution || { who: '', weapon: '', room: '' },
+                    notes: game.notes || ''
+                });
+                showMessage(t('gameLoadedMsg'));
+            };
+
+            const deletePreviousGame = (gameId) => {
+                showConfirm(t('confirmDeleteGame'), () => {
+                    const newHistory = gameHistory.filter(game => game.id !== gameId);
+                    setGameHistory(newHistory);
+                    localStorage.setItem('clue_game_history', JSON.stringify(newHistory));
+                    showMessage(t('gameDeletedMsg'));
+                });
+            };
+
+            const formatDate = (dateString) => new Date(dateString).toLocaleDateString();
+
+            const formatPlayers = (playerNames) => {
+                const activePlayerNames = Object.values(playerNames).filter(name => name && name.trim() !== '');
+                return activePlayerNames.length > 0 ? activePlayerNames.join(', ') : t('noGamesPlayed');
+            };
+
+            const formatSolution = (solution) => {
+                if (!solution.who || !solution.weapon || !solution.room) {
+                    return '-';
+                }
+                return `${getTranslatedCardName(solution.who)} / ${getTranslatedCardName(solution.weapon)} / ${getTranslatedCardName(solution.room)}`;
+            };
+
+            if (gameHistory.length === 0) {
+                return null;
+            }
+
+            return (
+                <div className="mb-5">
+                    <div className="bg-black text-white p-3 text-center font-typewriter">
+                        <button
+                            className="flex items-center justify-center w-full text-center p-3 md:p-4 text-sm md:text-base cursor-pointer transition-all duration-200 hover:bg-gray-800"
+                            onClick={() => setShowGameHistory(!showGameHistory)}
+                        >
+                            <span className="text-xl font-bold tracking-wide uppercase mr-2">
+                                🎮 {t('gameHistory')}
+                            </span>
+                            <span className="text-sm">{showGameHistory ? '▼' : '▶'}</span>
+                        </button>
+                    </div>
+                    {showGameHistory && (
+                        <div className="bg-white border-2 border-black">
+                            {gameHistory.length === 0 ? (
+                                <div className="p-4 text-center text-gray-600 font-typewriter">
+                                    {t('noGamesPlayed')}
+                                </div>
+                            ) : (
+                                <div className="overflow-x-auto">
+                                    <table className="w-full border-collapse font-typewriter text-sm">
+                                        <thead>
+                                            <tr className="bg-gray-800 text-white">
+                                                <th className="p-2 border border-black text-left font-bold uppercase tracking-wide">
+                                                    {t('gameDate')}
+                                                </th>
+                                                <th className="p-2 border border-black text-left font-bold uppercase tracking-wide">
+                                                    {t('gamePlayers')}
+                                                </th>
+                                                <th className="p-2 border border-black text-left font-bold uppercase tracking-wide">
+                                                    {t('gameSolution')}
+                                                </th>
+                                                <th className="p-2 border border-black text-center font-bold uppercase tracking-wide">
+                                                    Actions
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {gameHistory.map(game => (
+                                                <tr key={game.id} className="hover:bg-gray-50">
+                                                    <td className="p-2 border border-black">
+                                                        {formatDate(game.completedAt)}
+                                                    </td>
+                                                    <td className="p-2 border border-black">
+                                                        {formatPlayers(game.playerNames)}
+                                                    </td>
+                                                    <td className="p-2 border border-black">
+                                                        {formatSolution(game.solution)}
+                                                    </td>
+                                                    <td className="p-2 border border-black text-center">
+                                                        <div className="flex gap-1 justify-center flex-col sm:flex-row">
+                                                            <button
+                                                                onClick={() => loadPreviousGame(game)}
+                                                                className="bg-blue-500 text-white border-2 border-blue-500 px-2 py-1 text-xs font-typewriter transition-all duration-200 uppercase font-bold hover:bg-blue-600 min-h-8"
+                                                                title={t('loadPreviousGame')}
+                                                            >
+                                                                📁
+                                                            </button>
+                                                            <button
+                                                                onClick={() => deletePreviousGame(game.id)}
+                                                                className="bg-red-500 text-white border-2 border-red-500 px-2 py-1 text-xs font-typewriter transition-all duration-200 uppercase font-bold hover:bg-red-600 min-h-8"
+                                                                title={t('deletePreviousGame')}
+                                                            >
+                                                                🗑️
+                                                            </button>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            ))}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            )}
+                        </div>
+                    )}
+                </div>
+            );
+        }
+
         // Controls Component
-        function Controls({ gameState, setGameState, t, showMessage }) {
-            const saveGame = () => {
+        function Controls({ gameState, setGameState, t, showMessage, startNewGame, showConfirm }) {
+            const downloadGame = () => {
                 try {
                     const fullGameState = {
                         playerNames: gameState.playerNames,
@@ -1307,7 +1627,7 @@
                 }
             };
 
-            const loadGame = () => {
+            const uploadGame = () => {
                 const input = document.createElement('input');
                 input.type = 'file';
                 input.accept = '.json';
@@ -1344,28 +1664,34 @@
             };
 
             const clearAll = () => {
-                if (confirm(t('confirmClearAll'))) {
+                showConfirm(t('confirmClearAll'), () => {
                     setGameState(prev => ({
                         ...prev,
                         cardStates: {}
                     }));
                     showMessage(t('cardClearedMsg'));
-                }
+                });
             };
 
             return (
                 <div className="bg-white p-3 md:p-4 text-center border-t-4 border-black flex flex-col sm:flex-row gap-2 sm:gap-1 sm:justify-center">
                     <button
-                        onClick={saveGame}
-                        className="bg-white text-black border-2 border-black px-4 py-2 md:px-5 cursor-pointer text-sm font-typewriter transition-all duration-200 uppercase font-bold hover:bg-black hover:text-white min-h-11 md:min-h-auto"
+                        onClick={startNewGame}
+                        className="bg-green-500 text-white border-2 border-green-500 px-4 py-2 md:px-5 cursor-pointer text-sm font-typewriter transition-all duration-200 uppercase font-bold hover:bg-green-600 min-h-11 md:min-h-auto"
                     >
-                        💾 {t('saveGame')}
+                        🎮 {t('newGame')}
                     </button>
                     <button
-                        onClick={loadGame}
+                        onClick={downloadGame}
                         className="bg-white text-black border-2 border-black px-4 py-2 md:px-5 cursor-pointer text-sm font-typewriter transition-all duration-200 uppercase font-bold hover:bg-black hover:text-white min-h-11 md:min-h-auto"
                     >
-                        📁 {t('loadGame')}
+                        💾 {t('downloadGame')}
+                    </button>
+                    <button
+                        onClick={uploadGame}
+                        className="bg-white text-black border-2 border-black px-4 py-2 md:px-5 cursor-pointer text-sm font-typewriter transition-all duration-200 uppercase font-bold hover:bg-black hover:text-white min-h-11 md:min-h-auto"
+                    >
+                        📁 {t('uploadGame')}
                     </button>
                     <button
                         onClick={clearAll}
