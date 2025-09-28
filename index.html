@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es" data-lang="es">
+<html lang="en" data-lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -275,7 +275,7 @@
                 gameSavedMsg: "Partida guardada exitosamente",
                 gameLoadedMsg: "¡Partida cargada exitosamente!",
                 errorSaveMsg: "Error al guardar la partida",
-                errorLoadMsg: "Error al cargar el archivo. Archivo inválido.",
+                errorLoadMsg: "Error al cargar archivo",
                 autoSaveFailedMsg: "Auto-guardado falló",
                 errorLoadAutoSaveMsg: "Error al cargar datos guardados",
                 smartFillMsg: "Auto-completado: {player} tiene \"{card}\", otros {count} jugadores marcados automáticamente como \"no la tienen\"",
@@ -333,7 +333,7 @@
                 gameSavedMsg: "Game saved successfully",
                 gameLoadedMsg: "Game loaded successfully!",
                 errorSaveMsg: "Error saving the game",
-                errorLoadMsg: "Error loading the file. Invalid file.",
+                errorLoadMsg: "Error loading file",
                 autoSaveFailedMsg: "Auto-save failed",
                 errorLoadAutoSaveMsg: "Error loading saved data",
                 smartFillMsg: "Auto-complete: {player} has \"{card}\", {count} other players automatically marked as \"don't have it\"",
@@ -373,12 +373,12 @@
         // Main App Component
         function ClueApp() {
             const [currentLanguage, setCurrentLanguage] = useState(
-                localStorage.getItem('clue_language') || 'es'
+                localStorage.getItem('clue_language') || 'en'
             );
             const [gameState, setGameState] = useState({
                 playerNames: {},
                 cardStates: {},
-                solution: { quien: '', arma: '', lugar: '' }
+                solution: { who: '', weapon: '', room: '' }
             });
             const [validationMessages, setValidationMessages] = useState([]);
             const [showInstructions, setShowInstructions] = useState(false);
@@ -415,7 +415,7 @@
                         setGameState({
                             playerNames: data.playerNames || {},
                             cardStates: data.cardStates || {},
-                            solution: data.solution || { quien: '', arma: '', lugar: '' }
+                            solution: data.solution || { who: '', weapon: '', room: '' }
                         });
                     }
                 } catch (e) {
@@ -842,7 +842,7 @@
                 if (confirm(t('confirmClearSolution'))) {
                     setGameState(prev => ({
                         ...prev,
-                        solution: { quien: '', arma: '', lugar: '' }
+                        solution: { who: '', weapon: '', room: '' }
                     }));
                     showMessage(t('solutionClearedMsg'));
                 }
@@ -863,8 +863,8 @@
                                 {t('who')}
                             </label>
                             <select
-                                value={gameState.solution.quien}
-                                onChange={(e) => updateSolution('quien', e.target.value)}
+                                value={gameState.solution.who}
+                                onChange={(e) => updateSolution('who', e.target.value)}
                                 className="p-2 border-2 border-black text-sm font-typewriter bg-white transition-colors duration-200 w-full focus:outline-none focus:border-gray-600 focus:bg-gray-50"
                             >
                                 <option value="">{t('selectOption')}</option>
@@ -880,8 +880,8 @@
                                 {t('withWhat')}
                             </label>
                             <select
-                                value={gameState.solution.arma}
-                                onChange={(e) => updateSolution('arma', e.target.value)}
+                                value={gameState.solution.weapon}
+                                onChange={(e) => updateSolution('weapon', e.target.value)}
                                 className="p-2 border-2 border-black text-sm font-typewriter bg-white transition-colors duration-200 w-full focus:outline-none focus:border-gray-600 focus:bg-gray-50"
                             >
                                 <option value="">{t('selectOption')}</option>
@@ -897,8 +897,8 @@
                                 {t('where')}
                             </label>
                             <select
-                                value={gameState.solution.lugar}
-                                onChange={(e) => updateSolution('lugar', e.target.value)}
+                                value={gameState.solution.room}
+                                onChange={(e) => updateSolution('room', e.target.value)}
                                 className="p-2 border-2 border-black text-sm font-typewriter bg-white transition-colors duration-200 w-full focus:outline-none focus:border-gray-600 focus:bg-gray-50"
                             >
                                 <option value="">{t('selectOption')}</option>
@@ -1093,7 +1093,7 @@
                         cardStates: gameState.cardStates,
                         solution: gameState.solution,
                         savedAt: new Date().toISOString(),
-                        version: '2.1'
+                        version: '1.0'
                     };
 
                     const dataStr = JSON.stringify(fullGameState, null, 2);
@@ -1123,17 +1123,14 @@
                             try {
                                 const loadedData = JSON.parse(e.target.result);
 
-                                if (loadedData.version === '2.1' || loadedData.version === '2.0' || (loadedData.playerNames && loadedData.cardStates)) {
+                                if (loadedData.version === '1.0' && loadedData.playerNames && loadedData.cardStates && loadedData.solution) {
                                     setGameState({
                                         playerNames: loadedData.playerNames || {},
                                         cardStates: loadedData.cardStates || {},
-                                        solution: loadedData.solution || { quien: '', arma: '', lugar: '' }
+                                        solution: loadedData.solution || { who: '', weapon: '', room: '' }
                                     });
                                 } else {
-                                    setGameState(prev => ({
-                                        ...prev,
-                                        cardStates: loadedData
-                                    }));
+                                    throw new Error('Unsupported file format');
                                 }
 
                                 showMessage(t('gameLoadedMsg'));
