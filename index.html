@@ -332,7 +332,9 @@
                 room: "Lugar",
                 downloadGame: "Descargar Partida",
                 uploadGame: "Cargar Partida",
-                clearAll: "Limpiar Todo",
+                clearAll: "Limpiar Cartas",
+                clearPlayers: "Limpiar Jugadores",
+                clearSolution: "Limpiar Solución",
                 newGame: "Nueva Partida",
                 previousGames: "Partidas Anteriores",
                 gameHistory: "Historial de Partidas",
@@ -349,12 +351,14 @@
                 gamePlayers: "Jugadores",
                 gameSolution: "Solución",
                 selectOption: "Seleccionar...",
-                confirmClearAll: "¿Estás seguro de que quieres limpiar toda la tarjeta?",
+                confirmClearAll: "¿Estás seguro de que quieres limpiar todas las marcas de cartas?",
+                confirmClearPlayers: "¿Estás seguro de que quieres limpiar todos los nombres de jugadores?",
                 confirmClearSolution: "¿Limpiar la solución del misterio?",
                 confirmYes: "Sí",
                 confirmNo: "No",
                 confirmCancel: "Cancelar",
-                cardClearedMsg: "Tarjeta limpiada completamente",
+                cardClearedMsg: "Todas las marcas de cartas han sido limpiadas",
+                playersClearedMsg: "Nombres de jugadores limpiados",
                 solutionClearedMsg: "Solución limpiada",
                 gameSavedMsg: "Partida guardada exitosamente",
                 gameLoadedMsg: "¡Partida cargada exitosamente!",
@@ -416,7 +420,9 @@
                 room: "Room",
                 downloadGame: "Download Game",
                 uploadGame: "Upload Game",
-                clearAll: "Clear All",
+                clearAll: "Clear Cards",
+                clearPlayers: "Clear Players",
+                clearSolution: "Clear Solution",
                 newGame: "New Game",
                 previousGames: "Previous Games",
                 gameHistory: "Game History",
@@ -433,12 +439,14 @@
                 gamePlayers: "Players",
                 gameSolution: "Solution",
                 selectOption: "Select...",
-                confirmClearAll: "Are you sure you want to clear the entire card?",
+                confirmClearAll: "Are you sure you want to clear all card markings?",
+                confirmClearPlayers: "Are you sure you want to clear all player names?",
                 confirmClearSolution: "Clear the mystery solution?",
                 confirmYes: "Yes",
                 confirmNo: "No",
                 confirmCancel: "Cancel",
-                cardClearedMsg: "Card completely cleared",
+                cardClearedMsg: "All card markings have been cleared",
+                playersClearedMsg: "Player names cleared",
                 solutionClearedMsg: "Solution cleared",
                 gameSavedMsg: "Game saved successfully",
                 gameLoadedMsg: "Game loaded successfully!",
@@ -1198,16 +1206,6 @@
                 });
             };
 
-            const clearSolution = () => {
-                showConfirm(t('confirmClearSolution'), () => {
-                    setGameState(prev => ({
-                        ...prev,
-                        solution: { who: '', weapon: '', room: '' }
-                    }));
-                    showMessage(t('solutionClearedMsg'));
-                });
-            };
-
             const { characters, weapons, rooms } = GAME_CARDS;
 
             return (
@@ -1267,14 +1265,6 @@
                                 ))}
                             </select>
                         </div>
-                    </div>
-                    <div className="text-center">
-                        <button
-                            onClick={clearSolution}
-                            className="bg-white text-black border-2 border-black px-3 py-2 md:px-3 md:py-1 cursor-pointer text-xs font-typewriter transition-all duration-200 uppercase font-bold hover:bg-black hover:text-white min-h-10 md:min-h-auto"
-                        >
-                            🗑️ {t('clearSolution')}
-                        </button>
                     </div>
                 </div>
             );
@@ -1699,32 +1689,66 @@
                 });
             };
 
+            const clearPlayers = () => {
+                showConfirm(t('confirmClearPlayers'), () => {
+                    setGameState(prev => ({
+                        ...prev,
+                        playerNames: {}
+                    }));
+                    showMessage(t('playersClearedMsg'));
+                });
+            };
+
+            const clearSolution = () => {
+                showConfirm(t('confirmClearSolution'), () => {
+                    setGameState(prev => ({
+                        ...prev,
+                        solution: { who: '', weapon: '', room: '' }
+                    }));
+                    showMessage(t('solutionClearedMsg'));
+                });
+            };
+
             return (
-                <div className="bg-white p-3 md:p-4 text-center border-t-2 border-b-2 border-black flex flex-col sm:flex-row gap-2 sm:gap-1 sm:justify-center">
+                <div className="bg-white p-3 md:p-4 text-center border-t-2 border-b-2 border-black">
+                    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 sm:gap-1 justify-items-center">
                     <button
                         onClick={startNewGame}
-                        className="bg-green-500 text-white border-2 border-green-500 px-4 py-2 md:px-5 cursor-pointer text-sm font-typewriter transition-all duration-200 uppercase font-bold hover:bg-green-600 min-h-11 md:min-h-auto"
+                        className="w-full bg-green-500 text-white border-2 border-green-500 px-2 py-2 cursor-pointer text-sm font-typewriter transition-all duration-200 uppercase font-bold hover:bg-green-600 min-h-11"
                     >
-                        🎮 {t('newGame')}
+                        {t('newGame')}
                     </button>
                     <button
                         onClick={downloadGame}
-                        className="bg-white text-black border-2 border-black px-4 py-2 md:px-5 cursor-pointer text-sm font-typewriter transition-all duration-200 uppercase font-bold hover:bg-black hover:text-white min-h-11 md:min-h-auto"
+                        className="w-full bg-white text-black border-2 border-black px-2 py-2 cursor-pointer text-sm font-typewriter transition-all duration-200 uppercase font-bold hover:bg-black hover:text-white min-h-11"
                     >
                         💾 {t('downloadGame')}
                     </button>
                     <button
                         onClick={uploadGame}
-                        className="bg-white text-black border-2 border-black px-4 py-2 md:px-5 cursor-pointer text-sm font-typewriter transition-all duration-200 uppercase font-bold hover:bg-black hover:text-white min-h-11 md:min-h-auto"
+                        className="w-full bg-white text-black border-2 border-black px-2 py-2 cursor-pointer text-sm font-typewriter transition-all duration-200 uppercase font-bold hover:bg-black hover:text-white min-h-11"
                     >
                         📁 {t('uploadGame')}
                     </button>
                     <button
                         onClick={clearAll}
-                        className="bg-white text-red-500 border-2 border-red-500 px-4 py-2 md:px-5 cursor-pointer text-sm font-typewriter transition-all duration-200 uppercase font-bold hover:bg-red-500 hover:text-white min-h-11 md:min-h-auto"
+                        className="w-full bg-white text-red-500 border-2 border-red-500 px-2 py-2 cursor-pointer text-sm font-typewriter transition-all duration-200 uppercase font-bold hover:bg-red-500 hover:text-white min-h-11"
                     >
-                        🗑️ {t('clearAll')}
+                        {t('clearAll')}
                     </button>
+                    <button
+                        onClick={clearPlayers}
+                        className="w-full bg-white text-red-500 border-2 border-red-500 px-2 py-2 cursor-pointer text-sm font-typewriter transition-all duration-200 uppercase font-bold hover:bg-orange-500 hover:text-white min-h-11"
+                    >
+                        {t('clearPlayers')}
+                    </button>
+                    <button
+                        onClick={clearSolution}
+                        className="w-full bg-white text-red-500 border-2 border-red-500 px-2 py-2 cursor-pointer text-sm font-typewriter transition-all duration-200 uppercase font-bold hover:bg-purple-500 hover:text-white min-h-11"
+                    >
+                        {t('clearSolution')}
+                    </button>
+                    </div>
                 </div>
             );
         }
