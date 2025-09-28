@@ -274,6 +274,8 @@
             es: {
                 subtitle: "Tarjeta de Puntuación Digital",
                 playerNames: "Nombres de Jugadores",
+                notes: "Notas",
+                notesPlaceholder: "Escribe tus deducciones, teorías o pistas aquí...",
                 player1Label: "Jugador 1:",
                 player2Label: "Jugador 2:",
                 player3Label: "Jugador 3:",
@@ -332,6 +334,8 @@
             en: {
                 subtitle: "Digital Score Card",
                 playerNames: "Player Names",
+                notes: "Notes",
+                notesPlaceholder: "Write your deductions, theories, or clues here...",
                 player1Label: "Player 1:",
                 player2Label: "Player 2:",
                 player3Label: "Player 3:",
@@ -425,7 +429,8 @@
             const [gameState, setGameState] = useState({
                 playerNames: {},
                 cardStates: {},
-                solution: { who: '', weapon: '', room: '' }
+                solution: { who: '', weapon: '', room: '' },
+                notes: ''
             });
             const [validationMessages, setValidationMessages] = useState([]);
             const [showInstructions, setShowInstructions] = useState(false);
@@ -463,7 +468,8 @@
                         setGameState({
                             playerNames: data.playerNames || {},
                             cardStates: data.cardStates || {},
-                            solution: data.solution || { who: '', weapon: '', room: '' }
+                            solution: data.solution || { who: '', weapon: '', room: '' },
+                            notes: data.notes || ''
                         });
                     }
                 } catch (e) {
@@ -725,6 +731,12 @@
                                 getTranslatedCardName={getTranslatedCardName}
                                 showMessage={showMessage}
                                 calculateProgress={calculateProgress}
+                            />
+
+                            <NotesSection
+                                gameState={gameState}
+                                setGameState={setGameState}
+                                t={t}
                             />
                         </div>
 
@@ -1042,6 +1054,45 @@
             );
         }
 
+        // Notes Section Component
+        function NotesSection({ gameState, setGameState, t }) {
+            const [showNotes, setShowNotes] = useState(true);
+
+            const updateNotes = (notes) => {
+                setGameState(prev => ({
+                    ...prev,
+                    notes: notes
+                }));
+            };
+
+            return (
+                <div className="mb-5">
+                    <div className="bg-black text-white p-3 text-center font-typewriter">
+                        <button
+                            className="flex items-center justify-center w-full text-center cursor-pointer transition-all duration-200 hover:bg-gray-800"
+                            onClick={() => setShowNotes(!showNotes)}
+                        >
+                            <span className="text-xl font-bold tracking-wide uppercase mr-2">
+                                📝 {t('notes')}
+                            </span>
+                            <span className="text-sm">{showNotes ? '▼' : '▶'}</span>
+                        </button>
+                    </div>
+                    {showNotes && (
+                        <div className="bg-white border-2 border-black p-4">
+                            <textarea
+                                value={gameState.notes}
+                                onChange={(e) => updateNotes(e.target.value)}
+                                placeholder={t('notesPlaceholder')}
+                                className="w-full p-3 border-2 border-black font-typewriter text-sm min-h-32 resize-y bg-white focus:outline-none focus:border-gray-600 focus:bg-gray-50 transition-colors duration-200"
+                                style={{ lineHeight: '1.5' }}
+                            />
+                        </div>
+                    )}
+                </div>
+            );
+        }
+
         // Game Section Component (for Characters, Weapons, Rooms)
         function GameSection({ title, items, gameState, setGameState, t, getTranslatedCardName, showMessage, calculateProgress }) {
             // Get active players (those with names)
@@ -1226,6 +1277,7 @@
                         playerNames: gameState.playerNames,
                         cardStates: gameState.cardStates,
                         solution: gameState.solution,
+                        notes: gameState.notes,
                         savedAt: new Date().toISOString(),
                         version: '1.0'
                     };
@@ -1261,7 +1313,8 @@
                                     setGameState({
                                         playerNames: loadedData.playerNames || {},
                                         cardStates: loadedData.cardStates || {},
-                                        solution: loadedData.solution || { who: '', weapon: '', room: '' }
+                                        solution: loadedData.solution || { who: '', weapon: '', room: '' },
+                                        notes: loadedData.notes || ''
                                     });
                                 } else {
                                     throw new Error('Unsupported file format');
