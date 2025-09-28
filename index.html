@@ -220,7 +220,16 @@
     <div id="root"></div>
 
     <script type="text/babel">
-        const { useState, useEffect, useCallback, useRef } = React;
+        const { useState, useEffect, useCallback, useRef, useMemo } = React;
+
+        // Game constants
+        const GAME_CARDS = {
+            characters: ['mrGreen', 'colonelMustard', 'mrsWhite', 'professorPlum', 'missScarlet', 'mrsPeacock'],
+            weapons: ['candlestick', 'dagger', 'leadPipe', 'revolver', 'rope', 'wrench'],
+            rooms: ['ballroom', 'billiardRoom', 'conservatory', 'diningRoom', 'hall', 'kitchen', 'library', 'lounge', 'study']
+        };
+
+        const PLAYER_NUMBERS = [1, 2, 3, 4, 5, 6];
 
         // Language translations
         const translations = {
@@ -345,29 +354,29 @@
         // Card names translations
         const cardTranslations = {
             // Characters
-            "Verduzco": { es: "Verduzco", en: "Mr. Green" },
-            "Mostaza": { es: "Mostaza", en: "Colonel Mustard" },
-            "Marlene": { es: "Marlene", en: "Mrs. White" },
-            "Moradillo": { es: "Moradillo", en: "Professor Plum" },
-            "Escarlata": { es: "Escarlata", en: "Miss Scarlet" },
-            "Blanca": { es: "Blanca", en: "Mrs. Peacock" },
+            "mrGreen": { es: "Verduzco", en: "Mr. Green" },
+            "colonelMustard": { es: "Mostaza", en: "Colonel Mustard" },
+            "mrsWhite": { es: "Marlene", en: "Mrs. White" },
+            "professorPlum": { es: "Moradillo", en: "Professor Plum" },
+            "missScarlet": { es: "Escarlata", en: "Miss Scarlet" },
+            "mrsPeacock": { es: "Blanca", en: "Mrs. Peacock" },
             // Weapons
-            "Candelabro": { es: "Candelabro", en: "Candlestick" },
-            "Daga": { es: "Daga", en: "Dagger" },
-            "Tubo de plomo": { es: "Tubo de plomo", en: "Lead Pipe" },
-            "Revólver": { es: "Revólver", en: "Revolver" },
-            "Soga": { es: "Soga", en: "Rope" },
-            "Llave inglesa": { es: "Llave inglesa", en: "Wrench" },
+            "candlestick": { es: "Candelabro", en: "Candlestick" },
+            "dagger": { es: "Daga", en: "Dagger" },
+            "leadPipe": { es: "Tubo de plomo", en: "Lead Pipe" },
+            "revolver": { es: "Revólver", en: "Revolver" },
+            "rope": { es: "Soga", en: "Rope" },
+            "wrench": { es: "Llave inglesa", en: "Wrench" },
             // Rooms
-            "Salón de baile": { es: "Salón de baile", en: "Ballroom" },
-            "Sala de billar": { es: "Sala de billar", en: "Billiard Room" },
-            "Terraza": { es: "Terraza", en: "Conservatory" },
-            "Comedor": { es: "Comedor", en: "Dining Room" },
-            "Pasillo": { es: "Pasillo", en: "Hall" },
-            "Cocina": { es: "Cocina", en: "Kitchen" },
-            "Biblioteca": { es: "Biblioteca", en: "Library" },
-            "Sala": { es: "Sala", en: "Lounge" },
-            "Estudio": { es: "Estudio", en: "Study" }
+            "ballroom": { es: "Salón de baile", en: "Ballroom" },
+            "billiardRoom": { es: "Sala de billar", en: "Billiard Room" },
+            "conservatory": { es: "Terraza", en: "Conservatory" },
+            "diningRoom": { es: "Comedor", en: "Dining Room" },
+            "hall": { es: "Pasillo", en: "Hall" },
+            "kitchen": { es: "Cocina", en: "Kitchen" },
+            "library": { es: "Biblioteca", en: "Library" },
+            "lounge": { es: "Sala", en: "Lounge" },
+            "study": { es: "Estudio", en: "Study" }
         };
 
         // Main App Component
@@ -452,9 +461,9 @@
                 // Clear existing validation warnings
                 setValidationMessages(prev => prev.filter(msg => msg.type !== 'validation-warning'));
 
-                const allItems = ['Verduzco', 'Mostaza', 'Marlene', 'Moradillo', 'Escarlata', 'Blanca',
-                    'Candelabro', 'Daga', 'Tubo de plomo', 'Revólver', 'Soga', 'Llave inglesa',
-                    'Salón de baile', 'Sala de billar', 'Terraza', 'Comedor', 'Pasillo', 'Cocina', 'Biblioteca', 'Sala', 'Estudio'];
+                const allItems = ['mrGreen', 'colonelMustard', 'mrsWhite', 'professorPlum', 'missScarlet', 'mrsPeacock',
+                    'candlestick', 'dagger', 'leadPipe', 'revolver', 'rope', 'wrench',
+                    'ballroom', 'billiardRoom', 'conservatory', 'diningRoom', 'hall', 'kitchen', 'library', 'lounge', 'study'];
 
                 const warnings = [];
 
@@ -484,25 +493,31 @@
                 });
             }, [gameState.cardStates, gameState.playerNames, t, getTranslatedCardName, currentLanguage]);
 
-            // Calculate progress for a section
+            // Calculate progress for a section (optimized)
             const calculateProgress = useCallback((items) => {
                 let completedRows = 0;
-                items.forEach(item => {
+                const cardStates = gameState.cardStates;
+
+                for (const item of items) {
                     let hasChecked = false;
-                    let hasCrossed = false;
+                    let crossedCount = 0;
 
                     for (let player = 1; player <= 6; player++) {
-                        const key = `${item}-${player}`;
-                        const state = gameState.cardStates[key];
-                        if (state === 'checked') hasChecked = true;
-                        if (state === 'crossed' || state === 'crossed-auto') hasCrossed = true;
+                        const state = cardStates[`${item}-${player}`];
+                        if (state === 'checked') {
+                            hasChecked = true;
+                            break; // Early exit if we found a checked cell
+                        }
+                        if (state === 'crossed' || state === 'crossed-auto') {
+                            crossedCount++;
+                        }
                     }
 
-                    // Row is complete if it has at least one checked OR all cells are crossed
-                    if (hasChecked || (hasCrossed && Object.keys(gameState.cardStates).filter(k => k.startsWith(item + '-')).length === 6)) {
+                    // Row is complete if it has at least one checked OR all 6 cells are crossed
+                    if (hasChecked || crossedCount === 6) {
                         completedRows++;
                     }
-                });
+                }
 
                 return Math.round((completedRows / items.length) * 100);
             }, [gameState.cardStates]);
@@ -630,8 +645,7 @@
 
                         <GameSection
                             title={t('who')}
-                            tableId="quien-table"
-                            items={['Verduzco', 'Mostaza', 'Marlene', 'Moradillo', 'Escarlata', 'Blanca']}
+                            items={GAME_CARDS.characters}
                             gameState={gameState}
                             setGameState={setGameState}
                             t={t}
@@ -642,8 +656,7 @@
 
                         <GameSection
                             title={t('withWhat')}
-                            tableId="armas-table"
-                            items={['Candelabro', 'Daga', 'Tubo de plomo', 'Revólver', 'Soga', 'Llave inglesa']}
+                            items={GAME_CARDS.weapons}
                             gameState={gameState}
                             setGameState={setGameState}
                             t={t}
@@ -654,8 +667,7 @@
 
                         <GameSection
                             title={t('where')}
-                            tableId="lugares-table"
-                            items={['Salón de baile', 'Sala de billar', 'Terraza', 'Comedor', 'Pasillo', 'Cocina', 'Biblioteca', 'Sala', 'Estudio']}
+                            items={GAME_CARDS.rooms}
                             gameState={gameState}
                             setGameState={setGameState}
                             t={t}
@@ -717,7 +729,7 @@
                         {t('playerNames')}
                     </h3>
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                        {[1, 2, 3, 4, 5, 6].map(playerNum => (
+                        {PLAYER_NUMBERS.map(playerNum => (
                             <div key={playerNum} className="flex flex-col gap-1">
                                 <label className="font-bold text-black text-sm font-typewriter">
                                     {t(`player${playerNum}Label`)}
@@ -848,9 +860,7 @@
                 }
             };
 
-            const characters = ['Verduzco', 'Mostaza', 'Marlene', 'Moradillo', 'Escarlata', 'Blanca'];
-            const weapons = ['Candelabro', 'Daga', 'Tubo de plomo', 'Revólver', 'Soga', 'Llave inglesa'];
-            const rooms = ['Salón de baile', 'Sala de billar', 'Terraza', 'Comedor', 'Pasillo', 'Cocina', 'Biblioteca', 'Sala', 'Estudio'];
+            const { characters, weapons, rooms } = GAME_CARDS;
 
             return (
                 <div className="bg-white p-4 mb-5 border-2 border-black">
@@ -923,8 +933,8 @@
         }
 
         // Game Section Component (for Characters, Weapons, Rooms)
-        function GameSection({ title, tableId, items, gameState, setGameState, t, getTranslatedCardName, showMessage, calculateProgress }) {
-            const progress = calculateProgress(items);
+        function GameSection({ title, items, gameState, setGameState, t, getTranslatedCardName, showMessage, calculateProgress }) {
+            const progress = useMemo(() => calculateProgress(items), [calculateProgress, items]);
             const handleCellClick = (item, player) => {
                 const key = `${item}-${player}`;
                 const currentState = gameState.cardStates[key] || 'empty';
@@ -954,9 +964,11 @@
             const smartFillCard = (item, playerWithCard) => {
                 const playerName = gameState.playerNames[playerWithCard] || `Player ${playerWithCard}`;
                 let autoFilledCount = 0;
+                let cardName;
 
                 setGameState(prev => {
                     const newCardStates = { ...prev.cardStates };
+                    autoFilledCount = 0; // Reset inside state update for accuracy
 
                     for (let player = 1; player <= 6; player++) {
                         if (player.toString() === playerWithCard) continue;
@@ -968,20 +980,22 @@
                         }
                     }
 
+                    // Prepare message inside state update to avoid stale closure
+                    if (autoFilledCount > 0) {
+                        cardName = getTranslatedCardName(item);
+                        const message = t('smartFillMsg')
+                            .replace('{player}', playerName)
+                            .replace('{card}', cardName)
+                            .replace('{count}', autoFilledCount);
+                        // Use setTimeout to avoid updating state during render
+                        setTimeout(() => showMessage(message, 'smart-fill'), 0);
+                    }
+
                     return {
                         ...prev,
                         cardStates: newCardStates
                     };
                 });
-
-                if (autoFilledCount > 0) {
-                    const cardName = getTranslatedCardName(item);
-                    const message = t('smartFillMsg')
-                        .replace('{player}', playerName)
-                        .replace('{card}', cardName)
-                        .replace('{count}', autoFilledCount);
-                    showMessage(message, 'smart-fill');
-                }
             };
 
             const smartUnfillCard = (item, playerWhoHadCard) => {
@@ -990,6 +1004,7 @@
 
                 setGameState(prev => {
                     const newCardStates = { ...prev.cardStates };
+                    autoUnfilledCount = 0; // Reset inside state update for accuracy
 
                     for (let player = 1; player <= 6; player++) {
                         if (player.toString() === playerWhoHadCard) continue;
@@ -1001,43 +1016,42 @@
                         }
                     }
 
+                    // Prepare message inside state update to avoid stale closure
+                    if (autoUnfilledCount > 0) {
+                        const cardName = getTranslatedCardName(item);
+                        const message = t('smartUnfillMsg')
+                            .replace('{player}', playerName)
+                            .replace('{card}', cardName)
+                            .replace('{count}', autoUnfilledCount);
+                        // Use setTimeout to avoid updating state during render
+                        setTimeout(() => showMessage(message, 'smart-fill'), 0);
+                    }
+
                     return {
                         ...prev,
                         cardStates: newCardStates
                     };
                 });
-
-                if (autoUnfilledCount > 0) {
-                    const cardName = getTranslatedCardName(item);
-                    const message = t('smartUnfillMsg')
-                        .replace('{player}', playerName)
-                        .replace('{card}', cardName)
-                        .replace('{count}', autoUnfilledCount);
-                    showMessage(message, 'smart-fill');
-                }
             };
 
-            const getCellClasses = (item, player) => {
+            const getCellClasses = useCallback((item, player) => {
                 const key = `${item}-${player}`;
                 const state = gameState.cardStates[key] || 'empty';
 
-                let classes = 'checkbox-cell w-12 bg-white cursor-pointer relative min-h-10 text-center transition-all duration-100 border border-black font-typewriter font-bold text-xl';
+                const baseClasses = 'checkbox-cell w-12 bg-white cursor-pointer relative min-h-10 text-center transition-all duration-100 border border-black font-typewriter font-bold text-xl';
 
                 if (state === 'checked') {
-                    classes += ' checked';
+                    return baseClasses + ' checked';
                 } else if (state === 'crossed' || state === 'crossed-auto') {
-                    classes += ' crossed';
-                    if (state === 'crossed-auto') {
-                        classes += ' auto-filled';
-                    }
+                    return baseClasses + ' crossed' + (state === 'crossed-auto' ? ' auto-filled' : '');
                 }
 
-                return classes;
-            };
+                return baseClasses;
+            }, [gameState.cardStates]);
 
-            const getPlayerName = (playerNum) => {
+            const getPlayerName = useCallback((playerNum) => {
                 return gameState.playerNames[playerNum] || t(`player${playerNum}`);
-            };
+            }, [gameState.playerNames, t]);
 
             return (
                 <div className="mb-6">
@@ -1054,7 +1068,7 @@
                                     <th className="bg-gray-800 text-white p-2 font-bold text-center text-xs border border-black uppercase tracking-wide">
                                         {title === t('who') ? t('character') : title === t('withWhat') ? t('weapon') : t('room')}
                                     </th>
-                                    {[1, 2, 3, 4, 5, 6].map(playerNum => (
+                                    {PLAYER_NUMBERS.map(playerNum => (
                                         <th key={playerNum} className="bg-gray-800 text-white p-2 font-bold text-center text-xs border border-black uppercase tracking-wide">
                                             {getPlayerName(playerNum)}
                                         </th>
@@ -1067,7 +1081,7 @@
                                         <td className="p-3 border border-black text-left font-bold bg-gray-100 text-black pl-4 text-sm">
                                             {getTranslatedCardName(item)}
                                         </td>
-                                        {[1, 2, 3, 4, 5, 6].map(playerNum => (
+                                        {PLAYER_NUMBERS.map(playerNum => (
                                             <td
                                                 key={playerNum}
                                                 className={getCellClasses(item, playerNum)}
