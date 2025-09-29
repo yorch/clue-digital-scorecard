@@ -2,7 +2,7 @@
   "name": "clue-digital-scorecard",
   "version": "1.0.0",
   "description": "Digital scorecard for Clue board game",
-  "main": "build.js",
+  "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -16,13 +16,12 @@
     "scorecard",
     "react"
   ],
-  "author": "",
+  "author": "Jorge Barnaby <jorge.barnaby@gmail.com>",
   "license": "MIT",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/yorch/clue-digital-scorecard.git"
   },
-  "type": "module",
   "bugs": {
     "url": "https://github.com/yorch/clue-digital-scorecard/issues"
   },
