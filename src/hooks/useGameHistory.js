@@ -98,9 +98,20 @@ export function useGameHistory(gameState, showMessage, t) {
     t,
   ]);
 
+  // Clear all game history
+  const clearAllHistory = useCallback(() => {
+    setGameHistory([]);
+    if (saveGameHistory([])) {
+      showMessage(t('allHistoryClearedMsg'));
+    } else {
+      showMessage(t('errorClearingHistoryMsg'), 'error');
+    }
+  }, [showMessage, t]);
+
   return {
     gameHistory,
     setGameHistory,
     isGameCompleted,
+    clearAllHistory,
   };
 }

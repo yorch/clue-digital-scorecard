@@ -10,6 +10,7 @@ export const GameHistorySection = ({
   showGameHistory,
   setShowGameHistory,
   showConfirm,
+  clearAllHistory,
 }) => {
   const loadPreviousGame = (game) => {
     setGameState({
@@ -27,6 +28,12 @@ export const GameHistorySection = ({
       setGameHistory(newHistory);
       localStorage.setItem('clue_game_history', JSON.stringify(newHistory));
       showMessage(t('gameDeletedMsg'));
+    });
+  };
+
+  const handleClearAllHistory = () => {
+    showConfirm(t('confirmClearAllHistory'), () => {
+      clearAllHistory();
     });
   };
 
@@ -127,6 +134,17 @@ export const GameHistorySection = ({
                   ))}
                 </tbody>
               </table>
+              {gameHistory.length > 0 && (
+                <div className="p-3 border-t border-gray-200 bg-gray-50">
+                  <button
+                    onClick={handleClearAllHistory}
+                    className="w-full bg-red-600 text-white border-2 border-red-600 px-4 py-2 font-typewriter transition-all duration-200 uppercase font-bold hover:bg-red-700 hover:border-red-700 rounded"
+                    title={t('clearAllHistory')}
+                  >
+                    🗑️ {t('clearAllHistory')}
+                  </button>
+                </div>
+              )}
             </div>
           )}
         </div>

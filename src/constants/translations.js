@@ -69,6 +69,11 @@ export const translations = {
       '¿Estás seguro de que quieres comenzar una nueva partida? Se guardará la partida actual si está en progreso.',
     confirmDeleteGame:
       '¿Estás seguro de que quieres eliminar esta partida del historial?',
+    confirmClearAllHistory:
+      '¿Estás seguro de que quieres eliminar TODAS las partidas del historial? Esta acción no se puede deshacer.',
+    clearAllHistory: 'Limpiar Todo el Historial',
+    allHistoryClearedMsg: 'Todo el historial ha sido limpiado',
+    errorClearingHistoryMsg: 'Error al limpiar el historial',
     gameCompletedMsg: '¡Partida completada y guardada en el historial!',
     newGameStartedMsg: 'Nueva partida iniciada',
     gameDeletedMsg: 'Partida eliminada del historial',
@@ -169,6 +174,11 @@ export const translations = {
       'Are you sure you want to start a new game? Current game will be saved if in progress.',
     confirmDeleteGame:
       'Are you sure you want to delete this game from history?',
+    confirmClearAllHistory:
+      'Are you sure you want to delete ALL games from history? This action cannot be undone.',
+    clearAllHistory: 'Clear All History',
+    allHistoryClearedMsg: 'All history has been cleared',
+    errorClearingHistoryMsg: 'Error clearing history',
     gameCompletedMsg: 'Game completed and saved to history!',
     newGameStartedMsg: 'New game started',
     gameDeletedMsg: 'Game deleted from history',

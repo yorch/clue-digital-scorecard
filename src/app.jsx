@@ -70,7 +70,7 @@ export const ClueApp = () => {
   useKeyboardNavigation(gameState);
 
   // Game history hook
-  const { gameHistory, setGameHistory } = useGameHistory(
+  const { gameHistory, setGameHistory, clearAllHistory } = useGameHistory(
     gameState,
     showMessage,
     t,
@@ -260,6 +260,7 @@ export const ClueApp = () => {
                 showGameHistory={showGameHistory}
                 setShowGameHistory={setShowGameHistory}
                 showConfirm={showConfirm}
+                clearAllHistory={clearAllHistory}
               />
             </div>
 
