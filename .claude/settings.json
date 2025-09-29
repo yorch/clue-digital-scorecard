@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(yarn:*)",
+      "Bash(npm:*)",
+      "mcp__context7__*",
+      "mcp__serena__*"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
