@@ -709,99 +709,105 @@ function ClueApp() {
 
   return (
     <>
-      <div className="max-w-screen-xl mx-auto bg-paper-white border-l-2 border-r-2 border-t-2 border-black m-3 sm:m-4 rounded-lg overflow-hidden shadow-lg">
-        <Header
-          currentLanguage={currentLanguage}
-          setLanguage={setLanguage}
-          t={t}
-        />
+      <div className="min-h-screen bg-gray-100 flex flex-col">
+        <div className="flex-1 flex justify-center">
+          <div className="max-w-screen-xl w-full bg-paper-white border-l-2 border-r-2 border-t-2 border-black m-3 sm:m-4 rounded-lg overflow-hidden shadow-lg">
+            <Header
+              currentLanguage={currentLanguage}
+              setLanguage={setLanguage}
+              t={t}
+            />
 
-        <div className="p-3 md:p-5 border-t-2 border-black">
-          <PlayerNamesSection
-            gameState={gameState}
-            setGameState={setGameState}
-            t={t}
-            showPlayerNames={showPlayerNames}
-            setShowPlayerNames={setShowPlayerNames}
-          />
+            <div className="p-3 md:p-5 border-t-2 border-black">
+              <PlayerNamesSection
+                gameState={gameState}
+                setGameState={setGameState}
+                t={t}
+                showPlayerNames={showPlayerNames}
+                setShowPlayerNames={setShowPlayerNames}
+              />
 
-          <InstructionsSection
-            showInstructions={showInstructions}
-            setShowInstructions={setShowInstructions}
-            t={t}
-          />
+              <InstructionsSection
+                showInstructions={showInstructions}
+                setShowInstructions={setShowInstructions}
+                t={t}
+              />
 
-          <Legend t={t} />
+              <Legend t={t} />
 
-          <GameSection
-            title={t('who')}
-            items={GAME_CARDS.characters}
-            gameState={gameState}
-            setGameState={setGameState}
-            t={t}
-            getTranslatedCardName={getTranslatedCardName}
-            showMessage={showMessage}
-            calculateProgress={calculateProgress}
-          />
+              <GameSection
+                title={t('who')}
+                items={GAME_CARDS.characters}
+                gameState={gameState}
+                setGameState={setGameState}
+                t={t}
+                getTranslatedCardName={getTranslatedCardName}
+                showMessage={showMessage}
+                calculateProgress={calculateProgress}
+              />
 
-          <GameSection
-            title={t('withWhat')}
-            items={GAME_CARDS.weapons}
-            gameState={gameState}
-            setGameState={setGameState}
-            t={t}
-            getTranslatedCardName={getTranslatedCardName}
-            showMessage={showMessage}
-            calculateProgress={calculateProgress}
-          />
+              <GameSection
+                title={t('withWhat')}
+                items={GAME_CARDS.weapons}
+                gameState={gameState}
+                setGameState={setGameState}
+                t={t}
+                getTranslatedCardName={getTranslatedCardName}
+                showMessage={showMessage}
+                calculateProgress={calculateProgress}
+              />
 
-          <GameSection
-            title={t('where')}
-            items={GAME_CARDS.rooms}
-            gameState={gameState}
-            setGameState={setGameState}
-            t={t}
-            getTranslatedCardName={getTranslatedCardName}
-            showMessage={showMessage}
-            calculateProgress={calculateProgress}
-          />
+              <GameSection
+                title={t('where')}
+                items={GAME_CARDS.rooms}
+                gameState={gameState}
+                setGameState={setGameState}
+                t={t}
+                getTranslatedCardName={getTranslatedCardName}
+                showMessage={showMessage}
+                calculateProgress={calculateProgress}
+              />
 
-          <SolutionSection
-            gameState={gameState}
-            setGameState={setGameState}
-            t={t}
-            getTranslatedCardName={getTranslatedCardName}
-            showMessage={showMessage}
-            showConfirm={showConfirm}
-          />
+              <SolutionSection
+                gameState={gameState}
+                setGameState={setGameState}
+                t={t}
+                getTranslatedCardName={getTranslatedCardName}
+                showMessage={showMessage}
+                showConfirm={showConfirm}
+              />
 
-          <NotesSection
-            gameState={gameState}
-            setGameState={setGameState}
-            t={t}
-          />
+              <NotesSection
+                gameState={gameState}
+                setGameState={setGameState}
+                t={t}
+              />
 
-          <GameHistorySection
-            gameHistory={gameHistory}
-            setGameHistory={setGameHistory}
-            setGameState={setGameState}
-            t={t}
-            getTranslatedCardName={getTranslatedCardName}
-            showMessage={showMessage}
-            showGameHistory={showGameHistory}
-            setShowGameHistory={setShowGameHistory}
-            showConfirm={showConfirm}
-          />
+              <GameHistorySection
+                gameHistory={gameHistory}
+                setGameHistory={setGameHistory}
+                setGameState={setGameState}
+                t={t}
+                getTranslatedCardName={getTranslatedCardName}
+                showMessage={showMessage}
+                showGameHistory={showGameHistory}
+                setShowGameHistory={setShowGameHistory}
+                showConfirm={showConfirm}
+              />
+            </div>
+
+            <Controls
+              gameState={gameState}
+              setGameState={setGameState}
+              t={t}
+              showMessage={showMessage}
+              startNewGame={startNewGame}
+              showConfirm={showConfirm}
+            />
+          </div>
         </div>
 
-        <Controls
-          gameState={gameState}
-          setGameState={setGameState}
-          t={t}
-          showMessage={showMessage}
-          startNewGame={startNewGame}
-          showConfirm={showConfirm}
-        />
+        <Footer />
       </div>
 
       <ToastMessages
@@ -1745,6 +1751,17 @@ function Controls({
           {t('clearSolution')}
         </button>
       </div>
+    </div>
+  );
+}
+
+// Footer Component
+function Footer() {
+  const currentYear = new Date().getFullYear();
+
+  return (
+    <div className="bg-gray-100 text-center py-3 px-4 border-t-2 border-black text-sm font-typewriter text-gray-600">
+      <p>© {currentYear} Jorge Barnaby</p>
     </div>
   );
 }
