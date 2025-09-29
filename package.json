@@ -1,0 +1,41 @@
+{
+  "name": "clue-digital-scorecard",
+  "version": "1.0.0",
+  "description": "Digital scorecard for Clue board game",
+  "main": "build.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "cleanup": "rm -rf dist",
+    "format": "prettier --write ."
+  },
+  "keywords": [
+    "clue",
+    "board-game",
+    "scorecard",
+    "react"
+  ],
+  "author": "",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yorch/clue-digital-scorecard.git"
+  },
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/yorch/clue-digital-scorecard/issues"
+  },
+  "homepage": "https://github.com/yorch/clue-digital-scorecard#readme",
+  "dependencies": {
+    "react": "19.1.1",
+    "react-dom": "19.1.1"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "5.0.4",
+    "prettier": "3.6.2",
+    "vite": "7.1.7",
+    "vite-plugin-singlefile": "2.3.0"
+  },
+  "packageManager": "yarn@4.10.3"
+}
