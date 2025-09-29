@@ -1,5 +1,3 @@
-import React from 'react';
-
 export const Legend = ({ t }) => (
   <div className="flex flex-col sm:flex-row justify-center gap-2 sm:gap-5 my-4 flex-wrap font-typewriter text-sm">
     <div className="flex items-center justify-center gap-2 text-sm p-2 sm:p-0 border sm:border-0 border-black bg-white sm:bg-transparent">

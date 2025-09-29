@@ -1,4 +1,3 @@
-import React from 'react';
 import { PLAYER_NUMBERS } from '../constants/gameData.js';
 
 export const PlayerNamesSection = ({

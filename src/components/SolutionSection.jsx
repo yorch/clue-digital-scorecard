@@ -1,4 +1,3 @@
-import React from 'react';
 import { GAME_CARDS } from '../constants/gameData.js';
 
 export const SolutionSection = ({

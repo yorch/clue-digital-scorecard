@@ -1,5 +1,3 @@
-import React from 'react';
-
 export const Header = ({ currentLanguage, setLanguage, t }) => (
   <div className="bg-white text-black p-3 md:p-5 text-center relative">
     <h1 className="text-2xl md:text-4xl mb-1 font-bold uppercase tracking-widest">

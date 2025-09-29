@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import { useState, useCallback } from 'react';
 
 export const ToastMessages = ({ messages, setValidationMessages }) => {
   const [removingMessages, setRemovingMessages] = useState(new Set());

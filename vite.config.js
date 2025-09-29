@@ -7,7 +7,7 @@ export default defineConfig({
   plugins: [
     tailwindcss(),
     react({
-      jsxRuntime: 'classic',
+      jsxRuntime: 'automatic',
     }),
     viteSingleFile({
       removeViteModuleLoader: false,

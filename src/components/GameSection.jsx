@@ -1,4 +1,4 @@
-import React, { useMemo, useCallback } from 'react';
+import { useMemo, useCallback } from 'react';
 import { PLAYER_NUMBERS } from '../constants/gameData.js';
 
 export const GameSection = ({

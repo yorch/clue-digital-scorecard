@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 export const NotesSection = ({ gameState, setGameState, t }) => {
   const [showNotes, setShowNotes] = useState(true);
