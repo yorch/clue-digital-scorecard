@@ -124,12 +124,6 @@ tr:hover td:first-child {
   font-weight: bold;
 }
 
-/* Language button active state */
-.lang-btn.active {
-  background: #000 !important;
-  color: #fff !important;
-}
-
 /* Toast notification styles */
 .toast-container {
   position: fixed;
