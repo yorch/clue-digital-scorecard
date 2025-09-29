@@ -1,3 +1,11 @@
+@import "tailwindcss";
+
+@theme {
+  --font-typewriter: "Special Elite", "Courier New", "Courier", monospace;
+  --color-paper: #f5f5f0;
+  --color-paper-white: #fafaf8;
+}
+
 /* Essential functionality styles that can't be replaced with Tailwind */
 
 /* Checkbox cell pseudo-elements for content */

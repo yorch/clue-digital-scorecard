@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import ReactDOM from 'react-dom/client';
-import './styles.css';
+import './style.css';
 
 // Game constants
 const GAME_CARDS = {

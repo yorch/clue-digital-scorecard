@@ -22,7 +22,7 @@
     "type": "git",
     "url": "git+https://github.com/yorch/clue-digital-scorecard.git"
   },
-  "type": "commonjs",
+  "type": "module",
   "bugs": {
     "url": "https://github.com/yorch/clue-digital-scorecard/issues"
   },
@@ -32,8 +32,10 @@
     "react-dom": "19.1.1"
   },
   "devDependencies": {
+    "@tailwindcss/vite": "4.1.13",
     "@vitejs/plugin-react": "5.0.4",
     "prettier": "3.6.2",
+    "tailwindcss": "4.1.13",
     "vite": "7.1.7",
     "vite-plugin-singlefile": "2.3.0"
   },
