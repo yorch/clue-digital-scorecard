@@ -4,20 +4,29 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-This is a React-based digital scorecard application for the Clue board game with bilingual support (English/Spanish). The application defaults to English and allows players to track which cards each player has during the game through an interactive web interface with advanced features including player name customization, auto-save, validation, keyboard navigation, and solution tracking.
+This is a React-based digital scorecard application for the Clue board game with bilingual support (English/Spanish). The application defaults to English and allows players to track which cards each player has during the game through an interactive web interface with advanced features including player name customization, auto-save, validation, keyboard navigation, solution tracking, and game history management.
 
 ## Architecture
 
 ### Development Structure with Vite Build System
 
 - **index.html**: Entry point that imports from `src/app.jsx`
-- **src/app.jsx**: Main React application with all components and logic
-- **vite.config.js**: Vite configuration with single-file build plugin
-- Uses React 18, Vite for development server and building, and Tailwind CSS via CDN
-- Development mode: Vite dev server with hot reload
-- Production build: Single self-contained HTML file (~220KB)
+- **src/app.jsx**: Main React application with modular component architecture (reduced from 540 to 295 lines through refactoring)
+- **vite.config.js**: Vite configuration with automatic JSX runtime and single-file build plugin
+- Uses React 18, Vite for development server and building, and Tailwind CSS via @tailwindcss/vite plugin
+- Development mode: Vite dev server with hot reload and automatic JSX transformation
+- Production build: Single self-contained HTML file (~250KB)
 
-### Core Components
+### Modular Architecture
+
+**Component Structure**:
+
+- **Custom Hooks**: Extracted logic into reusable hooks (`useGameHistory`, `useToastMessages`, `useKeyboardNavigation`, `useAutoSave`)
+- **Utility Functions**: Separated concerns into utils (`localStorage`, `gameValidation`, `debounce`)
+- **Reusable Components**: `CollapsibleSection` component for consistent styling across all major sections
+- **Specialized Components**: Individual components for each major feature area
+
+**Core System Components**:
 
 1. **Game Data Model**:
    - Three main categories: Characters (Who?), Weapons (With what?), Rooms (Where?)
@@ -33,39 +42,52 @@ This is a React-based digital scorecard application for the Clue board game with
 
 3. **State Management**:
    - React hooks (useState, useEffect, useCallback) for component state
-   - Auto-save to localStorage every 30 seconds
+   - Custom hooks for complex state logic (game history, validation, auto-save)
+   - Auto-save to localStorage every 30 seconds with error handling
    - JSON-based save/load system using browser File API
-   - React state management for all game data
+   - Atomic localStorage operations to prevent state corruption
    - Language preference stored in localStorage
 
 4. **Solution Tracking**:
-   - Dedicated dropdown system for mystery solution (Who?, What?, Where?)
+   - Collapsible section with dedicated dropdown system for mystery solution (Who?, What?, Where?)
    - Integrated with auto-save system
-   - Visual separation from main scorecard grid
+   - Visual separation from main scorecard grid with thematic icons
 
-5. **Validation System**:
+5. **Game History Management**:
+   - Automatic saving of completed games (up to 10 most recent)
+   - Load previous games functionality
+   - Individual game deletion with confirmation
+   - Clear all history functionality
+   - Duplicate game detection to prevent redundant saves
+
+6. **Validation System**:
    - Real-time duplicate card detection across players
    - Bilingual warning messages with player name identification
    - Smart logic for progress tracking and completion percentages
+   - Toast notification system with auto-cleanup
 
-6. **Language System**:
+7. **Language System**:
    - Complete bilingual support (English/Spanish)
    - Runtime language switching with persistent preference
    - Comprehensive translation system for UI and card names
 
 ### UI Features
 
+- **Modern Collapsible Design**: All major sections (Player Names, Notes, Solution, Game History) use consistent collapsible headers with animated arrows
 - **Responsive Design**: Mobile-first approach optimized for all screen sizes (320px+)
 - **Keyboard Navigation**: Full keyboard support with Tab, arrows, Space, and Escape keys
 - **Visual States**:
   - Empty cells: Gray border with ◯ symbol, clickable
   - Checked cells: Green background with O symbol (player has card)
   - Crossed cells: Red background with X symbol (player doesn't have card)
-- **Player Management**: Customizable player names (up to 15 characters) with persistence
+- **Enhanced Form Controls**: Input fields and dropdowns with hover states, focus rings, and improved accessibility
+- **Player Management**: Customizable player names (up to 15 characters) with persistence in collapsible section
 - **Auto-Save**: Automatic localStorage backup every 30 seconds with manual JSON export/import
 - **Progress Tracking**: Real-time completion percentages displayed in section headers
-- **Smart Validation**: Duplicate card warnings with contextual messaging
-- **Typewriter Theme**: Special Elite font with paper-like color scheme for vintage detective aesthetic
+- **Smart Validation**: Duplicate card warnings with contextual messaging and toast notifications
+- **Game History Interface**: Professional table with load/delete actions, formatted dates, and bulk clear functionality
+- **Typewriter Theme**: Special Elite font with paper-like color scheme and thematic icons for vintage detective aesthetic
+- **Consistent Styling**: Unified paper-white sections with black borders, shadows, and smooth animations
 
 ## Development Commands
 
@@ -82,7 +104,7 @@ yarn dev
 ```bash
 # Build single-file production version
 yarn build
-# Creates dist/index.html (~220KB single file)
+# Creates dist/index.html (~250KB single file)
 ```
 
 ### Serving Built Version

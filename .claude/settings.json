@@ -6,6 +6,7 @@
       "Bash(npm:*)",
       "Bash(yarn:*)",
       "mcp__context7__*",
+      "mcp__sequential-thinking__*",
       "mcp__serena__*"
     ],
     "deny": [],

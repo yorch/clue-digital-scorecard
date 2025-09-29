@@ -32,6 +32,15 @@ A bilingual digital scorecard for the Clue board game built with React. Track wh
 - **🤖 Smart Auto-Complete**: Intelligent card elimination when a player is confirmed to have a card
 - **📋 Interactive Instructions**: Collapsible help section with detailed usage guide
 
+### Architectural Improvements (v2.2)
+
+- **🏗️ Modular Architecture**: Component-based design with reusable CollapsibleSection component
+- **🔧 Custom Hooks**: Extracted game logic into specialized hooks (useGameHistory, useKeyboardNavigation)
+- **🧹 Clear All History**: One-click button to remove all saved game history with confirmation
+- **⚡ Performance Optimization**: Reduced circular dependencies and improved state management
+- **📦 Better Code Organization**: Separated components, hooks, and utilities into dedicated directories
+- **🛡️ Enhanced Error Handling**: Improved error recovery and user feedback systems
+
 ## 🚀 Quick Start
 
 ### For End Users
@@ -125,7 +134,7 @@ A bilingual digital scorecard for the Clue board game built with React. Track wh
 ### Architecture
 
 - **Development**: Modular React application with Vite build system and hot reload
-- **Production**: Complete self-contained HTML file (~220KB) with inlined assets
+- **Production**: Complete self-contained HTML file (~250KB) with inlined assets
 - **Modern Framework**: React 18 with hooks and modern ES6+ features
 - **Build System**: Vite with vite-plugin-singlefile for production bundling
 - **Styling Framework**: Tailwind CSS with custom typewriter theme (Special Elite font)
@@ -171,9 +180,19 @@ The project uses **Vite build system** for modern development experience while m
 ```text
 clue-digital-scorecard/
 ├── src/                  # Source files for development
-│   └── app.jsx          # Main React application
+│   ├── app.jsx          # Main React application
+│   ├── components/      # Reusable React components
+│   │   ├── CollapsibleSection.jsx
+│   │   ├── GameHistorySection.jsx
+│   │   ├── PlayerNamesSection.jsx
+│   │   ├── NotesSection.jsx
+│   │   └── SolutionSection.jsx
+│   ├── hooks/           # Custom React hooks
+│   │   └── useGameHistory.js
+│   └── utils/           # Utility functions
+│       └── debounce.js
 ├── dist/                 # Built output (generated)
-│   └── index.html        # Complete bundled single-file application (~220KB)
+│   └── index.html        # Complete bundled single-file application (~250KB)
 ├── index.html           # Entry point that imports from src/
 ├── vite.config.js       # Vite configuration with single-file plugin
 ├── package.json         # Project configuration and dependencies
@@ -193,7 +212,7 @@ yarn dev
 
 # Build the complete single-file version
 yarn build
-# Creates dist/index.html (~220KB)
+# Creates dist/index.html (~250KB)
 
 # Test the built application
 yarn preview
@@ -219,7 +238,7 @@ The Vite build system with vite-plugin-singlefile:
 - Takes `index.html` as entry point
 - Bundles `src/app.jsx` with all React components
 - Inlines all CSS and JavaScript into single HTML file
-- Creates optimized ~220KB self-contained file
+- Creates optimized ~250KB self-contained file
 
 The resulting file can be:
 
@@ -241,7 +260,8 @@ The resulting file can be:
 6. **Monitor Progress**: Watch completion percentages to see investigation progress
 7. **Navigation**: Use mouse/touch or keyboard (Tab, arrows, Space) for efficient input
 8. **Validation**: Watch for warnings if you accidentally mark the same card for multiple players
-9. **Save/Resume**: Game automatically saves, or manually export for sharing
+9. **Game History**: View and manage previously completed games, with option to clear all history
+10. **Save/Resume**: Game automatically saves, or manually export for sharing
 
 ### Keyboard Shortcuts
 
