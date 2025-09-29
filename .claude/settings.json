@@ -1,8 +1,10 @@
 {
   "permissions": {
     "allow": [
-      "Bash(yarn:*)",
+      "Bash(curl:*)",
+      "Bash(grep:*)",
       "Bash(npm:*)",
+      "Bash(yarn:*)",
       "mcp__context7__*",
       "mcp__serena__*"
     ],
