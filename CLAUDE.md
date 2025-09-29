@@ -4,16 +4,18 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-This is a single-file React-based digital scorecard application for the Clue board game with bilingual support (English/Spanish). The application defaults to English and allows players to track which cards each player has during the game through an interactive web interface with advanced features including player name customization, auto-save, validation, keyboard navigation, and solution tracking.
+This is a React-based digital scorecard application for the Clue board game with bilingual support (English/Spanish). The application defaults to English and allows players to track which cards each player has during the game through an interactive web interface with advanced features including player name customization, auto-save, validation, keyboard navigation, and solution tracking.
 
 ## Architecture
 
-### Single-File Structure
+### Development Structure with Vite Build System
 
-- **index.html**: Complete self-contained HTML application with embedded React/JSX and CSS (~1200 lines)
-- Uses React 18, Babel for JSX transformation, and Tailwind CSS via CDN
-- No build process or external files required
-- Direct browser execution via file:// protocol or simple HTTP server
+- **index.html**: Entry point that imports from `src/app.jsx`
+- **src/app.jsx**: Main React application with all components and logic
+- **vite.config.js**: Vite configuration with single-file build plugin
+- Uses React 18, Vite for development server and building, and Tailwind CSS via CDN
+- Development mode: Vite dev server with hot reload
+- Production build: Single self-contained HTML file (~220KB)
 
 ### Core Components
 
@@ -67,15 +69,27 @@ This is a single-file React-based digital scorecard application for the Clue boa
 
 ## Development Commands
 
-### Running Locally
+### Development Mode
 
 ```bash
-# Option 1: Direct browser open
-open index.html
+# Start Vite development server with hot reload
+yarn dev
+# Opens browser to http://localhost:3000/
+```
 
-# Option 2: Simple HTTP server (if needed for testing)
-python3 -m http.server 8000
-# Then visit http://localhost:8000
+### Production Build
+
+```bash
+# Build single-file production version
+yarn build
+# Creates dist/index.html (~220KB single file)
+```
+
+### Serving Built Version
+
+```bash
+# Serve built version for testing
+yarn preview
 ```
 
 ### Testing
@@ -84,6 +98,7 @@ python3 -m http.server 8000
 - Manual testing in multiple browsers recommended
 - Test responsive behavior at different screen sizes
 - Verify save/load functionality with actual JSON files
+- Test both development and production builds
 
 ## Key Technical Details
 
@@ -95,9 +110,13 @@ python3 -m http.server 8000
 
   ```json
   {
-    "playerNames": {"1": "Alice", "2": "Bob"},
-    "cardStates": {"mrGreen-1": "checked", "colonelMustard-2": "crossed"},
-    "solution": {"character": "mrGreen", "weapon": "dagger", "room": "library"},
+    "playerNames": { "1": "Alice", "2": "Bob" },
+    "cardStates": { "mrGreen-1": "checked", "colonelMustard-2": "crossed" },
+    "solution": {
+      "character": "mrGreen",
+      "weapon": "dagger",
+      "room": "library"
+    },
     "language": "en",
     "savedAt": "2024-01-15T10:30:00.000Z",
     "version": "1.0"
@@ -112,7 +131,7 @@ python3 -m http.server 8000
 - File operations use HTML5 File API for client-side file handling
 - Keyboard event management with focus tracking and smart navigation
 - Real-time validation on every state change via React
-- No server-side requirements
+- No server-side requirements for either development or production builds
 
 ### Styling Architecture
 
@@ -139,13 +158,16 @@ Bilingual application with English as default:
 
 - Modern browsers with ES6+ and React support required (Chrome, Firefox, Safari, Edge)
 - Key APIs used: React hooks, JSON, File API, localStorage, modern JavaScript features
-- External dependencies: React 18 CDN, Babel Standalone CDN, Tailwind CSS CDN, Google Fonts (Special Elite)
+- External dependencies: React 18 CDN, Tailwind CSS CDN, Google Fonts (Special Elite)
 - No polyfills included - assumes modern browser environment
 
 ## Important Notes
 
-- **Single File Architecture**: React application in index.html (~1200 lines) with JSX
-- **No Build Process**: Direct browser execution with Babel transformation
+- **Development Architecture**: Separate source files with Vite build system for development
+- **Production Architecture**: Single self-contained HTML file (~220KB) with inlined CSS and JS
+- **Build Process**: Vite with vite-plugin-singlefile for production builds
+- **Development Process**: Hot reload via Vite dev server at <http://localhost:3000/>
 - **State Persistence**: React state with localStorage auto-save and manual JSON export/import
 - **Accessibility**: Keyboard navigation, proper contrast, mobile-friendly design, bilingual support
 - **Performance**: Modern React patterns, optimized with useCallback/useMemo, minimal external dependencies
+- **Deployment**: Production build creates single HTML file that can be opened directly in browsers or served from any web server

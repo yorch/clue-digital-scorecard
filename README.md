@@ -34,21 +34,33 @@ A bilingual digital scorecard for the Clue board game built with React. Track wh
 
 ## 🚀 Quick Start
 
-1. Open `index.html` in any modern web browser
-2. **Choose Language**: Toggle between English/Spanish using the language buttons in the top-right
-3. **View Instructions**: Click the "How to use the card?" button for detailed guidance (optional)
-4. **Set Player Names**: Enter custom names in the "Player Names" section (optional)
-5. **Track Solution**: Use the "Mystery Solution" section to track your deductions
-6. **Mark Cards**: Click on cells to track card ownership:
+### For End Users
+
+1. Download the latest release and open `dist/index.html` in any modern web browser
+
+### For Development
+
+1. Clone the repository
+2. Run `yarn install`
+3. Run `yarn dev` to start development server
+4. Open browser to `http://localhost:3000/`
+
+### Using the Application
+
+1. **Choose Language**: Toggle between English/Spanish using the language buttons in the top-right
+2. **View Instructions**: Click the "How to use the card?" button for detailed guidance (optional)
+3. **Set Player Names**: Enter custom names in the "Player Names" section (optional)
+4. **Track Solution**: Use the "Mystery Solution" section to track your deductions
+5. **Mark Cards**: Click on cells to track card ownership:
    - Empty = Unknown status
    - ✓ = Player has the card
    - ✗ = Player doesn't have the card
-7. **Keyboard Navigation**: Use Tab, arrows, Space, and Escape for efficient navigation
-8. **Monitor Progress**: Watch real-time completion percentages in section titles
-9. **Smart Auto-Complete**: When you mark a card as owned, other players' cells automatically clear
-10. **Auto-Save**: Your progress saves automatically every 30 seconds
-11. **Manual Save**: Use "Save Game" to export game state
-12. **Load Game**: Use "Load Game" to import a saved game
+6. **Keyboard Navigation**: Use Tab, arrows, Space, and Escape for efficient navigation
+7. **Monitor Progress**: Watch real-time completion percentages in section titles
+8. **Smart Auto-Complete**: When you mark a card as owned, other players' cells automatically clear
+9. **Auto-Save**: Your progress saves automatically every 30 seconds
+10. **Manual Save**: Use "Save Game" to export game state
+11. **Load Game**: Use "Load Game" to import a saved game
 
 ## 🎯 Game Categories
 
@@ -112,8 +124,10 @@ A bilingual digital scorecard for the Clue board game built with React. Track wh
 
 ### Architecture
 
-- **Single File**: Complete self-contained React application in HTML file (~1200 lines)
-- **Modern Framework**: React 18 with hooks, Babel for JSX transformation
+- **Development**: Modular React application with Vite build system and hot reload
+- **Production**: Complete self-contained HTML file (~220KB) with inlined assets
+- **Modern Framework**: React 18 with hooks and modern ES6+ features
+- **Build System**: Vite with vite-plugin-singlefile for production bundling
 - **Styling Framework**: Tailwind CSS with custom typewriter theme (Special Elite font)
 - **Design Theme**: Detective/vintage aesthetic with paper-like colors and typewriter fonts
 - **Client-Side Storage**: Uses localStorage for automatic persistence and settings
@@ -150,25 +164,69 @@ A bilingual digital scorecard for the Clue board game built with React. Track wh
 
 ## 🚧 Development
 
-### Running Locally
+The project uses **Vite build system** for modern development experience while maintaining the ability to build a single HTML file for easy deployment.
 
-```bash
-# Option 1: Direct browser
-open index.html
-
-# Option 2: Local server (if needed)
-python3 -m http.server 8000
-# Visit http://localhost:8000
-```
-
-### File Structure
+### Project Structure
 
 ```text
 clue-digital-scorecard/
-├── index.html          # Complete React application (~1200 lines)
-├── README.md          # Project documentation
-└── CLAUDE.md         # Claude Code guidance
+├── src/                  # Source files for development
+│   └── app.jsx          # Main React application
+├── dist/                 # Built output (generated)
+│   └── index.html        # Complete bundled single-file application (~220KB)
+├── index.html           # Entry point that imports from src/
+├── vite.config.js       # Vite configuration with single-file plugin
+├── package.json         # Project configuration and dependencies
+├── README.md            # Project documentation
+└── CLAUDE.md           # Claude Code guidance
 ```
+
+### Development Workflow
+
+```bash
+# Install dependencies
+yarn install
+
+# Start development server with hot reload
+yarn dev
+# Opens browser to http://localhost:3000/
+
+# Build the complete single-file version
+yarn build
+# Creates dist/index.html (~220KB)
+
+# Test the built application
+yarn preview
+```
+
+### Working with Source Files
+
+**Development Mode:**
+
+- Edit `src/app.jsx` - Complete React application with all components
+- Vite provides hot reload for instant feedback
+- Development server at `http://localhost:3000/`
+
+**Production Mode:**
+
+- Build creates `dist/index.html` with everything inlined
+- Uses vite-plugin-singlefile to bundle CSS and JS into single HTML file
+
+### Build Process
+
+The Vite build system with vite-plugin-singlefile:
+
+- Takes `index.html` as entry point
+- Bundles `src/app.jsx` with all React components
+- Inlines all CSS and JavaScript into single HTML file
+- Creates optimized ~220KB self-contained file
+
+The resulting file can be:
+
+- Opened directly in any modern browser
+- Deployed to any web server
+- Shared as a single file
+- Used offline without any dependencies
 
 ## 🎮 How to Play
 
