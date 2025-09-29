@@ -7,10 +7,17 @@ import { GAME_CARDS, PLAYER_NUMBERS } from './constants/gameData.js';
 
 // Hooks and utilities
 import { useTranslation } from './hooks/useTranslation.js';
+import { calculateProgress } from './utils/gameValidation.js';
+import { useToastMessages } from './hooks/useToastMessages.js';
+import { useKeyboardNavigation } from './hooks/useKeyboardNavigation.js';
+import { useGameHistory } from './hooks/useGameHistory.js';
+import { useAutoSave } from './hooks/useAutoSave.js';
 import {
-  validateCardAssignments,
-  calculateProgress,
-} from './utils/gameValidation.js';
+  StorageKeys,
+  loadGameState,
+  loadGameHistory,
+  removeStorageItem,
+} from './utils/localStorage.js';
 
 // Components
 import { Header } from './components/Header.jsx';
@@ -29,7 +36,7 @@ import { ConfirmModal } from './components/ConfirmModal.jsx';
 // Main App Component
 export const ClueApp = () => {
   const [currentLanguage, setCurrentLanguage] = useState(
-    localStorage.getItem('clue_language') || 'en',
+    localStorage.getItem(StorageKeys.LANGUAGE) || 'en',
   );
   const [gameState, setGameState] = useState({
     playerNames: {},
@@ -37,13 +44,9 @@ export const ClueApp = () => {
     solution: { who: '', weapon: '', room: '' },
     notes: '',
   });
-  const [gameHistory, setGameHistory] = useState([]);
-  const [validationMessages, setValidationMessages] = useState([]);
   const [showInstructions, setShowInstructions] = useState(false);
   const [showPlayerNames, setShowPlayerNames] = useState(true);
   const [showGameHistory, setShowGameHistory] = useState(true);
-  const [keyboardNavigation, setKeyboardNavigation] = useState(false);
-  const [currentFocusedCell, setCurrentFocusedCell] = useState(null);
   const [confirmModal, setConfirmModal] = useState({
     isOpen: false,
     message: '',
@@ -54,25 +57,35 @@ export const ClueApp = () => {
   // Translation hooks
   const { t, getTranslatedCardName } = useTranslation(currentLanguage);
 
-  // Auto-save functionality
-  const autoSave = useCallback(() => {
-    try {
-      localStorage.setItem('clue_autosave', JSON.stringify(gameState));
-    } catch (e) {
-      showMessage(t('autoSaveFailedMsg'), 'error');
-    }
-  }, [gameState, t]);
+  // Toast messages hook
+  const {
+    messages: validationMessages,
+    setMessages: setValidationMessages,
+    showMessage,
+    clearValidationWarnings,
+    addValidationWarning,
+  } = useToastMessages();
 
-  // Show message
-  const showMessage = useCallback((text, type = 'success', duration = 3000) => {
-    const id = Date.now();
-    const newMessage = { id, text, type };
-    setValidationMessages((prev) => [...prev, newMessage]);
+  // Keyboard navigation hook
+  useKeyboardNavigation(gameState);
 
-    setTimeout(() => {
-      setValidationMessages((prev) => prev.filter((msg) => msg.id !== id));
-    }, duration);
-  }, []);
+  // Game history hook
+  const { gameHistory, setGameHistory } = useGameHistory(
+    gameState,
+    showMessage,
+    t,
+  );
+
+  // Auto-save hook
+  useAutoSave(
+    gameState,
+    showMessage,
+    clearValidationWarnings,
+    addValidationWarning,
+    t,
+    getTranslatedCardName,
+    currentLanguage,
+  );
 
   // Custom confirm modal
   const showConfirm = useCallback(
@@ -88,7 +101,9 @@ export const ClueApp = () => {
               onConfirm: null,
               onCancel: null,
             });
-            if (onConfirm) onConfirm();
+            if (onConfirm) {
+              onConfirm();
+            }
             resolve(true);
           },
           onCancel: () => {
@@ -98,7 +113,9 @@ export const ClueApp = () => {
               onConfirm: null,
               onCancel: null,
             });
-            if (onCancel) onCancel();
+            if (onCancel) {
+              onCancel();
+            }
             resolve(false);
           },
         });
@@ -106,51 +123,10 @@ export const ClueApp = () => {
     [],
   );
 
-  // Check if game is completed (solution is filled)
-  const isGameCompleted = useCallback(
-    () =>
-      gameState.solution.who &&
-      gameState.solution.weapon &&
-      gameState.solution.room,
-    [gameState.solution],
-  );
-
-  // Save completed game to history
-  const saveGameToHistory = useCallback(() => {
-    if (!isGameCompleted()) {
-      return;
-    }
-
-    const activePlayers = PLAYER_NUMBERS.filter(
-      (playerNum) =>
-        gameState.playerNames[playerNum] &&
-        gameState.playerNames[playerNum].trim() !== '',
-    );
-
-    const completedGame = {
-      id: Date.now(),
-      playerNames: gameState.playerNames,
-      cardStates: gameState.cardStates,
-      solution: gameState.solution,
-      notes: gameState.notes,
-      completedAt: new Date().toISOString(),
-      activePlayers: activePlayers,
-      version: '1.0',
-    };
-
-    const newHistory = [completedGame, ...gameHistory].slice(0, 10); // Keep last 10 games
-    setGameHistory(newHistory);
-    localStorage.setItem('clue_game_history', JSON.stringify(newHistory));
-    showMessage(t('gameCompletedMsg'));
-  }, [gameState, gameHistory, isGameCompleted, t, showMessage]);
-
   // Start new game
   const startNewGame = useCallback(() => {
     showConfirm(t('confirmNewGame'), () => {
-      // Save current game if completed
-      if (isGameCompleted()) {
-        saveGameToHistory();
-      }
+      // Game will be automatically saved by the useEffect if it's completed
 
       // Reset game state
       setGameState({
@@ -161,31 +137,10 @@ export const ClueApp = () => {
       });
 
       // Clear auto-save
-      localStorage.removeItem('clue_autosave');
+      removeStorageItem(StorageKeys.AUTO_SAVE);
       showMessage(t('newGameStartedMsg'));
     });
-  }, [t, isGameCompleted, saveGameToHistory, showConfirm, showMessage]);
-
-  // Validate card assignments for duplicates
-  const validateCardAssignmentsFn = useCallback(() => {
-    // Clear existing validation warnings
-    setValidationMessages((prev) =>
-      prev.filter((msg) => msg.type !== 'validation-warning'),
-    );
-
-    const warnings = validateCardAssignments(
-      gameState,
-      t,
-      getTranslatedCardName,
-      currentLanguage,
-    );
-
-    warnings.forEach((warning) => {
-      const id = Date.now() + Math.random();
-      const warningMessage = { id, text: warning, type: 'validation-warning' };
-      setValidationMessages((prev) => [...prev, warningMessage]);
-    });
-  }, [gameState, t, getTranslatedCardName, currentLanguage]);
+  }, [t, showConfirm, showMessage]);
 
   // Calculate progress for a section (optimized)
   const calculateProgressFn = useCallback(
@@ -197,190 +152,29 @@ export const ClueApp = () => {
   // Set language
   const setLanguage = useCallback((lang) => {
     setCurrentLanguage(lang);
-    localStorage.setItem('clue_language', lang);
+    localStorage.setItem(StorageKeys.LANGUAGE, lang);
     document.documentElement.setAttribute('data-lang', lang);
   }, []);
 
-  // Load auto-saved data and game history
+  // Load auto-saved data on mount
   useEffect(() => {
     try {
-      const saved = localStorage.getItem('clue_autosave');
-      if (saved) {
-        const data = JSON.parse(saved);
-        setGameState({
-          playerNames: data.playerNames || {},
-          cardStates: data.cardStates || {},
-          solution: data.solution || { who: '', weapon: '', room: '' },
-          notes: data.notes || '',
-        });
-      }
+      const savedState = loadGameState();
+      setGameState(savedState);
 
-      // Load game history
-      const history = localStorage.getItem('clue_game_history');
-      if (history) {
-        setGameHistory(JSON.parse(history));
-      }
+      const history = loadGameHistory();
+      setGameHistory(history);
     } catch (e) {
-      showMessage(t('errorLoadAutoSaveMsg'), 'error');
+      console.error('Failed to load saved data:', e);
+      showMessage('Failed to load saved data. Starting fresh.', 'warning');
     }
-  }, []);
-
-  // Auto-save on game state changes
-  useEffect(() => {
-    autoSave();
-    validateCardAssignmentsFn();
-  }, [autoSave, validateCardAssignmentsFn]);
-
-  // Auto-save completed games to history
-  useEffect(() => {
-    if (isGameCompleted()) {
-      // Only save if this is a new completion (not loading a saved game)
-      const previousSolution = JSON.stringify({
-        who: gameState.solution.who,
-        weapon: gameState.solution.weapon,
-        room: gameState.solution.room,
-      });
-
-      // Check if this exact game is already in history
-      const isDuplicateGame = gameHistory.some(
-        (game) =>
-          JSON.stringify(game.solution) === previousSolution &&
-          JSON.stringify(game.playerNames) ===
-            JSON.stringify(gameState.playerNames) &&
-          JSON.stringify(game.cardStates) ===
-            JSON.stringify(gameState.cardStates),
-      );
-
-      if (!isDuplicateGame) {
-        saveGameToHistory();
-      }
-    }
-  }, [
-    gameState.solution,
-    isGameCompleted,
-    saveGameToHistory,
-    gameHistory,
-    gameState.playerNames,
-    gameState.cardStates,
-  ]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // Empty deps is intentional - only run on mount, showMessage is stable
 
   // Initialize language on mount
   useEffect(() => {
     setLanguage(currentLanguage);
   }, [setLanguage, currentLanguage]);
-
-  // Keyboard navigation functionality
-  useEffect(() => {
-    const handleKeyDown = (e) => {
-      // Only activate keyboard navigation if user presses Tab or arrow keys
-      if (
-        [
-          'Tab',
-          'ArrowUp',
-          'ArrowDown',
-          'ArrowLeft',
-          'ArrowRight',
-          ' ',
-          'Enter',
-        ].includes(e.key)
-      ) {
-        setKeyboardNavigation(true);
-      }
-
-      if (!keyboardNavigation) return;
-
-      const checkboxCells = Array.from(
-        document.querySelectorAll('.checkbox-cell'),
-      );
-      const currentIndex = currentFocusedCell
-        ? checkboxCells.indexOf(currentFocusedCell)
-        : -1;
-
-      switch (e.key) {
-        case 'Tab':
-          e.preventDefault();
-          const nextIndex = e.shiftKey
-            ? currentIndex <= 0
-              ? checkboxCells.length - 1
-              : currentIndex - 1
-            : currentIndex >= checkboxCells.length - 1
-              ? 0
-              : currentIndex + 1;
-          focusCell(checkboxCells[nextIndex]);
-          break;
-        case 'ArrowRight':
-          e.preventDefault();
-          if (currentFocusedCell) {
-            const nextCell =
-              checkboxCells[
-                Math.min(currentIndex + 1, checkboxCells.length - 1)
-              ];
-            focusCell(nextCell);
-          }
-          break;
-        case 'ArrowLeft':
-          e.preventDefault();
-          if (currentFocusedCell) {
-            const prevCell = checkboxCells[Math.max(currentIndex - 1, 0)];
-            focusCell(prevCell);
-          }
-          break;
-        case 'ArrowDown':
-          e.preventDefault();
-          if (currentFocusedCell) {
-            // Calculate cells per row based on active players
-            const activePlayers =
-              Array.from(document.querySelectorAll('th')).length - 1; // -1 for card name column
-            const cellsPerRow = Math.max(activePlayers, 1);
-            const nextRowIndex = Math.min(
-              currentIndex + cellsPerRow,
-              checkboxCells.length - 1,
-            );
-            focusCell(checkboxCells[nextRowIndex]);
-          }
-          break;
-        case 'ArrowUp':
-          e.preventDefault();
-          if (currentFocusedCell) {
-            // Calculate cells per row based on active players
-            const activePlayers =
-              Array.from(document.querySelectorAll('th')).length - 1; // -1 for card name column
-            const cellsPerRow = Math.max(activePlayers, 1);
-            const prevRowIndex = Math.max(currentIndex - cellsPerRow, 0);
-            focusCell(checkboxCells[prevRowIndex]);
-          }
-          break;
-        case ' ':
-        case 'Enter':
-          e.preventDefault();
-          if (currentFocusedCell) {
-            currentFocusedCell.click();
-          }
-          break;
-        case 'Escape':
-          setKeyboardNavigation(false);
-          if (currentFocusedCell) {
-            currentFocusedCell.classList.remove('focused-cell');
-            setCurrentFocusedCell(null);
-          }
-          break;
-      }
-    };
-
-    const focusCell = (cell) => {
-      if (currentFocusedCell) {
-        currentFocusedCell.classList.remove('focused-cell');
-      }
-      if (cell) {
-        cell.classList.add('focused-cell');
-        cell.focus();
-        setCurrentFocusedCell(cell);
-      }
-    };
-
-    document.addEventListener('keydown', handleKeyDown);
-    return () => document.removeEventListener('keydown', handleKeyDown);
-  }, [keyboardNavigation, currentFocusedCell]);
 
   return (
     <>
