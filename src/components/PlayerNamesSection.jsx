@@ -28,8 +28,7 @@ export const PlayerNamesSection = ({
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {PLAYER_NUMBERS.map((playerNum) => (
           <div key={playerNum} className="flex flex-col gap-2">
-            <label className="font-bold text-black text-sm font-typewriter flex items-center gap-2">
-              <span className="text-sm">🎭</span>
+            <label className="font-bold text-black text-sm font-typewriter">
               {t(`player${playerNum}Label`)}
             </label>
             <input
