@@ -116,6 +116,10 @@ export function useKeyboardNavigation(gameState) {
 
         case ' ':
         case 'Enter':
+          // Don't prevent default if user is typing in a textarea or input
+          if (e.target.tagName === 'TEXTAREA' || e.target.tagName === 'INPUT') {
+            return;
+          }
           e.preventDefault();
           if (focusedCellRef.current) {
             focusedCellRef.current.click();
