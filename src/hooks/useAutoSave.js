@@ -1,4 +1,4 @@
-import { useEffect, useCallback, useMemo } from 'react';
+import { useEffect, useCallback, useMemo, useRef } from 'react';
 import { saveGameState } from '../utils/localStorage.js';
 import { validateCardAssignments } from '../utils/gameValidation.js';
 import { debounce } from '../utils/debounce.js';
@@ -25,6 +25,9 @@ export function useAutoSave(
   getTranslatedCardName,
   currentLanguage,
 ) {
+  // Track if this is the first render to prevent saving initial empty state
+  const isFirstRender = useRef(true);
+
   // Auto-save functionality
   const autoSave = useCallback(() => {
     if (!saveGameState(gameState)) {
@@ -61,8 +64,13 @@ export function useAutoSave(
     [validateCardAssignmentsFn],
   );
 
-  // Auto-save on game state changes
+  // Auto-save on game state changes (skip first render to avoid overwriting loaded state)
   useEffect(() => {
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
+    }
+
     autoSave();
     debouncedValidation();
   }, [autoSave, debouncedValidation]);

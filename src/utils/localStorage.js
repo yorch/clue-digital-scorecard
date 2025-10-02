@@ -61,6 +61,9 @@ export function removeStorageItem(key) {
  */
 export function loadGameState() {
   const saved = getStorageItem(StorageKeys.AUTO_SAVE);
+
+  console.debug('Loaded game state from localStorage:', saved);
+
   if (!saved) {
     return {
       playerNames: {},
@@ -84,6 +87,8 @@ export function loadGameState() {
  * @returns {boolean} Success status
  */
 export function saveGameState(gameState) {
+  console.debug('Saving game state to localStorage:', gameState);
+
   return setStorageItem(StorageKeys.AUTO_SAVE, gameState);
 }
 
