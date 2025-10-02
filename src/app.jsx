@@ -47,6 +47,7 @@ export const ClueApp = () => {
   const [showInstructions, setShowInstructions] = useState(false);
   const [showPlayerNames, setShowPlayerNames] = useState(true);
   const [showGameHistory, setShowGameHistory] = useState(true);
+  const [showScorecard, setShowScorecard] = useState(true);
   const [confirmModal, setConfirmModal] = useState({
     isOpen: false,
     message: '',
@@ -204,38 +205,55 @@ export const ClueApp = () => {
 
               <Legend t={t} />
 
-              <GameSection
-                title={t('who')}
-                items={GAME_CARDS.characters}
-                gameState={gameState}
-                setGameState={setGameState}
-                t={t}
-                getTranslatedCardName={getTranslatedCardName}
-                showMessage={showMessage}
-                calculateProgress={calculateProgressFn}
-              />
+              <div className="mb-4 flex justify-end">
+                <button
+                  onClick={() => setShowScorecard(!showScorecard)}
+                  className="px-4 py-2 text-xs md:text-sm font-typewriter font-bold uppercase tracking-wider bg-paper-white border-2 border-black shadow-lg rounded-lg hover:bg-gray-100 focus:bg-gray-100 focus:outline-none transition-all duration-300"
+                >
+                  {showScorecard ? t('hideScorecard') : t('showScorecard')}
+                </button>
+              </div>
 
-              <GameSection
-                title={t('withWhat')}
-                items={GAME_CARDS.weapons}
-                gameState={gameState}
-                setGameState={setGameState}
-                t={t}
-                getTranslatedCardName={getTranslatedCardName}
-                showMessage={showMessage}
-                calculateProgress={calculateProgressFn}
-              />
+              <div
+                className={`transition-all duration-300 ${
+                  !showScorecard
+                    ? 'blur-md select-none pointer-events-none'
+                    : ''
+                }`}
+              >
+                <GameSection
+                  title={t('who')}
+                  items={GAME_CARDS.characters}
+                  gameState={gameState}
+                  setGameState={setGameState}
+                  t={t}
+                  getTranslatedCardName={getTranslatedCardName}
+                  showMessage={showMessage}
+                  calculateProgress={calculateProgressFn}
+                />
 
-              <GameSection
-                title={t('where')}
-                items={GAME_CARDS.rooms}
-                gameState={gameState}
-                setGameState={setGameState}
-                t={t}
-                getTranslatedCardName={getTranslatedCardName}
-                showMessage={showMessage}
-                calculateProgress={calculateProgressFn}
-              />
+                <GameSection
+                  title={t('withWhat')}
+                  items={GAME_CARDS.weapons}
+                  gameState={gameState}
+                  setGameState={setGameState}
+                  t={t}
+                  getTranslatedCardName={getTranslatedCardName}
+                  showMessage={showMessage}
+                  calculateProgress={calculateProgressFn}
+                />
+
+                <GameSection
+                  title={t('where')}
+                  items={GAME_CARDS.rooms}
+                  gameState={gameState}
+                  setGameState={setGameState}
+                  t={t}
+                  getTranslatedCardName={getTranslatedCardName}
+                  showMessage={showMessage}
+                  calculateProgress={calculateProgressFn}
+                />
+              </div>
 
               <SolutionSection
                 gameState={gameState}

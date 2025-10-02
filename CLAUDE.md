@@ -74,6 +74,7 @@ This is a React-based digital scorecard application for the Clue board game with
 ### UI Features
 
 - **Modern Collapsible Design**: All major sections (Player Names, Notes, Solution, Game History) use consistent collapsible headers with animated arrows
+- **Privacy Blur Toggle**: Eye icon button in header to blur/unblur scorecard for privacy when others are watching (disables pointer events and text selection when blurred)
 - **Responsive Design**: Mobile-first approach optimized for all screen sizes (320px+)
 - **Keyboard Navigation**: Full keyboard support with Tab, arrows, Space, and Escape keys
 - **Visual States**:

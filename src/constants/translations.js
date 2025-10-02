@@ -104,6 +104,8 @@ export const translations = {
       'Auto-limpieza: {player} ya no tiene "{card}", {count} celdas auto-completadas limpiadas',
     helpFirstLoadMsg:
       '💡 Usa Tab y flechas para navegar, Espacio para cambiar estado',
+    hideScorecard: 'Ocultar',
+    showScorecard: 'Mostrar',
   },
   en: {
     subtitle: 'Digital Score Card',
@@ -207,6 +209,8 @@ export const translations = {
       'Auto-clear: {player} no longer has "{card}", {count} auto-filled cells cleared',
     helpFirstLoadMsg:
       '💡 Use Tab and arrows to navigate, Space to change state',
+    hideScorecard: 'Hide',
+    showScorecard: 'Show',
   },
 };
 
