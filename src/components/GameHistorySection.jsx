@@ -131,17 +131,17 @@ export const GameHistorySection = ({
                       <div className="flex gap-3 justify-center flex-col sm:flex-row items-center">
                         <button
                           onClick={() => loadPreviousGame(game)}
-                          className="bg-blue-600 text-white border-2 border-blue-700 px-4 py-2 text-xs font-typewriter font-bold uppercase tracking-wide transition-all duration-200 hover:bg-blue-700 hover:border-blue-800 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-blue-300 min-h-10 rounded"
+                          className="bg-paper-white text-black border-2 border-black px-4 py-2 text-xs font-typewriter font-bold uppercase tracking-wide transition-all duration-200 hover:bg-gray-200 shadow-md focus:outline-none focus:ring-2 focus:ring-gray-400 min-h-10 rounded cursor-pointer"
                           title={t('loadPreviousGame')}
                         >
-                          📂 Load
+                          Load
                         </button>
                         <button
                           onClick={() => deletePreviousGame(game.id)}
-                          className="bg-red-600 text-white border-2 border-red-700 px-4 py-2 text-xs font-typewriter font-bold uppercase tracking-wide transition-all duration-200 hover:bg-red-700 hover:border-red-800 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-red-300 min-h-10 rounded"
+                          className="bg-paper-white text-black border-2 border-black px-4 py-2 text-xs font-typewriter font-bold uppercase tracking-wide transition-all duration-200 hover:bg-gray-200 shadow-md focus:outline-none focus:ring-2 focus:ring-gray-400 min-h-10 rounded cursor-pointer"
                           title={t('deletePreviousGame')}
                         >
-                          🗑️ Delete
+                          X
                         </button>
                       </div>
                     </td>
@@ -155,7 +155,7 @@ export const GameHistorySection = ({
           <div className="p-4 border-t-2 border-black bg-gray-100 -m-4 mt-4">
             <button
               onClick={handleClearAllHistory}
-              className="w-full bg-red-700 text-white border-2 border-red-800 px-6 py-3 font-typewriter font-bold uppercase tracking-wider transition-all duration-200 hover:bg-red-800 hover:border-red-900 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-red-300 rounded-lg text-sm"
+              className="w-full bg-red-700 text-white border-2 border-red-800 px-6 py-3 font-typewriter font-bold uppercase tracking-wider transition-all duration-200 hover:bg-red-800 hover:border-red-900 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-red-300 rounded-lg text-sm cursor-pointer"
               title={t('clearAllHistory')}
             >
               <div className="flex items-center justify-center gap-2">
