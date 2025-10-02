@@ -27,6 +27,7 @@ import { Legend } from './components/Legend.jsx';
 import { GameSection } from './components/GameSection.jsx';
 import { SolutionSection } from './components/SolutionSection.jsx';
 import { NotesSection } from './components/NotesSection.jsx';
+import { CluesSection } from './components/CluesSection.jsx';
 import { GameHistorySection } from './components/GameHistorySection.jsx';
 import { Controls } from './components/Controls.jsx';
 import { Footer } from './components/Footer.jsx';
@@ -43,6 +44,7 @@ export const ClueApp = () => {
     cardStates: {},
     solution: { who: '', weapon: '', room: '' },
     notes: '',
+    clues: [],
   });
   const [showInstructions, setShowInstructions] = useState(false);
   const [showPlayerNames, setShowPlayerNames] = useState(true);
@@ -135,6 +137,7 @@ export const ClueApp = () => {
         cardStates: {},
         solution: { who: '', weapon: '', room: '' },
         notes: '',
+        clues: [],
       });
 
       // Clear auto-save
@@ -263,6 +266,12 @@ export const ClueApp = () => {
               />
 
               <NotesSection
+                gameState={gameState}
+                setGameState={setGameState}
+                t={t}
+              />
+
+              <CluesSection
                 gameState={gameState}
                 setGameState={setGameState}
                 t={t}

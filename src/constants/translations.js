@@ -106,6 +106,13 @@ export const translations = {
       '💡 Usa Tab y flechas para navegar, Espacio para cambiar estado',
     hideScorecard: 'Ocultar',
     showScorecard: 'Mostrar',
+    clues: 'Pistas',
+    addCluePlaceholder: 'Ej: Jugador A puede tener Comedor o Soga',
+    add: 'Agregar',
+    noCluesYet: 'Aún no hay pistas. ¡Agrega tus deducciones!',
+    markComplete: 'Marcar como completada',
+    markIncomplete: 'Marcar como incompleta',
+    delete: 'Eliminar',
   },
   en: {
     subtitle: 'Digital Score Card',
@@ -211,6 +218,13 @@ export const translations = {
       '💡 Use Tab and arrows to navigate, Space to change state',
     hideScorecard: 'Hide',
     showScorecard: 'Show',
+    clues: 'Clues',
+    addCluePlaceholder: 'e.g., Player A may have Dining Room or Rope',
+    add: 'Add',
+    noCluesYet: 'No clues yet. Add your deductions!',
+    markComplete: 'Mark as complete',
+    markIncomplete: 'Mark as incomplete',
+    delete: 'Delete',
   },
 };
 

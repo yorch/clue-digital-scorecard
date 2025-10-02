@@ -70,6 +70,7 @@ export function loadGameState() {
       cardStates: {},
       solution: { who: '', weapon: '', room: '' },
       notes: '',
+      clues: [],
     };
   }
 
@@ -78,6 +79,7 @@ export function loadGameState() {
     cardStates: saved.cardStates || {},
     solution: saved.solution || { who: '', weapon: '', room: '' },
     notes: saved.notes || '',
+    clues: saved.clues || [],
   };
 }
 
