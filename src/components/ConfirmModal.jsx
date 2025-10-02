@@ -17,13 +17,13 @@ export const ConfirmModal = ({ isOpen, message, onConfirm, onCancel, t }) => {
           <div className="flex gap-3 justify-center">
             <button
               onClick={onConfirm}
-              className="bg-green-500 text-white border-2 border-green-500 px-4 py-2 cursor-pointer text-sm font-typewriter transition-all duration-200 uppercase font-bold hover:bg-green-600 min-h-10"
+              className="bg-green-50 text-black border-2 border-black px-4 py-2 cursor-pointer text-sm font-typewriter transition-all duration-200 uppercase font-bold hover:bg-green-100 shadow-md focus:outline-none focus:ring-2 focus:ring-green-400 min-h-10 rounded"
             >
               ✓ {t('confirmYes')}
             </button>
             <button
               onClick={onCancel}
-              className="bg-red-500 text-white border-2 border-red-500 px-4 py-2 cursor-pointer text-sm font-typewriter transition-all duration-200 uppercase font-bold hover:bg-red-600 min-h-10"
+              className="bg-red-50 text-black border-2 border-black px-4 py-2 cursor-pointer text-sm font-typewriter transition-all duration-200 uppercase font-bold hover:bg-red-100 shadow-md focus:outline-none focus:ring-2 focus:ring-red-400 min-h-10 rounded"
             >
               ✗ {t('confirmNo')}
             </button>

@@ -155,13 +155,10 @@ export const GameHistorySection = ({
           <div className="p-4 border-t-2 border-black bg-gray-100 -m-4 mt-4">
             <button
               onClick={handleClearAllHistory}
-              className="w-full bg-red-700 text-white border-2 border-red-800 px-6 py-3 font-typewriter font-bold uppercase tracking-wider transition-all duration-200 hover:bg-red-800 hover:border-red-900 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-red-300 rounded-lg text-sm cursor-pointer"
+              className="w-full bg-red-50 text-black border-2 border-black px-6 py-3 font-typewriter font-bold uppercase tracking-wider transition-all duration-200 hover:bg-red-100 shadow-md focus:outline-none focus:ring-2 focus:ring-red-400 rounded-lg text-sm cursor-pointer"
               title={t('clearAllHistory')}
             >
-              <div className="flex items-center justify-center gap-2">
-                <span className="text-base">🧹</span>
-                <span>{t('clearAllHistory')}</span>
-              </div>
+              {t('clearAllHistory')}
             </button>
           </div>
         </>

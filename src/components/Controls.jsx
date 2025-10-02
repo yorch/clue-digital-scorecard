@@ -112,37 +112,37 @@ export const Controls = ({
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 sm:gap-1 justify-items-center">
         <button
           onClick={startNewGame}
-          className="w-full bg-green-500 text-white border-2 border-green-500 px-2 py-2 cursor-pointer text-sm font-typewriter transition-all duration-200 uppercase font-bold hover:bg-green-600 min-h-11"
+          className="w-full bg-green-50 text-black border-2 border-black px-2 py-2 cursor-pointer text-sm font-typewriter transition-all duration-200 uppercase font-bold hover:bg-green-100 shadow-md focus:outline-none focus:ring-2 focus:ring-green-400 min-h-11 rounded"
         >
           {t('newGame')}
         </button>
         <button
           onClick={downloadGame}
-          className="w-full bg-white text-black border-2 border-black px-2 py-2 cursor-pointer text-sm font-typewriter transition-all duration-200 uppercase font-bold hover:bg-black hover:text-white min-h-11"
+          className="w-full bg-blue-50 text-black border-2 border-black px-2 py-2 cursor-pointer text-sm font-typewriter transition-all duration-200 uppercase font-bold hover:bg-blue-100 shadow-md focus:outline-none focus:ring-2 focus:ring-blue-400 min-h-11 rounded"
         >
-          💾 {t('downloadGame')}
+          {t('downloadGame')}
         </button>
         <button
           onClick={uploadGame}
-          className="w-full bg-white text-black border-2 border-black px-2 py-2 cursor-pointer text-sm font-typewriter transition-all duration-200 uppercase font-bold hover:bg-black hover:text-white min-h-11"
+          className="w-full bg-blue-50 text-black border-2 border-black px-2 py-2 cursor-pointer text-sm font-typewriter transition-all duration-200 uppercase font-bold hover:bg-blue-100 shadow-md focus:outline-none focus:ring-2 focus:ring-blue-400 min-h-11 rounded"
         >
-          📁 {t('uploadGame')}
+          {t('uploadGame')}
         </button>
         <button
           onClick={clearAll}
-          className="w-full bg-white text-red-500 border-2 border-red-500 px-2 py-2 cursor-pointer text-sm font-typewriter transition-all duration-200 uppercase font-bold hover:bg-red-500 hover:text-white min-h-11"
+          className="w-full bg-red-50 text-black border-2 border-black px-2 py-2 cursor-pointer text-sm font-typewriter transition-all duration-200 uppercase font-bold hover:bg-red-100 shadow-md focus:outline-none focus:ring-2 focus:ring-red-400 min-h-11 rounded"
         >
           {t('clearAll')}
         </button>
         <button
           onClick={clearPlayers}
-          className="w-full bg-white text-red-500 border-2 border-red-500 px-2 py-2 cursor-pointer text-sm font-typewriter transition-all duration-200 uppercase font-bold hover:bg-orange-500 hover:text-white min-h-11"
+          className="w-full bg-red-50 text-black border-2 border-black px-2 py-2 cursor-pointer text-sm font-typewriter transition-all duration-200 uppercase font-bold hover:bg-red-100 shadow-md focus:outline-none focus:ring-2 focus:ring-red-400 min-h-11 rounded"
         >
           {t('clearPlayers')}
         </button>
         <button
           onClick={clearSolution}
-          className="w-full bg-white text-red-500 border-2 border-red-500 px-2 py-2 cursor-pointer text-sm font-typewriter transition-all duration-200 uppercase font-bold hover:bg-purple-500 hover:text-white min-h-11"
+          className="w-full bg-red-50 text-black border-2 border-black px-2 py-2 cursor-pointer text-sm font-typewriter transition-all duration-200 uppercase font-bold hover:bg-red-100 shadow-md focus:outline-none focus:ring-2 focus:ring-red-400 min-h-11 rounded"
         >
           {t('clearSolution')}
         </button>

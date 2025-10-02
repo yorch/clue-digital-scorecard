@@ -9,7 +9,7 @@ export const Header = ({ currentLanguage, setLanguage, t }) => (
     <div className="absolute top-3 right-3 md:top-5 md:right-5 flex gap-2 items-center">
       <div className="flex bg-paper-white border-2 border-black shadow-lg rounded-lg overflow-hidden">
         <button
-          className={`lang-btn px-3 py-2 text-sm md:text-base font-typewriter font-bold uppercase tracking-wider transition-all duration-300 border-r border-black last:border-r-0 min-w-12 md:min-w-16 focus:outline-none ${
+          className={`lang-btn px-3 py-2 text-sm md:text-base font-typewriter font-bold uppercase tracking-wider transition-all duration-300 border-r border-black last:border-r-0 min-w-12 md:min-w-16 focus:outline-none cursor-pointer ${
             currentLanguage === 'es'
               ? 'bg-black text-white shadow-inner hover:bg-gray-800 focus:bg-gray-800'
               : 'bg-paper-white text-black hover:bg-gray-100 focus:bg-gray-100'
@@ -19,7 +19,7 @@ export const Header = ({ currentLanguage, setLanguage, t }) => (
           ES
         </button>
         <button
-          className={`lang-btn px-3 py-2 text-sm md:text-base font-typewriter font-bold uppercase tracking-wider transition-all duration-300 border-r border-black last:border-r-0 min-w-12 md:min-w-16 focus:outline-none ${
+          className={`lang-btn px-3 py-2 text-sm md:text-base font-typewriter font-bold uppercase tracking-wider transition-all duration-300 border-r border-black last:border-r-0 min-w-12 md:min-w-16 focus:outline-none cursor-pointer ${
             currentLanguage === 'en'
               ? 'bg-black text-white shadow-inner hover:bg-gray-800 focus:bg-gray-800'
               : 'bg-paper-white text-black hover:bg-gray-100 focus:bg-gray-100'

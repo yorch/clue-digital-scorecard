@@ -6,7 +6,7 @@ export const InstructionsSection = ({
   return (
     <div className="mb-5 text-center">
       <button
-        className="bg-white text-black border-2 border-black px-3 py-2 md:px-4 cursor-pointer text-sm font-typewriter transition-all duration-200 uppercase font-bold hover:bg-black hover:text-white min-h-11 md:min-h-auto"
+        className="bg-paper-white text-black border-2 border-black px-3 py-2 md:px-4 cursor-pointer text-sm font-typewriter transition-all duration-200 uppercase font-bold hover:bg-gray-200 shadow-md focus:outline-none focus:ring-2 focus:ring-gray-400 min-h-11 md:min-h-auto rounded"
         onClick={() => setShowInstructions(!showInstructions)}
       >
         <span>{showInstructions ? '❌' : '❓'}</span> {t('howToUse')}

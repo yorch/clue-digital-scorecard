@@ -211,7 +211,7 @@ export const ClueApp = () => {
               <div className="mb-4 flex justify-end">
                 <button
                   onClick={() => setShowScorecard(!showScorecard)}
-                  className="px-4 py-2 text-xs md:text-sm font-typewriter font-bold uppercase tracking-wider bg-paper-white border-2 border-black shadow-lg rounded-lg hover:bg-gray-100 focus:bg-gray-100 focus:outline-none transition-all duration-300"
+                  className="px-4 py-2 text-xs md:text-sm font-typewriter font-bold uppercase tracking-wider bg-paper-white border-2 border-black shadow-lg rounded-lg hover:bg-gray-100 focus:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-400 transition-all duration-300 cursor-pointer"
                 >
                   {showScorecard ? t('hideScorecard') : t('showScorecard')}
                 </button>

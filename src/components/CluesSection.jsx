@@ -68,7 +68,7 @@ export const CluesSection = ({ gameState, setGameState, t }) => {
           />
           <button
             onClick={addClue}
-            className="px-4 py-2 bg-green-600 text-white font-typewriter font-bold border-2 border-black shadow-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-400 transition-all duration-200 rounded cursor-pointer"
+            className="px-4 py-2 bg-green-50 text-black font-typewriter font-bold text-sm border-2 border-black shadow-md hover:bg-green-100 focus:outline-none focus:ring-2 focus:ring-green-400 transition-all duration-200 rounded cursor-pointer uppercase tracking-wide"
           >
             {t('add')}
           </button>
@@ -92,7 +92,7 @@ export const CluesSection = ({ gameState, setGameState, t }) => {
               >
                 <button
                   onClick={() => toggleClue(clue.id)}
-                  className="flex-shrink-0 w-6 h-6 border-2 border-black rounded flex items-center justify-center hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-400 transition-all duration-200"
+                  className="flex-shrink-0 w-6 h-6 border-2 border-black rounded flex items-center justify-center hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-400 transition-all duration-200 cursor-pointer"
                   aria-label={
                     clue.completed ? t('markIncomplete') : t('markComplete')
                   }
