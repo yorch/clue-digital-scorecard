@@ -134,9 +134,10 @@ A bilingual digital scorecard for the Clue board game built with React. Track wh
 ### Architecture
 
 - **Development**: Modular React application with Vite build system and hot reload
-- **Production**: Complete self-contained HTML file (~250KB) with inlined assets
-- **Modern Framework**: React 18 with hooks and modern ES6+ features
+- **Production**: Complete self-contained HTML file (~260KB) with inlined assets
+- **Modern Framework**: React 19 with hooks and modern ES6+ features
 - **Build System**: Vite with vite-plugin-singlefile for production bundling
+- **Code Quality**: Biome for linting and formatting
 - **Styling Framework**: Tailwind CSS with custom typewriter theme (Special Elite font)
 - **Design Theme**: Detective/vintage aesthetic with paper-like colors and typewriter fonts
 - **Client-Side Storage**: Uses localStorage for automatic persistence and settings
@@ -182,17 +183,37 @@ clue-digital-scorecard/
 ├── src/                  # Source files for development
 │   ├── app.jsx          # Main React application
 │   ├── components/      # Reusable React components
+│   │   ├── CluesSection.jsx
 │   │   ├── CollapsibleSection.jsx
+│   │   ├── ConfirmModal.jsx
+│   │   ├── Controls.jsx
+│   │   ├── Footer.jsx
 │   │   ├── GameHistorySection.jsx
-│   │   ├── PlayerNamesSection.jsx
+│   │   ├── GameSection.jsx
+│   │   ├── Header.jsx
+│   │   ├── InstructionsSection.jsx
+│   │   ├── Legend.jsx
 │   │   ├── NotesSection.jsx
-│   │   └── SolutionSection.jsx
+│   │   ├── PlayerNamesSection.jsx
+│   │   ├── SolutionSection.jsx
+│   │   └── ToastMessages.jsx
+│   ├── constants/       # Game data and translations
+│   │   ├── gameData.js
+│   │   ├── translations.js
+│   │   ├── translations.en.js
+│   │   └── translations.es.js
 │   ├── hooks/           # Custom React hooks
-│   │   └── useGameHistory.js
+│   │   ├── useAutoSave.js
+│   │   ├── useGameHistory.js
+│   │   ├── useKeyboardNavigation.js
+│   │   ├── useToastMessages.js
+│   │   └── useTranslation.js
 │   └── utils/           # Utility functions
-│       └── debounce.js
+│       ├── debounce.js
+│       ├── gameValidation.js
+│       └── localStorage.js
 ├── dist/                 # Built output (generated)
-│   └── index.html        # Complete bundled single-file application (~250KB)
+│   └── index.html        # Complete bundled single-file application (~260KB)
 ├── index.html           # Entry point that imports from src/
 ├── vite.config.js       # Vite configuration with single-file plugin
 ├── package.json         # Project configuration and dependencies
@@ -212,7 +233,13 @@ yarn dev
 
 # Build the complete single-file version
 yarn build
-# Creates dist/index.html (~250KB)
+# Creates dist/index.html (~260KB)
+
+# Lint and format code
+yarn lint        # Check for issues
+yarn lint:fix    # Auto-fix issues
+yarn format      # Check formatting
+yarn format:fix  # Auto-fix formatting
 
 # Test the built application
 yarn preview
@@ -238,7 +265,7 @@ The Vite build system with vite-plugin-singlefile:
 - Takes `index.html` as entry point
 - Bundles `src/app.jsx` with all React components
 - Inlines all CSS and JavaScript into single HTML file
-- Creates optimized ~250KB self-contained file
+- Creates optimized ~260KB self-contained file
 
 The resulting file can be:
 

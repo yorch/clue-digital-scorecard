@@ -13,9 +13,10 @@ This is a React-based digital scorecard application for the Clue board game with
 - **index.html**: Entry point that imports from `src/app.jsx`
 - **src/app.jsx**: Main React application with modular component architecture (reduced from 540 to 295 lines through refactoring)
 - **vite.config.js**: Vite configuration with automatic JSX runtime and single-file build plugin
-- Uses React 18, Vite for development server and building, and Tailwind CSS via @tailwindcss/vite plugin
+- Uses React 19, Vite for development server and building, and Tailwind CSS via @tailwindcss/vite plugin
 - Development mode: Vite dev server with hot reload and automatic JSX transformation
-- Production build: Single self-contained HTML file (~250KB)
+- Production build: Single self-contained HTML file (~260KB)
+- Code quality: Biome for linting and formatting
 
 ### Modular Architecture
 
@@ -83,7 +84,7 @@ This is a React-based digital scorecard application for the Clue board game with
   - Crossed cells: Red background with X symbol (player doesn't have card)
 - **Enhanced Form Controls**: Input fields and dropdowns with hover states, focus rings, and improved accessibility
 - **Player Management**: Customizable player names (up to 15 characters) with persistence in collapsible section
-- **Auto-Save**: Automatic localStorage backup every 30 seconds with manual JSON export/import
+- **Auto-Save**: Automatic localStorage backup on every state change with manual JSON export/import, includes browser back/forward button protection
 - **Progress Tracking**: Real-time completion percentages displayed in section headers
 - **Smart Validation**: Duplicate card warnings with contextual messaging and toast notifications
 - **Game History Interface**: Professional table with load/delete actions, formatted dates, and bulk clear functionality
@@ -105,7 +106,17 @@ yarn dev
 ```bash
 # Build single-file production version
 yarn build
-# Creates dist/index.html (~250KB single file)
+# Creates dist/index.html (~260KB single file)
+```
+
+### Code Quality
+
+```bash
+# Lint and format code
+yarn lint        # Check for issues
+yarn lint:fix    # Auto-fix issues
+yarn format      # Check formatting
+yarn format:fix  # Auto-fix formatting
 ```
 
 ### Serving Built Version
@@ -181,13 +192,13 @@ Bilingual application with English as default:
 
 - Modern browsers with ES6+ and React support required (Chrome, Firefox, Safari, Edge)
 - Key APIs used: React hooks, JSON, File API, localStorage, modern JavaScript features
-- External dependencies: React 18 CDN, Tailwind CSS CDN, Google Fonts (Special Elite)
+- External dependencies: React 19 CDN, Tailwind CSS CDN, Google Fonts (Special Elite)
 - No polyfills included - assumes modern browser environment
 
 ## Important Notes
 
 - **Development Architecture**: Separate source files with Vite build system for development
-- **Production Architecture**: Single self-contained HTML file (~220KB) with inlined CSS and JS
+- **Production Architecture**: Single self-contained HTML file (~260KB) with inlined CSS and JS
 - **Build Process**: Vite with vite-plugin-singlefile for production builds
 - **Development Process**: Hot reload via Vite dev server at <http://localhost:3000/>
 - **State Persistence**: React state with localStorage auto-save and manual JSON export/import
