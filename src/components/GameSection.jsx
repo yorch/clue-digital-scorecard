@@ -10,6 +10,7 @@ export const GameSection = ({
   getTranslatedCardName,
   showMessage,
   calculateProgress,
+  isBlurred = false,
 }) => {
   // Get active players (those with names)
   const activePlayers = useMemo(
@@ -177,7 +178,12 @@ export const GameSection = ({
           {progress}%
         </span>
       </div>
-      <div className="overflow-x-auto border border-black bg-white rounded-md shadow-sm">
+      <div className="overflow-x-auto border border-black bg-white rounded-md shadow-sm relative">
+        {isBlurred && (
+          <div className="absolute inset-0 backdrop-blur-xl bg-gradient-to-br from-slate-700/50 via-slate-600/40 to-slate-700/50 z-10 rounded-md pointer-events-none select-none transition-all duration-300">
+            <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
+          </div>
+        )}
         <table className="w-full border-collapse bg-white font-typewriter">
           <thead>
             <tr>

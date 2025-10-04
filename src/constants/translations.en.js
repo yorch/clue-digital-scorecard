@@ -100,6 +100,7 @@ export const en = {
   helpFirstLoadMsg: '💡 Use Tab and arrows to navigate, Space to change state',
   hideScorecard: 'Hide',
   showScorecard: 'Show',
+  scorecardHidden: 'Scorecard Hidden',
   clues: 'Clues',
   addCluePlaceholder: 'e.g., Player A may have Dining Room or Rope',
   add: 'Add',

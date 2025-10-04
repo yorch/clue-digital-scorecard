@@ -105,6 +105,7 @@ export const es = {
     '💡 Usa Tab y flechas para navegar, Espacio para cambiar estado',
   hideScorecard: 'Ocultar',
   showScorecard: 'Mostrar',
+  scorecardHidden: 'Tarjeta Oculta',
   clues: 'Pistas',
   addCluePlaceholder: 'Ej: Jugador A puede tener Comedor o Soga',
   add: 'Agregar',

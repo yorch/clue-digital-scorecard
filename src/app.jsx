@@ -217,13 +217,7 @@ export const ClueApp = () => {
                 </button>
               </div>
 
-              <div
-                className={`transition-all duration-300 ${
-                  !showScorecard
-                    ? 'blur-md select-none pointer-events-none'
-                    : ''
-                }`}
-              >
+              <div>
                 <GameSection
                   title={t('who')}
                   items={GAME_CARDS.characters}
@@ -233,6 +227,7 @@ export const ClueApp = () => {
                   getTranslatedCardName={getTranslatedCardName}
                   showMessage={showMessage}
                   calculateProgress={calculateProgressFn}
+                  isBlurred={!showScorecard}
                 />
 
                 <GameSection
@@ -244,6 +239,7 @@ export const ClueApp = () => {
                   getTranslatedCardName={getTranslatedCardName}
                   showMessage={showMessage}
                   calculateProgress={calculateProgressFn}
+                  isBlurred={!showScorecard}
                 />
 
                 <GameSection
@@ -255,6 +251,7 @@ export const ClueApp = () => {
                   getTranslatedCardName={getTranslatedCardName}
                   showMessage={showMessage}
                   calculateProgress={calculateProgressFn}
+                  isBlurred={!showScorecard}
                 />
               </div>
 
