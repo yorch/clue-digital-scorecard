@@ -1,7 +1,7 @@
-import { useEffect, useCallback, useMemo, useRef } from 'react';
-import { saveGameState } from '../utils/localStorage.js';
-import { validateCardAssignments } from '../utils/gameValidation.js';
+import { useCallback, useEffect, useMemo, useRef } from 'react';
 import { debounce } from '../utils/debounce.js';
+import { validateCardAssignments } from '../utils/gameValidation.js';
+import { saveGameState } from '../utils/localStorage.js';
 
 const VALIDATION_DEBOUNCE_MS = 300;
 
@@ -39,24 +39,12 @@ export function useAutoSave(
   const validateCardAssignmentsFn = useCallback(() => {
     clearValidationWarnings();
 
-    const warnings = validateCardAssignments(
-      gameState,
-      t,
-      getTranslatedCardName,
-      currentLanguage,
-    );
+    const warnings = validateCardAssignments(gameState, t, getTranslatedCardName, currentLanguage);
 
     warnings.forEach((warning) => {
       addValidationWarning(warning);
     });
-  }, [
-    gameState,
-    t,
-    getTranslatedCardName,
-    currentLanguage,
-    clearValidationWarnings,
-    addValidationWarning,
-  ]);
+  }, [gameState, t, getTranslatedCardName, currentLanguage, clearValidationWarnings, addValidationWarning]);
 
   // Debounced version of validation
   const debouncedValidation = useMemo(
@@ -77,7 +65,7 @@ export function useAutoSave(
 
   return {
     autoSave,
-    validateCardAssignmentsFn,
     debouncedValidation,
+    validateCardAssignmentsFn,
   };
 }

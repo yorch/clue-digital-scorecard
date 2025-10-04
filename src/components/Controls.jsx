@@ -1,19 +1,12 @@
-export const Controls = ({
-  gameState,
-  setGameState,
-  t,
-  showMessage,
-  startNewGame,
-  showConfirm,
-}) => {
+export const Controls = ({ gameState, setGameState, t, showMessage, startNewGame, showConfirm }) => {
   const downloadGame = () => {
     try {
       const fullGameState = {
-        playerNames: gameState.playerNames,
         cardStates: gameState.cardStates,
-        solution: gameState.solution,
         notes: gameState.notes,
+        playerNames: gameState.playerNames,
         savedAt: new Date().toISOString(),
+        solution: gameState.solution,
         version: '1.0',
       };
 
@@ -22,12 +15,11 @@ export const Controls = ({
 
       const link = document.createElement('a');
       link.href = URL.createObjectURL(dataBlob);
-      link.download =
-        'clue_game_' + new Date().toISOString().slice(0, 10) + '.json';
+      link.download = `clue_game_${new Date().toISOString().slice(0, 10)}.json`;
       link.click();
 
       showMessage(t('gameSavedMsg'));
-    } catch (error) {
+    } catch (_error) {
       showMessage(t('errorSaveMsg'), 'error');
     }
   };
@@ -37,11 +29,11 @@ export const Controls = ({
     input.type = 'file';
     input.accept = '.json';
 
-    input.onchange = function (event) {
+    input.onchange = (event) => {
       const file = event.target.files[0];
       if (file) {
         const reader = new FileReader();
-        reader.onload = function (e) {
+        reader.onload = (e) => {
           try {
             const loadedData = JSON.parse(e.target.result);
 
@@ -52,21 +44,21 @@ export const Controls = ({
               loadedData.solution
             ) {
               setGameState({
-                playerNames: loadedData.playerNames || {},
                 cardStates: loadedData.cardStates || {},
-                solution: loadedData.solution || {
-                  who: '',
-                  weapon: '',
-                  room: '',
-                },
                 notes: loadedData.notes || '',
+                playerNames: loadedData.playerNames || {},
+                solution: loadedData.solution || {
+                  room: '',
+                  weapon: '',
+                  who: '',
+                },
               });
             } else {
               throw new Error('Unsupported file format');
             }
 
             showMessage(t('gameLoadedMsg'));
-          } catch (error) {
+          } catch (_error) {
             showMessage(t('errorLoadMsg'), 'error');
           }
         };
@@ -101,7 +93,7 @@ export const Controls = ({
     showConfirm(t('confirmClearSolution'), () => {
       setGameState((prev) => ({
         ...prev,
-        solution: { who: '', weapon: '', room: '' },
+        solution: { room: '', weapon: '', who: '' },
       }));
       showMessage(t('solutionClearedMsg'));
     });
@@ -111,38 +103,44 @@ export const Controls = ({
     <div className="bg-white p-3 md:p-4 text-center border-t-2 border-b-2 border-black">
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 sm:gap-1 justify-items-center">
         <button
-          onClick={startNewGame}
           className="w-full bg-green-50 text-black border-2 border-black px-2 py-2 cursor-pointer text-sm font-typewriter transition-all duration-200 uppercase font-bold hover:bg-green-100 shadow-md focus:outline-none focus:ring-2 focus:ring-green-400 min-h-11 rounded"
+          onClick={startNewGame}
+          type="button"
         >
           {t('newGame')}
         </button>
         <button
-          onClick={downloadGame}
           className="w-full bg-blue-50 text-black border-2 border-black px-2 py-2 cursor-pointer text-sm font-typewriter transition-all duration-200 uppercase font-bold hover:bg-blue-100 shadow-md focus:outline-none focus:ring-2 focus:ring-blue-400 min-h-11 rounded"
+          onClick={downloadGame}
+          type="button"
         >
           {t('downloadGame')}
         </button>
         <button
-          onClick={uploadGame}
           className="w-full bg-blue-50 text-black border-2 border-black px-2 py-2 cursor-pointer text-sm font-typewriter transition-all duration-200 uppercase font-bold hover:bg-blue-100 shadow-md focus:outline-none focus:ring-2 focus:ring-blue-400 min-h-11 rounded"
+          onClick={uploadGame}
+          type="button"
         >
           {t('uploadGame')}
         </button>
         <button
-          onClick={clearAll}
           className="w-full bg-red-50 text-black border-2 border-black px-2 py-2 cursor-pointer text-sm font-typewriter transition-all duration-200 uppercase font-bold hover:bg-red-100 shadow-md focus:outline-none focus:ring-2 focus:ring-red-400 min-h-11 rounded"
+          onClick={clearAll}
+          type="button"
         >
           {t('clearAll')}
         </button>
         <button
-          onClick={clearPlayers}
           className="w-full bg-red-50 text-black border-2 border-black px-2 py-2 cursor-pointer text-sm font-typewriter transition-all duration-200 uppercase font-bold hover:bg-red-100 shadow-md focus:outline-none focus:ring-2 focus:ring-red-400 min-h-11 rounded"
+          onClick={clearPlayers}
+          type="button"
         >
           {t('clearPlayers')}
         </button>
         <button
-          onClick={clearSolution}
           className="w-full bg-red-50 text-black border-2 border-black px-2 py-2 cursor-pointer text-sm font-typewriter transition-all duration-200 uppercase font-bold hover:bg-red-100 shadow-md focus:outline-none focus:ring-2 focus:ring-red-400 min-h-11 rounded"
+          onClick={clearSolution}
+          type="button"
         >
           {t('clearSolution')}
         </button>

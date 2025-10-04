@@ -1,4 +1,5 @@
-import { useMemo, useCallback } from 'react';
+/** biome-ignore-all lint/a11y/useKeyWithClickEvents: TODO: Explore solution */
+import { useCallback, useMemo } from 'react';
 import { PLAYER_NUMBERS } from '../constants/gameData.js';
 
 export const GameSection = ({
@@ -16,17 +17,12 @@ export const GameSection = ({
   const activePlayers = useMemo(
     () =>
       PLAYER_NUMBERS.filter(
-        (playerNum) =>
-          gameState.playerNames[playerNum] &&
-          gameState.playerNames[playerNum].trim() !== '',
+        (playerNum) => gameState.playerNames[playerNum] && gameState.playerNames[playerNum].trim() !== '',
       ),
     [gameState.playerNames],
   );
 
-  const progress = useMemo(
-    () => calculateProgress(items, activePlayers),
-    [calculateProgress, items, activePlayers],
-  );
+  const progress = useMemo(() => calculateProgress(items, activePlayers), [calculateProgress, items, activePlayers]);
 
   const handleCellClick = (item, player) => {
     const key = `${item}-${player}`;
@@ -55,8 +51,7 @@ export const GameSection = ({
   };
 
   const smartFillCard = (item, playerWithCard) => {
-    const playerName =
-      gameState.playerNames[playerWithCard] || `Player ${playerWithCard}`;
+    const playerName = gameState.playerNames[playerWithCard] || `Player ${playerWithCard}`;
     let autoFilledCount = 0;
     let cardName;
 
@@ -94,8 +89,7 @@ export const GameSection = ({
   };
 
   const smartUnfillCard = (item, playerWhoHadCard) => {
-    const playerName =
-      gameState.playerNames[playerWhoHadCard] || `Player ${playerWhoHadCard}`;
+    const playerName = gameState.playerNames[playerWhoHadCard] || `Player ${playerWhoHadCard}`;
     let autoUnfilledCount = 0;
 
     setGameState((prev) => {
@@ -140,13 +134,10 @@ export const GameSection = ({
         'checkbox-cell w-12 sm:w-14 bg-white cursor-pointer relative min-h-12 sm:min-h-10 text-center transition-all duration-100 border border-black font-typewriter font-bold text-xl p-1 sm:p-0';
 
       if (state === 'checked') {
-        return baseClasses + ' checked';
-      } else if (state === 'crossed' || state === 'crossed-auto') {
-        return (
-          baseClasses +
-          ' crossed' +
-          (state === 'crossed-auto' ? ' auto-filled' : '')
-        );
+        return `${baseClasses} checked`;
+      }
+      if (state === 'crossed' || state === 'crossed-auto') {
+        return `${baseClasses} crossed${state === 'crossed-auto' ? ' auto-filled' : ''}`;
       }
 
       return baseClasses;
@@ -174,57 +165,41 @@ export const GameSection = ({
     <div className="mb-6">
       <div className="section-title bg-black text-white px-3 py-2 md:px-4 text-sm md:text-base font-bold text-left mb-3 uppercase tracking-widest font-typewriter relative">
         {title}
-        <span className="progress-indicator text-xs md:text-sm py-1 px-2 md:py-auto md:px-auto">
-          {progress}%
-        </span>
+        <span className="progress-indicator text-xs md:text-sm py-1 px-2 md:py-auto md:px-auto">{progress}%</span>
       </div>
       <div className="overflow-x-auto border border-black bg-white rounded-md shadow-sm relative">
         {isBlurred && (
           <div className="absolute inset-0 backdrop-blur-xl bg-gradient-to-br from-slate-700/50 via-slate-600/40 to-slate-700/50 z-10 rounded-md pointer-events-none select-none transition-all duration-300">
-            <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
+            <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
           </div>
         )}
         <table className="w-full border-collapse bg-white font-typewriter">
           <thead>
             <tr>
               <th className="bg-gray-800 text-white p-1 md:p-2 font-bold text-center text-xs border border-black uppercase tracking-wide">
-                {title === t('who')
-                  ? t('character')
-                  : title === t('withWhat')
-                    ? t('weapon')
-                    : t('room')}
+                {title === t('who') ? t('character') : title === t('withWhat') ? t('weapon') : t('room')}
               </th>
               {activePlayers.map((playerNum) => (
                 <th
-                  key={playerNum}
                   className="bg-gray-800 text-white p-1 md:p-2 font-bold text-center text-xs border border-black uppercase tracking-wide min-w-12"
+                  key={playerNum}
                 >
-                  <span className="block sm:hidden">
-                    {getPlayerName(playerNum, true)}
-                  </span>
-                  <span className="hidden sm:block">
-                    {getPlayerName(playerNum, false)}
-                  </span>
+                  <span className="block sm:hidden">{getPlayerName(playerNum, true)}</span>
+                  <span className="hidden sm:block">{getPlayerName(playerNum, false)}</span>
                 </th>
               ))}
             </tr>
           </thead>
           <tbody>
             {items.map((item, index) => (
-              <tr
-                key={item}
-                className={`hover:bg-gray-100 ${index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}`}
-              >
+              <tr className={`hover:bg-gray-100 ${index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}`} key={item}>
                 <td className="p-2 md:p-3 border border-black text-left font-bold bg-gray-100 text-black text-xs md:text-sm min-w-20">
                   {getTranslatedCardName(item)}
                 </td>
                 {activePlayers.map((playerNum) => (
                   <td
+                    className={`${getCellClasses(item, playerNum)} w-12 sm:w-14 h-12 sm:h-10 min-w-12 sm:min-w-14`}
                     key={playerNum}
-                    className={
-                      getCellClasses(item, playerNum) +
-                      ' w-12 sm:w-14 h-12 sm:h-10 min-w-12 sm:min-w-14'
-                    }
                     onClick={() => handleCellClick(item, playerNum.toString())}
                     tabIndex="-1"
                   />

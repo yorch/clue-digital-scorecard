@@ -1,6 +1,6 @@
 // Language translations - index file
-import { en, cardNamesEn } from './translations.en.js';
-import { es, cardNamesEs } from './translations.es.js';
+import { cardNamesEn, en } from './translations.en.js';
+import { cardNamesEs, es } from './translations.es.js';
 
 export const translations = {
   en,
@@ -9,34 +9,34 @@ export const translations = {
 
 // Card names translations
 export const cardTranslations = {
-  // Characters
-  mrGreen: { es: cardNamesEs.mrGreen, en: cardNamesEn.mrGreen },
-  colonelMustard: {
-    es: cardNamesEs.colonelMustard,
-    en: cardNamesEn.colonelMustard,
-  },
-  mrsWhite: { es: cardNamesEs.mrsWhite, en: cardNamesEn.mrsWhite },
-  professorPlum: {
-    es: cardNamesEs.professorPlum,
-    en: cardNamesEn.professorPlum,
-  },
-  missScarlet: { es: cardNamesEs.missScarlet, en: cardNamesEn.missScarlet },
-  mrsPeacock: { es: cardNamesEs.mrsPeacock, en: cardNamesEn.mrsPeacock },
-  // Weapons
-  candlestick: { es: cardNamesEs.candlestick, en: cardNamesEn.candlestick },
-  dagger: { es: cardNamesEs.dagger, en: cardNamesEn.dagger },
-  leadPipe: { es: cardNamesEs.leadPipe, en: cardNamesEn.leadPipe },
-  revolver: { es: cardNamesEs.revolver, en: cardNamesEn.revolver },
-  rope: { es: cardNamesEs.rope, en: cardNamesEn.rope },
-  wrench: { es: cardNamesEs.wrench, en: cardNamesEn.wrench },
   // Rooms
-  ballroom: { es: cardNamesEs.ballroom, en: cardNamesEn.ballroom },
-  billiardRoom: { es: cardNamesEs.billiardRoom, en: cardNamesEn.billiardRoom },
-  conservatory: { es: cardNamesEs.conservatory, en: cardNamesEn.conservatory },
-  diningRoom: { es: cardNamesEs.diningRoom, en: cardNamesEn.diningRoom },
-  hall: { es: cardNamesEs.hall, en: cardNamesEn.hall },
-  kitchen: { es: cardNamesEs.kitchen, en: cardNamesEn.kitchen },
-  library: { es: cardNamesEs.library, en: cardNamesEn.library },
-  lounge: { es: cardNamesEs.lounge, en: cardNamesEn.lounge },
-  study: { es: cardNamesEs.study, en: cardNamesEn.study },
+  ballroom: { en: cardNamesEn.ballroom, es: cardNamesEs.ballroom },
+  billiardRoom: { en: cardNamesEn.billiardRoom, es: cardNamesEs.billiardRoom },
+  // Weapons
+  candlestick: { en: cardNamesEn.candlestick, es: cardNamesEs.candlestick },
+  colonelMustard: {
+    en: cardNamesEn.colonelMustard,
+    es: cardNamesEs.colonelMustard,
+  },
+  conservatory: { en: cardNamesEn.conservatory, es: cardNamesEs.conservatory },
+  dagger: { en: cardNamesEn.dagger, es: cardNamesEs.dagger },
+  diningRoom: { en: cardNamesEn.diningRoom, es: cardNamesEs.diningRoom },
+  hall: { en: cardNamesEn.hall, es: cardNamesEs.hall },
+  kitchen: { en: cardNamesEn.kitchen, es: cardNamesEs.kitchen },
+  leadPipe: { en: cardNamesEn.leadPipe, es: cardNamesEs.leadPipe },
+  library: { en: cardNamesEn.library, es: cardNamesEs.library },
+  lounge: { en: cardNamesEn.lounge, es: cardNamesEs.lounge },
+  missScarlet: { en: cardNamesEn.missScarlet, es: cardNamesEs.missScarlet },
+  // Characters
+  mrGreen: { en: cardNamesEn.mrGreen, es: cardNamesEs.mrGreen },
+  mrsPeacock: { en: cardNamesEn.mrsPeacock, es: cardNamesEs.mrsPeacock },
+  mrsWhite: { en: cardNamesEn.mrsWhite, es: cardNamesEs.mrsWhite },
+  professorPlum: {
+    en: cardNamesEn.professorPlum,
+    es: cardNamesEs.professorPlum,
+  },
+  revolver: { en: cardNamesEn.revolver, es: cardNamesEs.revolver },
+  rope: { en: cardNamesEn.rope, es: cardNamesEs.rope },
+  study: { en: cardNamesEn.study, es: cardNamesEs.study },
+  wrench: { en: cardNamesEn.wrench, es: cardNamesEs.wrench },
 };

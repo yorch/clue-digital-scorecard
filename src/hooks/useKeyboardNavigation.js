@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { PLAYER_NUMBERS } from '../constants/gameData.js';
 
 /**
@@ -11,17 +11,12 @@ export function useKeyboardNavigation(gameState) {
   const focusedCellRef = useRef(null);
 
   // Memoized selector for checkbox cells
-  const getCheckboxCells = useCallback(
-    () => Array.from(document.querySelectorAll('.checkbox-cell')),
-    [],
-  );
+  const getCheckboxCells = useCallback(() => Array.from(document.querySelectorAll('.checkbox-cell')), []);
 
   // Memoized calculation of cells per row
   const getCellsPerRow = useCallback(() => {
     const activePlayers = PLAYER_NUMBERS.filter(
-      (playerNum) =>
-        gameState.playerNames[playerNum] &&
-        gameState.playerNames[playerNum].trim() !== '',
+      (playerNum) => gameState.playerNames[playerNum] && gameState.playerNames[playerNum].trim() !== '',
     ).length;
     return Math.max(activePlayers, 1);
   }, [gameState.playerNames]);
@@ -29,26 +24,14 @@ export function useKeyboardNavigation(gameState) {
   useEffect(() => {
     const handleKeyDown = (e) => {
       // Only activate keyboard navigation if user presses Tab or arrow keys
-      if (
-        [
-          'Tab',
-          'ArrowUp',
-          'ArrowDown',
-          'ArrowLeft',
-          'ArrowRight',
-          ' ',
-          'Enter',
-        ].includes(e.key)
-      ) {
+      if (['Tab', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', ' ', 'Enter'].includes(e.key)) {
         setKeyboardNavigation(true);
       }
 
       if (!keyboardNavigation) return;
 
       const checkboxCells = getCheckboxCells();
-      const currentIndex = focusedCellRef.current
-        ? checkboxCells.indexOf(focusedCellRef.current)
-        : -1;
+      const currentIndex = focusedCellRef.current ? checkboxCells.indexOf(focusedCellRef.current) : -1;
 
       const focusCell = (cell) => {
         if (focusedCellRef.current) {
@@ -62,7 +45,7 @@ export function useKeyboardNavigation(gameState) {
       };
 
       switch (e.key) {
-        case 'Tab':
+        case 'Tab': {
           e.preventDefault();
           const nextIndex = e.shiftKey
             ? currentIndex <= 0
@@ -73,14 +56,12 @@ export function useKeyboardNavigation(gameState) {
               : currentIndex + 1;
           focusCell(checkboxCells[nextIndex]);
           break;
+        }
 
         case 'ArrowRight':
           e.preventDefault();
           if (focusedCellRef.current) {
-            const nextCell =
-              checkboxCells[
-                Math.min(currentIndex + 1, checkboxCells.length - 1)
-              ];
+            const nextCell = checkboxCells[Math.min(currentIndex + 1, checkboxCells.length - 1)];
             focusCell(nextCell);
           }
           break;
@@ -97,10 +78,7 @@ export function useKeyboardNavigation(gameState) {
           e.preventDefault();
           if (focusedCellRef.current) {
             const cellsPerRow = getCellsPerRow();
-            const nextRowIndex = Math.min(
-              currentIndex + cellsPerRow,
-              checkboxCells.length - 1,
-            );
+            const nextRowIndex = Math.min(currentIndex + cellsPerRow, checkboxCells.length - 1);
             focusCell(checkboxCells[nextRowIndex]);
           }
           break;

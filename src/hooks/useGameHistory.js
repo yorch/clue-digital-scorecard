@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { PLAYER_NUMBERS } from '../constants/gameData.js';
 import { loadGameHistory, saveGameHistory } from '../utils/localStorage.js';
 
@@ -22,11 +22,7 @@ export function useGameHistory(gameState, showMessage, t) {
 
   // Check if game is completed
   const isGameCompleted = useCallback(() => {
-    return (
-      gameState.solution.who &&
-      gameState.solution.weapon &&
-      gameState.solution.room
-    );
+    return gameState.solution.who && gameState.solution.weapon && gameState.solution.room;
   }, [gameState.solution]);
 
   // Auto-save completed games to history
@@ -37,17 +33,17 @@ export function useGameHistory(gameState, showMessage, t) {
 
     // Create a stable identifier for the current game state
     const gameIdentifier = JSON.stringify({
-      solution: gameState.solution,
-      playerNames: gameState.playerNames,
       cardStates: gameState.cardStates,
+      playerNames: gameState.playerNames,
+      solution: gameState.solution,
     });
 
     // Check if this exact game is already in history
     const isDuplicateGame = gameHistory.some((game) => {
       const existingGameIdentifier = JSON.stringify({
-        solution: game.solution,
-        playerNames: game.playerNames,
         cardStates: game.cardStates,
+        playerNames: game.playerNames,
+        solution: game.solution,
       });
       return existingGameIdentifier === gameIdentifier;
     });
@@ -55,36 +51,28 @@ export function useGameHistory(gameState, showMessage, t) {
     // Only save if this is a new unique game
     if (!isDuplicateGame) {
       const activePlayers = PLAYER_NUMBERS.filter(
-        (playerNum) =>
-          gameState.playerNames[playerNum] &&
-          gameState.playerNames[playerNum].trim() !== '',
+        (playerNum) => gameState.playerNames[playerNum] && gameState.playerNames[playerNum].trim() !== '',
       );
 
       const completedGame = {
-        id: Date.now(),
-        playerNames: gameState.playerNames,
-        cardStates: gameState.cardStates,
-        solution: gameState.solution,
-        notes: gameState.notes,
-        completedAt: new Date().toISOString(),
         activePlayers: activePlayers,
+        cardStates: gameState.cardStates,
+        completedAt: new Date().toISOString(),
+        id: Date.now(),
+        notes: gameState.notes,
+        playerNames: gameState.playerNames,
+        solution: gameState.solution,
         version: '1.0',
       };
 
-      const newHistory = [completedGame, ...gameHistory].slice(
-        0,
-        MAX_GAME_HISTORY,
-      );
+      const newHistory = [completedGame, ...gameHistory].slice(0, MAX_GAME_HISTORY);
 
       // Atomic operation: set storage first, then state
       if (saveGameHistory(newHistory)) {
         setGameHistory(newHistory);
         showMessage(t('gameCompletedMsg'));
       } else {
-        showMessage(
-          t('errorSavingHistoryMsg') || 'Error saving game history',
-          'error',
-        );
+        showMessage(t('errorSavingHistoryMsg') || 'Error saving game history', 'error');
       }
     }
   }, [
@@ -109,9 +97,9 @@ export function useGameHistory(gameState, showMessage, t) {
   }, [showMessage, t]);
 
   return {
-    gameHistory,
-    setGameHistory,
-    isGameCompleted,
     clearAllHistory,
+    gameHistory,
+    isGameCompleted,
+    setGameHistory,
   };
 }

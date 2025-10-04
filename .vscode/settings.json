@@ -35,5 +35,5 @@
     "source.organizeImports.biome": "explicit"
   },
   "editor.formatOnPaste": true,
-  "editor.formatOnSave": true,
+  "editor.formatOnSave": true
 }

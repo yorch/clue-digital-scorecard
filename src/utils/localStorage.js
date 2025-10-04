@@ -66,20 +66,20 @@ export function loadGameState() {
 
   if (!saved) {
     return {
-      playerNames: {},
       cardStates: {},
-      solution: { who: '', weapon: '', room: '' },
-      notes: '',
       clues: [],
+      notes: '',
+      playerNames: {},
+      solution: { room: '', weapon: '', who: '' },
     };
   }
 
   return {
-    playerNames: saved.playerNames || {},
     cardStates: saved.cardStates || {},
-    solution: saved.solution || { who: '', weapon: '', room: '' },
-    notes: saved.notes || '',
     clues: saved.clues || [],
+    notes: saved.notes || '',
+    playerNames: saved.playerNames || {},
+    solution: saved.solution || { room: '', weapon: '', who: '' },
   };
 }
 

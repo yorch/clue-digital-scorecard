@@ -1,4 +1,4 @@
-import { useState, useCallback, useRef, useEffect } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 const MESSAGE_DURATION = 3000;
 
@@ -11,34 +11,29 @@ export function useToastMessages() {
   const timeoutsRef = useRef(new Map());
 
   // Show message with automatic dismissal
-  const showMessage = useCallback(
-    (text, type = 'success', duration = MESSAGE_DURATION) => {
-      const id = Date.now() + Math.random();
-      const newMessage = { id, text, type };
+  const showMessage = useCallback((text, type = 'success', duration = MESSAGE_DURATION) => {
+    const id = Date.now() + Math.random();
+    const newMessage = { id, text, type };
 
-      setMessages((prev) => [...prev, newMessage]);
+    setMessages((prev) => [...prev, newMessage]);
 
-      // Clear any existing timeout for this message
-      if (timeoutsRef.current.has(id)) {
-        clearTimeout(timeoutsRef.current.get(id));
-      }
+    // Clear any existing timeout for this message
+    if (timeoutsRef.current.has(id)) {
+      clearTimeout(timeoutsRef.current.get(id));
+    }
 
-      // Set new timeout and store reference
-      const timeoutId = setTimeout(() => {
-        setMessages((prev) => prev.filter((msg) => msg.id !== id));
-        timeoutsRef.current.delete(id);
-      }, duration);
+    // Set new timeout and store reference
+    const timeoutId = setTimeout(() => {
+      setMessages((prev) => prev.filter((msg) => msg.id !== id));
+      timeoutsRef.current.delete(id);
+    }, duration);
 
-      timeoutsRef.current.set(id, timeoutId);
-    },
-    [],
-  );
+    timeoutsRef.current.set(id, timeoutId);
+  }, []);
 
   // Clear validation warnings
   const clearValidationWarnings = useCallback(() => {
-    setMessages((prev) =>
-      prev.filter((msg) => msg.type !== 'validation-warning'),
-    );
+    setMessages((prev) => prev.filter((msg) => msg.type !== 'validation-warning'));
   }, []);
 
   // Add validation warning
@@ -60,10 +55,10 @@ export function useToastMessages() {
   );
 
   return {
+    addValidationWarning,
+    clearValidationWarnings,
     messages,
     setMessages,
     showMessage,
-    clearValidationWarnings,
-    addValidationWarning,
   };
 }

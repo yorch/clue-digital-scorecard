@@ -1,25 +1,25 @@
 {
-  "name": "Clue Digital Scorecard",
-  "short_name": "Clue Scorecard",
-  "description": "Free digital scorecard for Clue board game with bilingual support",
-  "start_url": "/",
-  "display": "standalone",
   "background_color": "#f5f1e8",
-  "theme_color": "#f5f1e8",
-  "orientation": "portrait",
+  "categories": ["games", "utilities"],
+  "description": "Free digital scorecard for Clue board game with bilingual support",
+  "dir": "ltr",
+  "display": "standalone",
   "icons": [
     {
-      "src": "/favicon.svg",
       "sizes": "any",
+      "src": "/favicon.svg",
       "type": "image/svg+xml"
     },
     {
-      "src": "/apple-touch-icon.png",
       "sizes": "180x180",
+      "src": "/apple-touch-icon.png",
       "type": "image/png"
     }
   ],
-  "categories": ["games", "utilities"],
   "lang": "en",
-  "dir": "ltr"
+  "name": "Clue Digital Scorecard",
+  "orientation": "portrait",
+  "short_name": "Clue Scorecard",
+  "start_url": "/",
+  "theme_color": "#f5f1e8"
 }

@@ -1,16 +1,9 @@
 import { PLAYER_NUMBERS } from '../constants/gameData.js';
 
-export function validateCardAssignments(
-  gameState,
-  t,
-  getTranslatedCardName,
-  currentLanguage,
-) {
+export function validateCardAssignments(gameState, t, getTranslatedCardName, currentLanguage) {
   // Get active players (those with names)
   const activePlayers = PLAYER_NUMBERS.filter(
-    (playerNum) =>
-      gameState.playerNames[playerNum] &&
-      gameState.playerNames[playerNum].trim() !== '',
+    (playerNum) => gameState.playerNames[playerNum] && gameState.playerNames[playerNum].trim() !== '',
   );
 
   const allItems = [
@@ -50,9 +43,7 @@ export function validateCardAssignments(
     });
 
     if (checkedPlayers.length > 1) {
-      const playerNames = checkedPlayers
-        .map((num) => gameState.playerNames[num] || t(`player${num}`))
-        .join(', ');
+      const playerNames = checkedPlayers.map((num) => gameState.playerNames[num] || t(`player${num}`)).join(', ');
       const translatedItem = getTranslatedCardName(item);
       const warning = `"${translatedItem}" ${currentLanguage === 'es' ? 'está asignada a múltiples jugadores' : 'is assigned to multiple players'}: ${playerNames}`;
       warnings.push(warning);

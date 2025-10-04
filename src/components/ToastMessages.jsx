@@ -1,4 +1,6 @@
-import { useState, useCallback } from 'react';
+/** biome-ignore-all lint/a11y/noStaticElementInteractions: TODO: Explore solution */
+/** biome-ignore-all lint/a11y/useKeyWithClickEvents: TODO: Ensure keyboard users can interact with the toast messages */
+import { useCallback, useState } from 'react';
 
 export const ToastMessages = ({ messages, setValidationMessages }) => {
   const [removingMessages, setRemovingMessages] = useState(new Set());
@@ -9,9 +11,7 @@ export const ToastMessages = ({ messages, setValidationMessages }) => {
 
       // Remove the message after animation completes
       setTimeout(() => {
-        setValidationMessages((prev) =>
-          prev.filter((msg) => msg.id !== messageId),
-        );
+        setValidationMessages((prev) => prev.filter((msg) => msg.id !== messageId));
         setRemovingMessages((prev) => {
           const newSet = new Set(prev);
           newSet.delete(messageId);
@@ -48,8 +48,8 @@ export const ToastMessages = ({ messages, setValidationMessages }) => {
     <div className="toast-container">
       {messages.map((message) => (
         <div
-          key={message.id}
           className={getToastClass(message)}
+          key={message.id}
           onClick={() => removeMessage(message.id)}
           title="Click to dismiss"
         >

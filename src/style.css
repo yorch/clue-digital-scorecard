@@ -1,7 +1,9 @@
-@import 'tailwindcss';
+/** biome-ignore-all lint/complexity/noImportantStyles: Explore if `important` is truly necessary */
+@import "tailwindcss";
 
+/* biome-ignore lint/suspicious/noUnknownAtRules: TailwindCSS */
 @theme {
-  --font-typewriter: 'Special Elite', 'Courier New', 'Courier', monospace;
+  --font-typewriter: "Special Elite", "Courier New", "Courier", monospace;
   --color-paper: #f5f5f0;
   --color-paper-white: #fafaf8;
 }
@@ -10,30 +12,30 @@
 
 /* Checkbox cell pseudo-elements for content */
 .checkbox-cell::before {
-  content: '◯';
   font-size: 1.2rem;
   color: #999;
+  content: "◯";
 }
 
 .checkbox-cell.checked::before {
-  content: 'O';
-  color: white;
   font-size: 1.3rem;
+  color: white;
+  content: "O";
 }
 
 .checkbox-cell.crossed::before {
-  content: 'X';
-  color: white;
   font-size: 1.3rem;
+  color: white;
+  content: "X";
 }
 
 /* Legend box pseudo-elements */
 .legend-box.checked::after {
-  content: 'O';
+  content: "O";
 }
 
 .legend-box.crossed::after {
-  content: 'X';
+  content: "X";
 }
 
 /* Animation for instructions slideDown */
@@ -63,8 +65,8 @@
 }
 
 .checkbox-cell.checked {
-  background: #4caf50 !important;
   color: white !important;
+  background: #4caf50 !important;
 }
 
 .checkbox-cell.checked:hover {
@@ -72,8 +74,8 @@
 }
 
 .checkbox-cell.crossed {
-  background: #f44336 !important;
   color: white !important;
+  background: #f44336 !important;
 }
 
 .checkbox-cell.crossed:hover {
@@ -95,8 +97,8 @@
 }
 
 .focused-cell {
-  box-shadow: 0 0 0 2px #000;
   border: 2px solid #000;
+  box-shadow: 0 0 0 2px #000;
 }
 
 /* Progress indicator positioning */
@@ -106,22 +108,22 @@
 
 .progress-indicator {
   position: absolute;
-  right: 10px;
   top: 50%;
-  transform: translateY(-50%);
-  background: #fff;
-  color: #000;
-  border: 1px solid #000;
+  right: 10px;
   padding: 2px 8px;
+  font-family: "Special Elite", "Courier New", monospace;
   font-size: 0.75rem;
   font-weight: normal;
-  font-family: 'Special Elite', 'Courier New', monospace;
+  color: #000;
+  background: #fff;
+  border: 1px solid #000;
+  transform: translateY(-50%);
 }
 
 /* Row hover effects */
 tr:hover td:first-child {
-  background-color: #e0e0e0 !important;
   font-weight: bold;
+  background-color: #e0e0e0 !important;
 }
 
 /* Toast notification styles */
@@ -131,8 +133,8 @@ tr:hover td:first-child {
   right: 0.5rem;
   left: 0.5rem;
   z-index: 10000;
-  max-width: none;
   width: auto;
+  max-width: none;
   pointer-events: none;
 }
 
@@ -146,28 +148,28 @@ tr:hover td:first-child {
 }
 
 .toast-message {
-  pointer-events: auto;
-  margin-bottom: 10px;
-  border: 2px solid #000;
-  background: #fafaf8;
-  color: #000;
+  position: relative;
   padding: 10px 12px;
-  font-family: 'Special Elite', 'Courier New', monospace;
+  margin-bottom: 10px;
+  font-family: "Special Elite", "Courier New", monospace;
   font-size: 0.8rem;
   line-height: 1.3;
-  box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.4);
-  transform: translateX(100%);
-  opacity: 0;
-  animation: slideInToast 0.3s ease-out forwards;
-  cursor: pointer;
-  transition: all 0.2s ease;
+  color: #000;
   word-wrap: break-word;
-  position: relative;
+  pointer-events: auto;
+  cursor: pointer;
+  background: #fafaf8;
+  border: 2px solid #000;
+  box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.4);
+  opacity: 0;
+  transform: translateX(100%);
+  transition: all 0.2s ease;
+  animation: slideInToast 0.3s ease-out forwards;
 }
 
 .toast-message:hover {
-  transform: translateX(-3px);
   box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.4);
+  transform: translateX(-3px);
 }
 
 .toast-message.removing {
@@ -198,42 +200,42 @@ tr:hover td:first-child {
 
 /* Toast message variants */
 .toast-success {
-  border-color: #4caf50;
   background: #f0f8f0;
+  border-color: #4caf50;
 }
 
 .toast-error {
-  border-color: #f44336;
   background: #fff0f0;
+  border-color: #f44336;
 }
 
 .toast-warning {
-  border-color: #ffa500;
   background: #fffbf0;
+  border-color: #ffa500;
 }
 
 .toast-smart-fill {
-  border-color: #4caf50;
   background: #f0f8f0;
+  border-color: #4caf50;
 }
 
 /* Toast content layout */
 .toast-content {
   display: flex;
-  align-items: flex-start;
   gap: 6px;
+  align-items: flex-start;
 }
 
 .toast-icon {
   flex-shrink: 0;
+  margin-top: 0;
   font-size: 0.9rem;
   line-height: 1;
-  margin-top: 0;
 }
 
 .toast-text {
   flex: 1;
   margin: 0;
-  font-weight: bold;
   font-size: inherit;
+  font-weight: bold;
 }

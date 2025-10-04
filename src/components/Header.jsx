@@ -1,11 +1,7 @@
 export const Header = ({ currentLanguage, setLanguage, t }) => (
   <div className="bg-white text-black p-3 md:p-5 text-center relative">
-    <h1 className="text-2xl md:text-4xl mb-1 font-bold uppercase tracking-widest">
-      🕵️ CLUE
-    </h1>
-    <p className="text-xs md:text-sm uppercase tracking-wide">
-      {t('subtitle')}
-    </p>
+    <h1 className="text-2xl md:text-4xl mb-1 font-bold uppercase tracking-widest">🕵️ CLUE</h1>
+    <p className="text-xs md:text-sm uppercase tracking-wide">{t('subtitle')}</p>
     <div className="absolute top-3 right-3 md:top-5 md:right-5 flex gap-2 items-center">
       <div className="flex bg-paper-white border-2 border-black shadow-lg rounded-lg overflow-hidden">
         <button
@@ -15,6 +11,7 @@ export const Header = ({ currentLanguage, setLanguage, t }) => (
               : 'bg-paper-white text-black hover:bg-gray-100 focus:bg-gray-100'
           }`}
           onClick={() => setLanguage('es')}
+          type="button"
         >
           ES
         </button>
@@ -25,6 +22,7 @@ export const Header = ({ currentLanguage, setLanguage, t }) => (
               : 'bg-paper-white text-black hover:bg-gray-100 focus:bg-gray-100'
           }`}
           onClick={() => setLanguage('en')}
+          type="button"
         >
           EN
         </button>
