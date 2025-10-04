@@ -30,15 +30,15 @@
   },
   "homepage": "https://github.com/yorch/clue-digital-scorecard#readme",
   "dependencies": {
-    "react": "19.1.1",
-    "react-dom": "19.1.1"
+    "react": "19.2.0",
+    "react-dom": "19.2.0"
   },
   "devDependencies": {
     "@biomejs/biome": "2.2.5",
-    "@tailwindcss/vite": "4.1.13",
+    "@tailwindcss/vite": "4.1.14",
     "@vitejs/plugin-react": "5.0.4",
-    "tailwindcss": "4.1.13",
-    "vite": "7.1.7",
+    "tailwindcss": "4.1.14",
+    "vite": "7.1.9",
     "vite-plugin-singlefile": "2.3.0"
   },
   "packageManager": "yarn@4.10.3"
