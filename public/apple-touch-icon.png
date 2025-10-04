@@ -1,0 +1,8 @@
+<!-- Placeholder: Generate actual PNG using an image tool -->
+<!-- For now, create a simple SVG that can be converted -->
+<svg xmlns="http://www.w3.org/2000/svg" width="180" height="180" viewBox="0 0 180 180">
+  <rect width="180" height="180" fill="#f5f1e8" rx="27"/>
+  <circle cx="72" cy="72" r="40" fill="none" stroke="#2c1810" stroke-width="9"/>
+  <line x1="101" y1="101" x2="135" y2="135" stroke="#2c1810" stroke-width="9" stroke-linecap="round"/>
+  <path d="M 50 72 L 65 87 L 90 57" fill="none" stroke="#2c1810" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

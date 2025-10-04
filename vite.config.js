@@ -25,4 +25,5 @@ export default defineConfig({
     open: true,
   },
   root: '.',
+  publicDir: 'public', // Copy public assets to dist
 });
