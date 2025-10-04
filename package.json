@@ -8,7 +8,9 @@
     "build": "vite build",
     "preview": "vite preview",
     "cleanup": "rm -rf dist",
-    "format": "prettier --write ."
+    "lint": "biome check",
+    "lint:fix": "biome check --write",
+    "format": "biome format --write"
   },
   "keywords": [
     "clue",
@@ -31,9 +33,9 @@
     "react-dom": "19.1.1"
   },
   "devDependencies": {
+    "@biomejs/biome": "2.2.5",
     "@tailwindcss/vite": "4.1.13",
     "@vitejs/plugin-react": "5.0.4",
-    "prettier": "3.6.2",
     "tailwindcss": "4.1.13",
     "vite": "7.1.7",
     "vite-plugin-singlefile": "2.3.0"
